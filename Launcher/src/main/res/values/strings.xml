@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Launcher</string>
+    <string name="startAppFailed">启动应用失败</string>
+</resources>

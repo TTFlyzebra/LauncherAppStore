@@ -1,0 +1,4 @@
+include ':Launcher',
+        ':Launcher3',
+//        'Launcher2',
+        ':wallpaperpick'

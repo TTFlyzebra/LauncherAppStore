@@ -130,6 +130,7 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
                 focusChange(isTouchPointInView(v, (int) event.getRawX(), (int) event.getRawY()));
                 break;
             case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
                 focusChange(false);
                 break;
         }

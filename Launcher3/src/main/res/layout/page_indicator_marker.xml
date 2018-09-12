@@ -17,8 +17,8 @@
 <com.android.launcher3.PageIndicatorMarker xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="16px"
     android:layout_height="16px"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
+    android:layout_marginLeft="8px"
+    android:layout_marginRight="8px"
     android:layout_gravity="center_vertical">
     <ImageView
         android:id="@+id/inactive"

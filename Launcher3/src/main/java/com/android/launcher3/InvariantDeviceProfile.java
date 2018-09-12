@@ -190,7 +190,7 @@ public class InvariantDeviceProfile {
 
         //@FlyZebra set column rows. ADD Jancar
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("JarCar",
-                400, 682,     2, 6, 0, 0, 4, 80, 14.4f,  1, 80, R.xml.jarcar_default_workspace));
+                400, 682,     2, 6, 0, 0, 4, 100, 14.4f,  1, 100, R.xml.jancar_default_workspace));
 //        predefinedDeviceProfiles.add(new InvariantDeviceProfile("Large Phone",
 //                406, 694,     5, 5, 4, 4, 4, 64, 14.4f,  5, 56, R.xml.default_workspace_5x5));
 //        // The tablet profile is odd in that the landscape orientation

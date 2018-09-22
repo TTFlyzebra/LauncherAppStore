@@ -66,8 +66,8 @@
     },
     {
       "jancar": "btdial",
-      "packName": "com.jancar.bluetooth",
-      "className": "com.jancar.bluetooth.BluetoothDialActivity",
+      "packName": "com.jancar.bluetooth.phone",
+      "className": "com.jancar.bluetooth.phone.view.MainActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page01_default_4.png",
       "focusImageUrl": "file:///android_asset/image/page01_focus_4.png",
@@ -85,7 +85,7 @@
     },
     {
       "jancar": "video",
-      "packName": "com.jancar.media",
+      "packName": "com.jancar.bluetooth.phone",
       "className": "com.jancar.media.activity.VideoActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page02_default_1.png",
@@ -105,7 +105,7 @@
     {
       "jancar": "a2dp",
       "packName": "com.jancar.bluetooth",
-      "className": "com.jancar.bluetooth.BluetoothMusic",
+      "className": "com.jancar.bluetooth.phone.view.MusicActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page02_default_2.png",
       "focusImageUrl": "file:///android_asset/image/page02_focus_2.png",
@@ -161,8 +161,8 @@
     },
     {
       "jancar": "setting",
-      "packName": " com.jancar.settings",
-      "className": "com.jancar.settings.MainActivity",
+      "packName": "com.jancar.settings",
+      "className": "com.jancar.settings.view.activity.MainActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page03_default_1.png",
       "focusImageUrl": "file:///android_asset/image/page03_focus_1.png",

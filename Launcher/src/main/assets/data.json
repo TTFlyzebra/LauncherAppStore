@@ -134,8 +134,8 @@
       "height":317
     },
     {
-      "packName": "com.jancar.imagebrowser",
-      "className": "com.jancar.imagebrowser.ImageBrowserActivity",
+      "packName": "com.jancar.media",
+      "className": "com.jancar.media.activity.PhotoActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page02_default_4.png",
       "focusImageUrl": "file:///android_asset/image/page02_focus_4.png",

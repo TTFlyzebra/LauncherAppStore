@@ -6,7 +6,7 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_MANIFEST_FILE := src/main/AndroidManifest.xml
 LOCAL_SRC_FILES := $(call all-java-files-under, src/main/java)
 LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/src/main/res \
-                      $(LOCAL_PATH)/../WallpaperPicker/res \
+                      $(LOCAL_PATH)/../wallpaperpick/src/main/res \
 	                  $(LOCAL_PATH)/../../../../../../prebuilts/sdk/current/support/v7/recyclerview/res
 LOCAL_JAVA_LIBRARIES := framework \
                         telephony-common 

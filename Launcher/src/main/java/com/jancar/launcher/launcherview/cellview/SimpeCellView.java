@@ -1,9 +1,11 @@
 package com.jancar.launcher.launcherview.cellview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.jancar.JancarManager;
 import com.jancar.launcher.R;
 import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.launcherview.flyview.FlyImageView;
@@ -33,6 +36,8 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
     private Handler mHandler = new Handler();
     private float clickAlpha = 0.75f;
     private float normalAlphe = 1.0f;
+    private JancarManager jancarManager;
+
 
     public SimpeCellView(Context context) {
         this(context, null);
@@ -42,8 +47,14 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
         this(context, attrs, 0);
     }
 
+    @SuppressLint("WrongConstant")
     public SimpeCellView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        try {
+            jancarManager = (JancarManager) context.getSystemService("jancar_manager");
+        }catch (Exception e){
+            FlyLog.e(e.toString());
+        }
         initView(context);
         focusChange(false);
     }
@@ -82,15 +93,15 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
 
     @Override
     public void notifyView() {
-        if(textView!=null&&appInfo!=null&&appInfo.textTitle!=null){
+        if (textView != null && appInfo != null && appInfo.textTitle != null) {
             textView.setText(appInfo.textTitle);
         }
-        if(imageView==null) return;
+        if (imageView == null) return;
         Glide.with(getContext()).load(appInfo.defaultImageUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(final Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
                 imageView.setImageBitmap(bitmap);
-                if(mirrorView!=null)  mirrorView.showImage(bitmap);
+                if (mirrorView != null) mirrorView.showImage(bitmap);
             }
         });
     }
@@ -100,6 +111,11 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
      */
     @Override
     public void runAction() {
+        if (!TextUtils.isEmpty(appInfo.jancar)&&jancarManager!=null) {
+            if(jancarManager.requestPage(appInfo.jancar)){
+                FlyLog.d("start app by jancarManager id=%d",appInfo.jancar);
+            }
+        }
         if (CommondUtils.execStartPackage(getContext(), appInfo.packName, appInfo.className))
             return;
         if (CommondUtils.execStartActivity(getContext(), appInfo.action)) return;

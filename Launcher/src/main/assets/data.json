@@ -8,6 +8,7 @@
   "y":-69,
   "cells": [
     {
+      "jancar": "gps",
       "packName": "com.autonavi.amapauto",
       "className": "com.autonavi.amapauto.MainMapActivity",
       "action": "",
@@ -26,6 +27,7 @@
       "height":317
     },
     {
+      "jancar": "elink",
       "packName": "net.easyconn",
       "className": "net.easyconn.WelcomeActivity",
       "action": "",
@@ -44,6 +46,7 @@
       "height":317
     },
     {
+      "jancar": "fm",
       "packName": "com.jancar.radio",
       "className": "com.jancar.radio.RadioActivity",
       "action": "",
@@ -62,8 +65,9 @@
       "height":317
     },
     {
-      "packName": "com.autochips.bluetooth",
-      "className": "com.autochips.bluetooth.BluetoothPhoneBookActivity",
+      "jancar": "btdial",
+      "packName": "com.jancar.bluetooth",
+      "className": "com.jancar.bluetooth.BluetoothDialActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page01_default_4.png",
       "focusImageUrl": "file:///android_asset/image/page01_focus_4.png",
@@ -80,6 +84,7 @@
       "height":317
     },
     {
+      "jancar": "video",
       "packName": "com.jancar.media",
       "className": "com.jancar.media.activity.VideoActivity",
       "action": "",
@@ -98,8 +103,9 @@
       "height":317
     },
     {
-      "packName": "com.autochips.bluetooth",
-      "className": "com.autochips.bluetooth.BluetoothMusicActivity",
+      "jancar": "a2dp",
+      "packName": "com.jancar.bluetooth",
+      "className": "com.jancar.bluetooth.BluetoothMusic",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page02_default_2.png",
       "focusImageUrl": "file:///android_asset/image/page02_focus_2.png",
@@ -116,6 +122,7 @@
       "height":317
     },
     {
+      "jancar": "music",
       "packName": "com.jancar.media",
       "className": "com.jancar.media.activity.MusicActivity",
       "action": "",
@@ -134,6 +141,7 @@
       "height":317
     },
     {
+      "jancar": "image",
       "packName": "com.jancar.media",
       "className": "com.jancar.media.activity.PhotoActivity",
       "action": "",
@@ -152,6 +160,7 @@
       "height":317
     },
     {
+      "jancar": "setting",
       "packName": " com.jancar.settings",
       "className": "com.jancar.settings.MainActivity",
       "action": "",
@@ -170,6 +179,7 @@
       "height":317
     },
     {
+      "jancar": "avin",
       "packName": "com.jancar.avin",
       "className": "com.jancar.avin.MainActivity",
       "action": "",
@@ -188,6 +198,7 @@
       "height":317
     },
     {
+      "jancar": "app",
       "packName": "com.android.launcher3",
       "className": "com.android.launcher3.Launcher",
       "action": "",

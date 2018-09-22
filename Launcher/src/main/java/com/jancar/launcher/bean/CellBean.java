@@ -24,4 +24,28 @@ public class CellBean implements Cloneable{
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
+    @Override
+    public String toString() {
+        return "CellBean{" +
+                "jancar='" + jancar + '\'' +
+                ", packName='" + packName + '\'' +
+                ", className='" + className + '\'' +
+                ", action='" + action + '\'' +
+                ", intentFlag='" + intentFlag + '\'' +
+                ", defaultImageUrl='" + defaultImageUrl + '\'' +
+                ", focusImageUrl='" + focusImageUrl + '\'' +
+                ", type=" + type +
+                ", textTitle='" + textTitle + '\'' +
+                ", textSize=" + textSize +
+                ", textColor='" + textColor + '\'' +
+                ", textLeft=" + textLeft +
+                ", textRight=" + textRight +
+                ", textTop=" + textTop +
+                ", textBottom=" + textBottom +
+                ", sort=" + sort +
+                ", width=" + width +
+                ", height=" + height +
+                '}';
+    }
 }

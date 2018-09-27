@@ -34,7 +34,6 @@ public class MainActivity extends Activity {
 
         String language = Locale.getDefault().getLanguage();
         String country = Locale.getDefault().getCountry();
-        FlyLog.d("language = %s,country = %s", language, country);
 
         launcherView = (LauncherView) findViewById(R.id.ac_main_launcherview);
         naviForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);

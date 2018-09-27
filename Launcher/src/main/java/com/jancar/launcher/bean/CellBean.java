@@ -9,7 +9,7 @@ public class CellBean implements Cloneable{
     public String defaultImageUrl = "file:///android_asset/image/page01_default_1.png";
     public String focusImageUrl="file:///android_asset/image/page01_focus_1.png";
     public int type = 1;
-    public String textTitle = "手机互联";
+    public Language textTitle;
     public int textSize = 26;
     public String textColor = "#FFFFFF";
     public int textLeft = 0;

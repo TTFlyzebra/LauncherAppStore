@@ -10,6 +10,7 @@ import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.bean.PageBean;
 import com.jancar.launcher.launcherview.viewpager.LauncherView;
 import com.jancar.launcher.launcherview.viewpager.NavForViewPager;
+import com.jancar.launcher.utils.FlyLog;
 import com.jancar.launcher.utils.GsonUtils;
 
 import java.io.BufferedReader;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
 
 
 public class MainActivity extends Activity {
@@ -29,12 +31,17 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 //        Settings.Global.putInt(getContentResolver(), Settings.Global.DEVICE_PROVISIONED, 1);
 //        Settings.Secure.putInt(getContentResolver(), Settings.Secure.USER_SETUP_COMPLETE, 1);
+
+        String language = Locale.getDefault().getLanguage();
+        String country = Locale.getDefault().getCountry();
+        FlyLog.d("language = %s,country = %s", language, country);
+
         launcherView = (LauncherView) findViewById(R.id.ac_main_launcherview);
         naviForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
-        String jsonStr = getAssetFileText("data.json",this);
-        PageBean pageBean = GsonUtils.json2Object(jsonStr,PageBean.class);
+        String jsonStr = getAssetFileText("data.json", this);
+        PageBean pageBean = GsonUtils.json2Object(jsonStr, PageBean.class);
 
-        if(pageBean!=null&&pageBean.cells!=null) {
+        if (pageBean != null && pageBean.cells != null) {
             //排序
             Collections.sort(pageBean.cells, new Comparator<CellBean>() {
                 @Override
@@ -58,7 +65,8 @@ public class MainActivity extends Activity {
 //        super.onBackPressed();
         return;
     }
-    public static String getAssetFileText(String fileName,Context context) {
+
+    public static String getAssetFileText(String fileName, Context context) {
         StringBuilder stringBuilder = new StringBuilder();
         try {
             AssetManager assetManager = context.getAssets();

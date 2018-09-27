@@ -15,7 +15,12 @@
       "defaultImageUrl": "file:///android_asset/image/page01_default_2.png",
       "focusImageUrl": "file:///android_asset/image/page01_focus_2.png",
       "type": 1,
-      "textTitle": "导航",
+      "textTitle": {
+        "zh_CN":"导航",
+        "zh_TW":"導航",
+        "zh_HK":"導航",
+        "en_US":"navigation"
+      },
       "textSize": 26,
       "textColor": "#FFFFFF",
       "textLeft": 0,
@@ -34,7 +39,12 @@
       "defaultImageUrl": "file:///android_asset/image/page01_default_1.png",
       "focusImageUrl": "file:///android_asset/image/page01_focus_1.png",
       "type": 1,
-      "textTitle": "手机互联",
+      "textTitle": {
+        "zh_CN":"手机互联",
+        "zh_TW":"手機互聯",
+        "zh_HK":"手機互聯",
+        "en_US":"Mobile internet"
+      },
       "textSize": 26,
       "textColor": "#FFFFFF",
       "textLeft": 0,
@@ -53,7 +63,12 @@
       "defaultImageUrl": "file:///android_asset/image/page01_default_3.png",
       "focusImageUrl": "file:///android_asset/image/page01_focus_3.png",
       "type": 2,
-      "textTitle": "收音机",
+      "textTitle": {
+        "zh_CN":"收音机",
+        "zh_TW":"收音機",
+        "zh_HK":"收音機",
+        "en_US":"radio"
+      },
       "textSize": 26,
       "textColor": "#FFFFFF",
       "textLeft": 0,
@@ -72,7 +87,12 @@
       "defaultImageUrl": "file:///android_asset/image/page01_default_4.png",
       "focusImageUrl": "file:///android_asset/image/page01_focus_4.png",
       "type": 1,
-      "textTitle": "电话",
+      "textTitle": {
+        "zh_CN":"电话",
+        "zh_TW":"電話",
+        "zh_HK":"電話",
+        "en_US":"phone"
+      },
       "textSize": 26,
       "textColor": "#FFFFFF",
       "textLeft": 0,
@@ -91,7 +111,12 @@
       "defaultImageUrl": "file:///android_asset/image/page02_default_1.png",
       "focusImageUrl": "file:///android_asset/image/page02_focus_1.png",
       "type": 1,
-      "textTitle": "视频",
+      "textTitle": {
+        "zh_CN":"视频",
+        "zh_TW":"視頻",
+        "zh_HK":"視頻",
+        "en_US":"video"
+      },
       "textSize": 26,
       "textColor": "#FFFFFF",
       "textLeft": 0,
@@ -110,7 +135,12 @@
       "defaultImageUrl": "file:///android_asset/image/page02_default_2.png",
       "focusImageUrl": "file:///android_asset/image/page02_focus_2.png",
       "type": 1,
-      "textTitle": "蓝牙音乐",
+      "textTitle": {
+        "zh_CN":"蓝牙音乐",
+        "zh_TW":"藍牙音樂",
+        "zh_HK":"藍牙音樂",
+        "en_US":"Bluetooth music"
+      },
       "textSize": 26,
       "textColor": "#FFFFFF",
       "textLeft": 0,
@@ -129,7 +159,12 @@
       "defaultImageUrl": "file:///android_asset/image/page02_default_3.png",
       "focusImageUrl": "file:///android_asset/image/page02_focus_3.png",
       "type": 1,
-      "textTitle": "音乐",
+      "textTitle": {
+        "zh_CN":"音乐",
+        "zh_TW":"音樂",
+        "zh_HK":"音樂",
+        "en_US":"music"
+      },
       "textSize": 26,
       "textColor": "#FFFFFF",
       "textLeft": 0,
@@ -148,7 +183,12 @@
       "defaultImageUrl": "file:///android_asset/image/page02_default_4.png",
       "focusImageUrl": "file:///android_asset/image/page02_focus_4.png",
       "type": 1,
-      "textTitle": "图片",
+      "textTitle": {
+        "zh_CN":"图片",
+        "zh_TW":"圖片",
+        "zh_HK":"圖片",
+        "en_US":"image"
+      },
       "textSize": 26,
       "textColor": "#FFFFFF",
       "textLeft": 0,
@@ -167,7 +207,12 @@
       "defaultImageUrl": "file:///android_asset/image/page03_default_1.png",
       "focusImageUrl": "file:///android_asset/image/page03_focus_1.png",
       "type": 1,
-      "textTitle": "设置",
+      "textTitle": {
+        "zh_CN":"设置",
+        "zh_TW":"設置",
+        "zh_HK":"設置",
+        "en_US":"Setting"
+      },
       "textSize": 26,
       "textColor": "#FFFFFF",
       "textLeft": 0,
@@ -186,7 +231,12 @@
       "defaultImageUrl": "file:///android_asset/image/page03_default_2.png",
       "focusImageUrl": "file:///android_asset/image/page03_focus_2.png",
       "type": 1,
-      "textTitle": "AUX",
+      "textTitle": {
+        "zh_CN":"AUX",
+        "zh_TW":"AUX",
+        "zh_HK":"AUX",
+        "en_US":"AUX"
+      },
       "textSize": 26,
       "textColor": "#FFFFFF",
       "textLeft": 0,
@@ -205,7 +255,12 @@
       "defaultImageUrl": "file:///android_asset/image/page03_default_3.png",
       "focusImageUrl": "file:///android_asset/image/page03_focus_3.png",
       "type": 1,
-      "textTitle": "应用",
+      "textTitle": {
+        "zh_CN":"应用",
+        "zh_TW":"應用",
+        "zh_HK":"應用",
+        "en_US":"application"
+      },
       "textSize": 26,
       "textColor": "#FFFFFF",
       "textLeft": 0,

@@ -94,7 +94,7 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
     @Override
     public void notifyView() {
         if (textView != null && appInfo != null && appInfo.textTitle != null) {
-            textView.setText(appInfo.textTitle);
+            textView.setText(appInfo.textTitle.getText());
         }
         if (imageView == null) return;
         Glide.with(getContext()).load(appInfo.defaultImageUrl).asBitmap().into(new SimpleTarget<Bitmap>() {

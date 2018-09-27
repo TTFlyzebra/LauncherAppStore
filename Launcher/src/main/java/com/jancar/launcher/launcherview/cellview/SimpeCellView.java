@@ -113,8 +113,10 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
     public void runAction() {
         if (!TextUtils.isEmpty(appInfo.jancar)&&jancarManager!=null) {
             if(jancarManager.requestPage(appInfo.jancar)){
-                FlyLog.d("start app by jancarManager id=%d",appInfo.jancar);
+                FlyLog.d("start app by jancarManager id=%s",appInfo.jancar);
                 return;
+            }else{
+                FlyLog.d("start app by jancarManager failed!");
             }
         }
         if (CommondUtils.execStartPackage(getContext(), appInfo.packName, appInfo.className))

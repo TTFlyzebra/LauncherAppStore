@@ -32,9 +32,6 @@ public class MainActivity extends Activity {
 //        Settings.Global.putInt(getContentResolver(), Settings.Global.DEVICE_PROVISIONED, 1);
 //        Settings.Secure.putInt(getContentResolver(), Settings.Secure.USER_SETUP_COMPLETE, 1);
 
-        String language = Locale.getDefault().getLanguage();
-        String country = Locale.getDefault().getCountry();
-
         launcherView = (LauncherView) findViewById(R.id.ac_main_launcherview);
         naviForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
         String jsonStr = getAssetFileText("data.json", this);

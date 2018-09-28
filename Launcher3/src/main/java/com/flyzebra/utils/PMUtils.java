@@ -14,6 +14,7 @@ import com.android.launcher3.compat.LauncherActivityInfoCompat;
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
+import com.flyzebra.utils.data.Const;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class PMUtils {
         LauncherApps launcherApps = (LauncherApps) context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
         if (launcherApps == null) return retLst;
         List<UserHandle> userHandles = getUserProfiles(context);
-        if(userHandles==null) return retLst;
+        if (userHandles == null) return retLst;
         for (UserHandle userHandle : userHandles) {
             List<LauncherActivityInfo> addList = launcherApps.getActivityList(null, userHandle);
             if (addList != null && !addList.isEmpty()) {
@@ -48,7 +49,7 @@ public class PMUtils {
         LauncherApps launcherApps = (LauncherApps) context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
         if (launcherApps == null) return retLst;
         List<UserHandle> userHandles = getUserProfiles(context);
-        if(userHandles==null) return retLst;
+        if (userHandles == null) return retLst;
         for (UserHandle userHandle : userHandles) {
             List<LauncherActivityInfo> addList = launcherApps.getActivityList(packageName, userHandle);
             if (addList != null && !addList.isEmpty()) {
@@ -65,14 +66,30 @@ public class PMUtils {
         LauncherAppsCompat mLauncherApps = LauncherAppsCompat.getInstance(context);
         if (mLauncherApps == null) return retList;
         UserManagerCompat mUserManager = UserManagerCompat.getInstance(context);
-        if(mUserManager==null) return retList;
+        if (mUserManager == null) return retList;
         List<UserHandleCompat> userHandles = mUserManager.getUserProfiles();
-        if(userHandles==null) return retList;
+        if (userHandles == null) return retList;
         for (UserHandleCompat userHandle : userHandles) {
             List<LauncherActivityInfoCompat> addList = mLauncherApps.getActivityList(packageName, userHandle);
             if (addList != null) {
-                for(LauncherActivityInfoCompat info:addList){
-                    retList.add((new AppInfo(context, info, userHandle, iconCache)));
+                for (LauncherActivityInfoCompat info : addList) {
+                    boolean isFilter = false;
+                    try {
+                        String myPackName = info.getComponentName().getPackageName();
+                        FlyLog.i("filter mypackname, mypackName=%s", myPackName);
+                        for (String packName : Const.FILTER_PACKNAMES) {
+                            if (packName.equals(myPackName)) {
+                                FlyLog.i("filter packname, packName=%s", packName);
+                                isFilter = true;
+                                break;
+                            }
+                        }
+                    } catch (Exception e) {
+                        FlyLog.e("filter mypackname error!");
+                    }
+                    if (!isFilter) {
+                        retList.add((new AppInfo(context, info, userHandle, iconCache)));
+                    }
                 }
             }
         }

@@ -126,7 +126,8 @@ public class LauncherProvider extends ContentProvider {
         return result;
     }
 
-    @Thunk static long dbInsertAndCheck(DatabaseHelper helper,
+    @Thunk
+    static long dbInsertAndCheck(DatabaseHelper helper,
             SQLiteDatabase db, String table, String nullColumnHack, ContentValues values) {
         if (values == null) {
             throw new RuntimeException("Error: attempting to insert null values");

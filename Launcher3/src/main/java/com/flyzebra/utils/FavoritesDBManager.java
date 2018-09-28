@@ -1,19 +1,15 @@
 package com.flyzebra.utils;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
 
-import com.android.launcher3.LauncherSettings;
-
 public class FavoritesDBManager {
-    private Context context;
+    private Uri WorkspaceScreensUri = Uri.parse("content://com.android.launcher3.settings/workspaceScreens");
+    private Uri favoritesUri = Uri.parse("content://com.android.launcher3.settings/favorites");
+    private Context mContext;
 
-
-    private FavoritesDBManager(Context mContext){
-        ContentResolver cr = mContext.getContentResolver();
-        Uri uri = LauncherSettings.WorkspaceScreens.CONTENT_URI;  //获取访问数据库的uri
-
+    private FavoritesDBManager(Context context) {
+        this.mContext = context;
     }
 }
 

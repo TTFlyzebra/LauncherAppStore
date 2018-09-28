@@ -69,7 +69,6 @@ import com.android.launcher3.util.ManagedProfileHeuristic;
 import com.android.launcher3.util.Thunk;
 import com.flyzebra.utils.FlyLog;
 import com.flyzebra.utils.PMUtils;
-import com.flyzebra.utils.data.Const;
 
 import java.lang.ref.WeakReference;
 import java.net.URISyntaxException;
@@ -81,9 +80,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -1607,11 +1606,6 @@ public class LauncherModel extends BroadcastReceiver
             // workspace first (default).
             keep_running:
             {
-                allLauncherActivitys = PMUtils.getAppInfos(null, mContext, mIconCache);
-//                final ContentResolver cr = mContext.getContentResolver();
-//                int ret = cr.delete(LauncherSettings.Favorites.CONTENT_URI, null,null);
-
-
                 if (DEBUG_LOADERS) Log.d(TAG, "step 1: loading workspace");
                 loadAndBindWorkspace();
 
@@ -1625,7 +1619,7 @@ public class LauncherModel extends BroadcastReceiver
                 if (DEBUG_LOADERS) Log.d(TAG, "step 2: loading all apps");
                 loadAndBindAllApps();
 
-
+                allLauncherActivitys = PMUtils.getAppInfos(null, mContext, mIconCache);
                 checkItems(mContext);
 
             }
@@ -3109,20 +3103,10 @@ public class LauncherModel extends BroadcastReceiver
                         mBgAllAppsList.addPackage(context, packages[i], mUser);
 
                         //添加图标到桌面
-                        boolean flag = false;
-                        for (String packName : Const.FILTER_PACKNAMES) {
-                            if (packName.equals(packages[i])) {
-                                flag = true;
-                                FlyLog.i("filter packname, packName=%s", packages[i]);
-                                break;
-                            }
-                        }
-                        if (!flag) {
-                            ArrayList<AppInfo> list = (ArrayList<AppInfo>) PMUtils.getAppInfos(packages[i], context, mIconCache);
-                            if (list != null && !list.isEmpty()) {
-                                FlyLog.i("OP_ADD, addAndBindAddedWorkspaceItems=%s", packages[i]);
-                                addAndBindAddedWorkspaceItems(context, list);
-                            }
+                        ArrayList<AppInfo> list = (ArrayList<AppInfo>) PMUtils.getAppInfos(packages[i], context, mIconCache);
+                        if (list != null && !list.isEmpty()) {
+                            FlyLog.i("OP_ADD, addAndBindAddedWorkspaceItems=%s", packages[i]);
+                            addAndBindAddedWorkspaceItems(context, list);
                         }
                     }
 
@@ -3843,12 +3827,7 @@ public class LauncherModel extends BroadcastReceiver
         return sWorkerThread.getLooper();
     }
 
-    /**
-     * 扫描所有应用并对桌面图标进行删除和添加
-     *
-     * @param mContext
-     */
-    List<AppInfo> allLauncherActivitys;
+    private List<AppInfo> allLauncherActivitys;
     private static final String FIRST_CREATE_DB = "FIRST_CREATE_DB";
     private static final String CELLX = "cellx";
     private static final String CELLY = "celly";
@@ -3862,9 +3841,15 @@ public class LauncherModel extends BroadcastReceiver
             SharedPreferences sp = mContext.getSharedPreferences(LauncherAppState.getSharedPreferencesKey(), Context.MODE_PRIVATE);
             if (sp.getBoolean(FIRST_CREATE_DB, true)) {
                 FlyLog.d("FIRST_CREATE_DB, start copy all apps to workspace");
-                firstAddFavorites(mContext, allLauncherActivitys);
-                resetLoadedState(false, true);
-                startLoaderFromBackground();
+                ContentValues v = new ContentValues();
+                v.put(LauncherSettings.WorkspaceScreens._ID, 1);
+                v.put(LauncherSettings.WorkspaceScreens.SCREEN_RANK, 0);
+                final ContentResolver cr = mContext.getContentResolver();
+                cr.insert(LauncherSettings.WorkspaceScreens.CONTENT_URI, v);
+                if (checkFavorites(mContext, allLauncherActivitys)) {
+                    resetLoadedState(false, true);
+                    startLoaderFromBackground();
+                }
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putBoolean(FIRST_CREATE_DB, false);
                 editor.apply();
@@ -3879,47 +3864,11 @@ public class LauncherModel extends BroadcastReceiver
         }
     }
 
-    public void firstAddFavorites(Context mContext, List<AppInfo> list) {
-        int appNum = list.size();
-        int screenNum = (int) Math.ceil((double) appNum / 12);  //这里的30是一个workspace桌面能承载的最大app数量，我改的是平板5x6界面所以是30个，这个数量可以在一个地方获得，我还没整理好偷懒直接写了
-        ContentResolver cr = mContext.getContentResolver();
-        cr.delete(LauncherSettings.WorkspaceScreens.CONTENT_URI, null, null);
-        int startNum = 0;
-        for (int i = 1; i <= screenNum; i++) {  //这部分算法写的比较拙略，总之就是向不同屏幕id添加app信息
-            int endNum = Math.min(i * 12, appNum);
-            ContentValues v = new ContentValues();
-            v.put(LauncherSettings.WorkspaceScreens._ID, i);
-            v.put(LauncherSettings.WorkspaceScreens.SCREEN_RANK, i - 1);
-            cr.insert(LauncherSettings.WorkspaceScreens.CONTENT_URI, v);
-            additem(mContext, startNum, endNum, i, list);
-            startNum += 12;
-        }
-    }
-
-    public void additem(Context mContext, int startNum, int endNum, int screen, List<AppInfo> list) {
-        for (int i = startNum; i < endNum; i++) {
-            ShortcutInfo shortcutInfo = new ShortcutInfo(list.get(i));
-            try {
-                String myPackName = shortcutInfo.getIntent().getComponent().getPackageName();
-                FlyLog.i("filter mypackname, mypackName=%s", myPackName);
-                for (String packName : Const.FILTER_PACKNAMES) {
-                    if (packName.equals(myPackName)) {
-                        FlyLog.i("filter packname, packName=%s", packName);
-                        return;
-                    }
-                }
-            } catch (Exception e) {
-                FlyLog.d("filter mypackname error!");
-            }
-            insertToDatabase(mContext, shortcutInfo, -100, screen, i % 6, (i % 12) / 6);
-        }
-    }
-
-    private boolean checkFavorites(Context mContext, List<AppInfo> allLauncherActivitys) {
+    private synchronized boolean checkFavorites(Context mContext, List<AppInfo> allLauncherActivitys) {
         boolean bMastLoad = false;
         final ContentResolver cr = mContext.getContentResolver();
         Cursor c = cr.query(LauncherSettings.Favorites.CONTENT_URI, null, null, null, null);
-        ArrayList<AppInfo> workspaceApps = new ArrayList<>();
+        ArrayList<AppInfo> favoritesApps = new ArrayList<>();
         try {
             while (c.moveToNext()) {
                 final int idIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites._ID);
@@ -3952,7 +3901,7 @@ public class LauncherModel extends BroadcastReceiver
                 info.spanX = 1;
                 info.spanY = 1;
                 info.title = c.getString(titleIndex);
-                workspaceApps.add(info);
+                favoritesApps.add(info);
             }
         } finally {
             if (c != null) {
@@ -3961,9 +3910,9 @@ public class LauncherModel extends BroadcastReceiver
         }
 
         //先删除
-        int sum = workspaceApps.size();
+        int sum = favoritesApps.size();
         for (int i = sum - 1; i >= 0; i--) {
-            AppInfo workInfo = workspaceApps.get(i);
+            AppInfo workInfo = favoritesApps.get(i);
             boolean isFind = false;
             for (AppInfo appInfo : allLauncherActivitys) {
                 String it1 = workInfo.intent.toUri(0);
@@ -3982,38 +3931,39 @@ public class LauncherModel extends BroadcastReceiver
                 }
                 //删除worksapceDB数据
                 bMastLoad = true;
-                workspaceApps.remove(i);
+                favoritesApps.remove(i);
             }
         }
 
         /**
          * 查找workspace上的最后一个图标位置
          */
-        Map<String, Integer> lastPos = new HashMap<>();
-        int screen = 1;
-        int cellx = 0;
-        int celly = 0;
-        if (workspaceApps != null && !workspaceApps.isEmpty()) {
-            screen = (int) workspaceApps.get(0).screenId;
-            cellx = workspaceApps.get(0).cellX;
-            celly = workspaceApps.get(0).cellY;
+        Hashtable<String, Integer> lastPos = new Hashtable<>();
+        int screen = 0;
+        int cellx = 5;
+        int celly = 1;
+        if (!favoritesApps.isEmpty()) {
+            screen = (int) favoritesApps.get(0).screenId;
+            cellx = favoritesApps.get(0).cellX;
+            celly = favoritesApps.get(0).cellY;
         }
-        for (AppInfo appInfo : workspaceApps) {
+        for (AppInfo appInfo : favoritesApps) {
             if ((appInfo.screenId * 10000 + appInfo.cellY * 100 + appInfo.cellX) > (screen * 10000 + celly * 100 + cellx)) {
                 screen = (int) appInfo.screenId;
                 cellx = appInfo.cellX;
                 celly = appInfo.cellY;
             }
         }
+
         lastPos.put(SCREEN, screen);
         lastPos.put(CELLX, cellx);
         lastPos.put(CELLY, celly);
 
         for (AppInfo appInfo : allLauncherActivitys) {
             boolean isFind = false;
-            int sum1 = workspaceApps.size();
+            int sum1 = favoritesApps.size();
             for (int i = sum1 - 1; i >= 0; i--) {
-                String it1 = workspaceApps.get(i).intent.toUri(0);
+                String it1 = favoritesApps.get(i).intent.toUri(0);
                 String it2 = appInfo.intent.toUri(0);
                 if (it1.equals(it2)) {
                     isFind = true;
@@ -4022,62 +3972,44 @@ public class LauncherModel extends BroadcastReceiver
             }
             if (isFind) {
                 try {
-                    FlyLog.d("%s already added!", appInfo.componentName.getClassName());
+                    FlyLog.d("already add packname=%s!", appInfo.componentName.getClassName());
                 } catch (Exception e) {
-                    e.toString();
+                    FlyLog.e(e.toString());
                 }
             } else {
                 try {
                     FlyLog.d("add packclassName=%s!", appInfo.componentName.getClassName());
                 } catch (Exception e) {
-                    e.toString();
+                    FlyLog.e(e.toString());
                 }
 
-                boolean isFilter = false;
-
-                try {
-                    String myPackName = appInfo.getIntent().getComponent().getPackageName();
-                    FlyLog.i("filter mypackname, mypackName=%s", myPackName);
-                    for (String packName : Const.FILTER_PACKNAMES) {
-                        if (packName.equals(myPackName)) {
-                            FlyLog.i("filter packname, packName=%s", packName);
-                            isFilter = true;
-                        }
-                    }
-                } catch (Exception e) {
-                    FlyLog.d("filter mypackname error!");
-                }
-
-                if(!isFilter) {
-                    if (lastPos.get(CELLX) == 5) {
-                        lastPos.put(CELLX, 0);
-                        if (lastPos.get(CELLY) == 1) {
-                            lastPos.put(CELLY, 0);
-                            lastPos.put(SCREEN, lastPos.get(SCREEN) + 1);
-                            //TODO：页面加1
-                            ContentValues v = new ContentValues();
-                            v.put(LauncherSettings.WorkspaceScreens._ID, lastPos.get(SCREEN));
-                            v.put(LauncherSettings.WorkspaceScreens.SCREEN_RANK, lastPos.get(SCREEN) - 1);
-                            cr.insert(LauncherSettings.WorkspaceScreens.CONTENT_URI, v);
-                        } else {
-                            lastPos.put(CELLY, lastPos.get(CELLY) + 1);
-                        }
+                if (lastPos.get(CELLX) == 5) {
+                    lastPos.put(CELLX, 0);
+                    if (lastPos.get(CELLY) == 1) {
+                        lastPos.put(CELLY, 0);
+                        lastPos.put(SCREEN, lastPos.get(SCREEN) + 1);
+                        //TODO：页面加1
+                        ContentValues v = new ContentValues();
+                        v.put(LauncherSettings.WorkspaceScreens._ID, lastPos.get(SCREEN));
+                        v.put(LauncherSettings.WorkspaceScreens.SCREEN_RANK, lastPos.get(SCREEN) - 1);
+                        cr.insert(LauncherSettings.WorkspaceScreens.CONTENT_URI, v);
+                        FlyLog.d("insertfly-> screen=%d", lastPos.get(SCREEN));
                     } else {
-                        lastPos.put(CELLX, lastPos.get(CELLX) + 1);
+                        lastPos.put(CELLY, lastPos.get(CELLY) + 1);
                     }
-                    ShortcutInfo shortcutInfo = new ShortcutInfo(appInfo);
-                    insertToDatabase(mContext, shortcutInfo, -100, lastPos.get(SCREEN), lastPos.get(CELLX), lastPos.get(CELLY));
-                    bMastLoad = true;
+                } else {
+                    lastPos.put(CELLX, lastPos.get(CELLX) + 1);
                 }
+                ShortcutInfo shortcutInfo = new ShortcutInfo(appInfo);
+                insertToDatabase(mContext, shortcutInfo, -100, lastPos.get(SCREEN), lastPos.get(CELLX), lastPos.get(CELLY));
+                bMastLoad = true;
             }
-
         }
         return bMastLoad;
     }
 
-    public static void insertToDatabase(Context context, final ItemInfo item, final long container,
-                                        final long screenId, final int cellX, final int cellY) {
-
+    public synchronized static void insertToDatabase(Context context, final ItemInfo item, final long container, final long screenId, final int cellX, final int cellY) {
+        FlyLog.d("insertfly-> screen=%d,cellx=%d,celly=%d,title=%s", screenId, cellX, cellY, item.title);
         item.container = container;
         item.cellX = cellX;
         item.cellY = cellY;
@@ -4087,7 +4019,6 @@ public class LauncherModel extends BroadcastReceiver
         item.onAddToDatabase(context, values);
         item.id = LauncherAppState.getLauncherProvider().generateNewItemId();
         values.put(LauncherSettings.Favorites._ID, item.id);
-        FlyLog.d("insertfly-> screen=%d,cellx=%d,celly=%d,title=%s", item.screenId, item.cellX, item.cellY, item.title);
         cr.insert(LauncherSettings.Favorites.CONTENT_URI, values);
     }
 

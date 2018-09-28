@@ -105,7 +105,7 @@
     },
     {
       "jancar": "video",
-      "packName": "com.jancar.bluetooth.phone",
+      "packName": "com.jancar.media",
       "className": "com.jancar.media.activity.VideoActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page02_default_1.png",
@@ -129,7 +129,7 @@
     },
     {
       "jancar": "a2dp",
-      "packName": "com.jancar.bluetooth",
+      "packName": "com.jancar.bluetooth.phone",
       "className": "com.jancar.bluetooth.phone.view.MusicActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page02_default_2.png",
@@ -201,7 +201,7 @@
     },
     {
       "jancar": "setting",
-      "packName": "com.jancar.settings",
+      "packName": "com.jancar.settingss",
       "className": "com.jancar.settings.view.activity.MainActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page03_default_1.png",

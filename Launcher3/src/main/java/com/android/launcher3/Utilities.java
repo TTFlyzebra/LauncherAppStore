@@ -71,16 +71,16 @@ import java.util.regex.Pattern;
  * Various utilities shared amongst the Launcher's classes.
  */
 public final class Utilities {
-    private static int sIconWidth = -1;
-    private static int sIconHeight = -1;
-    private static int sIconTextureWidth = -1;
-    private static int sIconTextureHeight = -1;
+    private static int sIconWidth = 102;
+    private static int sIconHeight = 102;
+    private static int sIconTextureWidth = 102;
+    private static int sIconTextureHeight = 102;
 
     private static final Paint sBlurPaint = new Paint();
     private static final Paint sGlowColorPressedPaint = new Paint();
     private static final Paint sGlowColorFocusedPaint = new Paint();
     private static final Paint sDisabledPaint = new Paint();
-    private final static int INTERNAL_PADDING = 6;
+    private final static int INTERNAL_PADDING = 0;
 
     private static final String TAG = "Launcher.Utilities";
 
@@ -741,16 +741,13 @@ public final class Utilities {
         sDisabledPaint.setAlpha(0x88);
     }
 
-
-    static Bitmap create3rdIconBitmap(Drawable icon, Context context) {
+    public static Bitmap create3rdIconBitmap(Drawable icon, Context context) {
         synchronized (sCanvas) { // we share the statics :-(
             if (sIconWidth == -1) {
                 initStatics(context);
             }
-
-            int width = sIconWidth - (INTERNAL_PADDING << 1);
-            int height = sIconHeight - (INTERNAL_PADDING << 1);
-
+            int width = sIconWidth;
+            int height = sIconHeight;
             if (icon instanceof PaintDrawable) {
                 PaintDrawable painter = (PaintDrawable) icon;
                 painter.setIntrinsicWidth(width);
@@ -781,19 +778,14 @@ public final class Utilities {
                     height = sourceHeight;
                 }
             }
-
             // no intrinsic size --> use default size
             int textureWidth = sIconTextureWidth;
             int textureHeight = sIconTextureHeight;
-
-            final Bitmap bitmap = Bitmap.createBitmap(textureWidth, textureHeight,
-                    Bitmap.Config.ARGB_8888);
+            final Bitmap bitmap = Bitmap.createBitmap(textureWidth, textureHeight, Bitmap.Config.ARGB_8888);
             final Canvas canvas = sCanvas;
             canvas.setBitmap(bitmap);
-
             final int left = (textureWidth - width) / 2;
             final int top = (textureHeight - height) / 2;
-
             @SuppressWarnings("all") // suppress dead code warning
             final boolean debug = false;
             if (debug) {
@@ -804,23 +796,19 @@ public final class Utilities {
                 debugPaint.setColor(0xffcccc00);
                 canvas.drawRect(left, top, left+width, top+height, debugPaint);
             }
-
             //Drawable drawable = context.getResources().getDrawable(R.drawable.homescreen_blue_strong_holo);
             try {
-                Drawable drawable = context.getResources().getDrawable(R.drawable.icon_bg2);
+                Drawable drawable = context.getResources().getDrawable(R.drawable.icon_bg3);
                 drawable.setBounds(0, 0, sIconWidth, sIconHeight);
                 drawable.draw(canvas);
             } catch (Exception e) {
                 //Log.d(TAG, "PackageManager.getApplicationInfo failed for " + packageName);
             }
-
-
             sOldBounds.set(icon.getBounds());
             icon.setBounds(left, top, left+width, top+height);
             icon.draw(canvas);
             icon.setBounds(sOldBounds);
             canvas.setBitmap(null);
-
             return bitmap;
         }
     }

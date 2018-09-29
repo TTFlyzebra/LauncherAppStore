@@ -45,7 +45,7 @@ public class PageIndicator extends LinearLayout {
 
         public PageMarkerResources() {
             /**
-             * @FlyZeba
+             * @FlyZebra
              * 修改导航指示的圆点图标
              */
             activeId = R.drawable.nav_on;

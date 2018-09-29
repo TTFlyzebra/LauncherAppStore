@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "V1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -40,5 +41,22 @@ dependencies {
     implementation files('libs/gson-2.8.5.jar')
     implementation files('libs/glide-3.7.0.jar')
     implementation 'com.android.support:support-v4:23.1.0'
-    implementation files('libs/jancar.jar')
+    implementation files('libs/framworks.jar')
+    implementation 'com.android.support:multidex:1.0.3'
+}
+preBuild {
+    doLast {
+        def imlFile = file(project.name + ".iml")
+        println 'Change ' + project.name + '.iml order'
+        try {
+            def parsedXml = (new XmlParser()).parse(imlFile)
+            def jdkNode = parsedXml.component[1].orderEntry.find { it.'@type' == 'jdk' }
+            parsedXml.component[1].remove(jdkNode)
+            def sdkString = "Android API " + android.compileSdkVersion.substring("android-".length()) + " Platform"
+            new Node(parsedXml.component[1], 'orderEntry', ['type': 'jdk', 'jdkName': sdkString, 'jdkType': 'Android SDK'])
+            groovy.xml.XmlUtil.serialize(parsedXml, new FileOutputStream(imlFile))
+        } catch (FileNotFoundException e) {
+            // nop, iml not found
+        }
+    }
 }

@@ -67,8 +67,8 @@ import com.android.launcher3.util.CursorIconInfo;
 import com.android.launcher3.util.LongArrayMap;
 import com.android.launcher3.util.ManagedProfileHeuristic;
 import com.android.launcher3.util.Thunk;
-import com.flyzebra.utils.FlyLog;
-import com.flyzebra.utils.PMUtils;
+import com.android.flyzebra.utils.FlyLog;
+import com.android.flyzebra.utils.PMUtils;
 
 import java.lang.ref.WeakReference;
 import java.net.URISyntaxException;
@@ -2855,7 +2855,6 @@ public class LauncherModel extends BroadcastReceiver
             }
         }
 
-        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         private void loadAllApps() {
             final long loadTime = DEBUG_LOADERS ? SystemClock.uptimeMillis() : 0;
 
@@ -2866,15 +2865,7 @@ public class LauncherModel extends BroadcastReceiver
                 return;
             }
 
-            UserManager mUserManager = (UserManager) mContext.getSystemService(Context.USER_SERVICE);
-            List<UserHandle> users = mUserManager.getUserProfiles();
-            List<UserHandleCompat> profiles = new ArrayList<>();
-            if (users != null) {
-                for (UserHandle user : users) {
-                    profiles.add(UserHandleCompat.fromUser(user));
-                }
-
-            }
+            final List<UserHandleCompat> profiles = mUserManager.getUserProfiles();
 
             // Clear the list of apps
             mBgAllAppsList.clear();

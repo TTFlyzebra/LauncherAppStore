@@ -111,7 +111,7 @@ import com.android.launcher3.util.Thunk;
 import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.android.launcher3.widget.WidgetHostViewLoader;
 import com.android.launcher3.widget.WidgetsContainerView;
-import com.flyzebra.utils.FlyLog;
+import com.android.flyzebra.utils.FlyLog;
 
 import java.io.File;
 import java.io.FileDescriptor;

@@ -56,7 +56,7 @@ import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.config.ProviderConfig;
 import com.android.launcher3.util.ManagedProfileHeuristic;
 import com.android.launcher3.util.Thunk;
-import com.flyzebra.utils.FlyLog;
+import com.android.flyzebra.utils.FlyLog;
 
 import java.io.File;
 import java.net.URISyntaxException;

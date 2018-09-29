@@ -13,7 +13,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<!-- @FlyZeba 修改导航条点的大小和间距-->
+<!-- @FlyZebra 修改导航条点的大小和间距-->
 <com.android.launcher3.PageIndicatorMarker xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="16px"
     android:layout_height="16px"

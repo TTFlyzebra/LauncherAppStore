@@ -1,8 +1,7 @@
-package com.jancar.launcher.launcherview.pageview;
+package com.jancar.launcher.view.viewpager;
 
 import com.jancar.launcher.bean.PageBean;
 
-public interface IPage {
+public interface ILauncher {
     void setData(PageBean pageBean);
-
 }

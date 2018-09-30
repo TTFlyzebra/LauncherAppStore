@@ -1,12 +1,13 @@
-package com.jancar.launcher.launcherview.cellview;
+package com.jancar.launcher.view.cellview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
 import com.jancar.BaseManager;
 import com.jancar.launcher.R;
-import com.jancar.launcher.launcherview.flyview.NumTextView;
+import com.jancar.launcher.view.flyview.NumTextView;
 import com.jancar.launcher.utils.FlyLog;
 import com.jancar.radio.RadioManager;
 
@@ -16,6 +17,7 @@ public class RadioCellView extends SimpeCellView implements
     private NumTextView numTextView;
     private ImageView AMFM_ImageView;
     private ImageView KHZMHZ_ImageView;
+    private int fmChannel = 98880000;
 
     private RadioManager radioManager;
 
@@ -36,6 +38,7 @@ public class RadioCellView extends SimpeCellView implements
         super.initView(context);
         radioManager = new RadioManager(context, this, this, "com.jancar.media");
         FlyLog.d("RadioManager init()");
+        radioManager.open();
         AMFM_ImageView = new ImageView(context);
         LayoutParams params1 = new LayoutParams(-2, -2);
         params1.leftMargin = 10;
@@ -61,10 +64,26 @@ public class RadioCellView extends SimpeCellView implements
     @Override
     public void notifyView() {
         super.notifyView();
-        AMFM_ImageView.setImageResource(R.drawable.radio_fm);
-        KHZMHZ_ImageView.setImageResource(R.drawable.radio_mhz);
-        numTextView.setText("98.88");
+        double f = 0f;
+        if (fmChannel > 1000 * 1000) {
+            AMFM_ImageView.setImageResource(R.drawable.radio_fm);
+            KHZMHZ_ImageView.setImageResource(R.drawable.radio_mhz);
+            f = fmChannel / 1000000f;
+        } else {
+            AMFM_ImageView.setImageResource(R.drawable.radio_am);
+            KHZMHZ_ImageView.setImageResource(R.drawable.radio_khz);
+            f = fmChannel / 1000f;
+        }
 
+        String str = String.format("%.2f", f);
+        int len = str.length();
+        if (len > 7) {
+            numTextView.setText("99999");
+        } else if (len > 5) {
+            numTextView.setText(str.substring(0, 5));
+        } else {
+            numTextView.setText(str);
+        }
     }
 
     @Override
@@ -79,7 +98,9 @@ public class RadioCellView extends SimpeCellView implements
 
     @Override
     public void onFreqChanged(int i) {
-        FlyLog.d("radio i=%d",i);
+        FlyLog.d("radio i=%d", i);
+        fmChannel = i;
+        notifyView();
     }
 
     @Override

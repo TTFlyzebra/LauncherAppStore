@@ -1,4 +1,4 @@
-package com.jancar.launcher.launcherview.cellview;
+package com.jancar.launcher.view.cellview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -22,9 +22,9 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.jancar.JancarManager;
 import com.jancar.launcher.R;
 import com.jancar.launcher.bean.CellBean;
-import com.jancar.launcher.launcherview.flyview.FlyImageView;
-import com.jancar.launcher.launcherview.flyview.FlyTextView;
-import com.jancar.launcher.launcherview.flyview.MirrorView;
+import com.jancar.launcher.view.flyview.FlyImageView;
+import com.jancar.launcher.view.flyview.FlyTextView;
+import com.jancar.launcher.view.flyview.MirrorView;
 import com.jancar.launcher.utils.CommondUtils;
 import com.jancar.launcher.utils.FlyLog;
 

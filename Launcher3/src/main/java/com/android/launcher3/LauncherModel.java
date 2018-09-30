@@ -3916,7 +3916,9 @@ public class LauncherModel extends BroadcastReceiver
             if (!isFind) {
                 FlyLog.d("DELETE Activity=%s", workInfo.intent.toUri(0));
                 //TODO:删除数据库数据，如果这一页只有这一个的情况未考虑
-                cr.delete(LauncherSettings.Favorites.CONTENT_URI, "id=?", new String[]{String.valueOf(workInfo.id)});
+                cr.delete(LauncherSettings.Favorites.CONTENT_URI,
+                        LauncherSettings.Favorites._ID+"=?",
+                        new String[]{String.valueOf(workInfo.id)});
                 for (UserHandleCompat user : mUserManager.getUserProfiles()) {
                     deletePackageFromDatabase(mContext, workInfo.intent.getPackage(), user);
                 }

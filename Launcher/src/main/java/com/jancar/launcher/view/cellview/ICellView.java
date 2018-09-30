@@ -1,9 +1,9 @@
-package com.jancar.launcher.launcherview.cellview;
+package com.jancar.launcher.view.cellview;
 
 import android.content.Context;
 
 import com.jancar.launcher.bean.CellBean;
-import com.jancar.launcher.launcherview.flyview.MirrorView;
+import com.jancar.launcher.view.flyview.MirrorView;
 
 public interface ICellView {
 

@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.provider.Settings;
 
 import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.bean.PageBean;
-import com.jancar.launcher.launcherview.viewpager.LauncherView;
-import com.jancar.launcher.launcherview.viewpager.NavForViewPager;
-import com.jancar.launcher.utils.FlyLog;
+import com.jancar.launcher.view.viewpager.LauncherView;
+import com.jancar.launcher.view.viewpager.NavForViewPager;
 import com.jancar.launcher.utils.GsonUtils;
 
 import java.io.BufferedReader;
@@ -18,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Locale;
 
 
 public class MainActivity extends Activity {

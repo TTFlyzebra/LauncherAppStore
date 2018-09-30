@@ -5,11 +5,11 @@
     android:layout_height="match_parent"
     android:gravity="center"
     tools:context=".MainActivity">
-    <com.jancar.launcher.launcherview.viewpager.LauncherView
+    <com.jancar.launcher.view.viewpager.LauncherView
         android:id="@+id/ac_main_launcherview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <com.jancar.launcher.launcherview.viewpager.NavForViewPager
+    <com.jancar.launcher.view.viewpager.NavForViewPager
         android:id="@+id/ac_main_navforviewpager"
         android:layout_width="match_parent"
         android:layout_height="80px"

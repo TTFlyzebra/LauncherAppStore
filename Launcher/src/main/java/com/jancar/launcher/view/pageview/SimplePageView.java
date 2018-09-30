@@ -1,4 +1,4 @@
-package com.jancar.launcher.launcherview.pageview;
+package com.jancar.launcher.view.pageview;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,8 +9,8 @@ import android.widget.FrameLayout;
 
 import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.bean.PageBean;
-import com.jancar.launcher.launcherview.cellview.CellViewFactory;
-import com.jancar.launcher.launcherview.cellview.ICellView;
+import com.jancar.launcher.view.cellview.CellViewFactory;
+import com.jancar.launcher.view.cellview.ICellView;
 import com.jancar.launcher.utils.FlyLog;
 
 import java.util.List;
@@ -71,7 +71,7 @@ public class SimplePageView extends FrameLayout implements IPage {
             if (i > pageBean.columns * pageBean.rows) break;
             CellBean appInfo = appInfoList.get(i);
             LayoutParams lp = new LayoutParams(pageBean.itemWidth, pageBean.itemHeight);
-            lp.leftMargin = sx + pageBean.x + (i % pageBean.columns) * (pageBean.itemWidth + pageBean.itemPadding*2)+pageBean.itemPadding;
+            lp.setMarginStart(sx + pageBean.x + (i % pageBean.columns) * (pageBean.itemWidth + pageBean.itemPadding*2)+pageBean.itemPadding);
             lp.topMargin = sy + pageBean.y + (i / pageBean.columns) * (pageBean.itemHeight + pageBean.itemPadding*2)+pageBean.itemPadding;
             ICellView iCellView = CellViewFactory.createView(getContext(), appInfo);
             addView((View) iCellView, lp);

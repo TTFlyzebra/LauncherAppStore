@@ -1,4 +1,4 @@
-package com.jancar.launcher.launcherview.viewpager;
+package com.jancar.launcher.view.viewpager;
 
 import android.content.Context;
 import android.graphics.Bitmap;

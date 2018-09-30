@@ -1,4 +1,4 @@
-package com.jancar.launcher.launcherview.flyview;
+package com.jancar.launcher.view.flyview;
 
 import android.content.Context;
 import android.content.res.Resources;

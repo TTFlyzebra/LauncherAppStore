@@ -1,4 +1,4 @@
-package com.jancar.launcher.launcherview.viewpager;
+package com.jancar.launcher.view.viewpager;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.bean.PageBean;
-import com.jancar.launcher.launcherview.pageview.SimplePageView;
+import com.jancar.launcher.view.pageview.SimplePageView;
 
 import java.util.ArrayList;
 import java.util.List;

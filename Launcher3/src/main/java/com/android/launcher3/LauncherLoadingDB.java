@@ -1,4 +1,4 @@
-package com.android.flyzebra.utils;
+package com.android.launcher3;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -9,11 +9,8 @@ import android.database.Cursor;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.android.launcher3.AppInfo;
-import com.android.launcher3.ItemInfo;
-import com.android.launcher3.LauncherAppState;
-import com.android.launcher3.LauncherSettings;
-import com.android.launcher3.ShortcutInfo;
+import com.android.flyzebra.FlyLog;
+import com.android.flyzebra.PMUtils;
 import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
 
@@ -24,8 +21,8 @@ import java.util.List;
 
 import static com.android.launcher3.LauncherModel.deletePackageFromDatabase;
 
-public class CheckSqlite {
-    private ICheckSqlite iCheckSqlite;
+public class LauncherLoadingDB {
+    private ILoadingDB iLoadingDB;
     private LauncherAppState launcherAppState;
     private List<AppInfo> allLauncherActivitys;
     private static final String FIRST_CREATE_DB = "FIRST_CREATE_DB";
@@ -33,15 +30,15 @@ public class CheckSqlite {
     private static final String CELLY = "celly";
     private static final String SCREEN = "screen";
 
-    public void setOnListener(ICheckSqlite iCheckSqlite) {
-        this.iCheckSqlite = iCheckSqlite;
+    public void setOnListener(ILoadingDB iLoadingDB) {
+        this.iLoadingDB = iLoadingDB;
     }
 
-    public interface ICheckSqlite {
-        void checkFinish();
+    public interface ILoadingDB {
+        void loadingFinish();
     }
 
-    public CheckSqlite(LauncherAppState launcherAppStatep){
+    public LauncherLoadingDB(LauncherAppState launcherAppStatep){
         this.launcherAppState = launcherAppStatep;
     }
 
@@ -55,8 +52,8 @@ public class CheckSqlite {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if(iCheckSqlite!=null){
-                            iCheckSqlite.checkFinish();
+                        if(iLoadingDB!=null){
+                            iLoadingDB.loadingFinish();
                         }
                     }
                 });

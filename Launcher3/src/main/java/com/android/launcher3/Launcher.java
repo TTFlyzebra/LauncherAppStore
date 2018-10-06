@@ -111,7 +111,7 @@ import com.android.launcher3.util.Thunk;
 import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.android.launcher3.widget.WidgetHostViewLoader;
 import com.android.launcher3.widget.WidgetsContainerView;
-import com.android.flyzebra.utils.FlyLog;
+import com.android.flyzebra.FlyLog;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -132,7 +132,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Launcher extends Activity
         implements View.OnClickListener, OnLongClickListener, LauncherModel.Callbacks,
-        View.OnTouchListener, PageSwitchListener, LauncherProviderChangeListener {
+        View.OnTouchListener, PageSwitchListener, LauncherProviderChangeListener,LauncherLoadingDB.ILoadingDB {
     static final String TAG = "Launcher";
     static final boolean LOGD = false;
 
@@ -500,17 +500,17 @@ public class Launcher extends Activity
             android.os.Debug.stopMethodTracing();
         }
 
-        if (!mRestoring) {
-            if (DISABLE_SYNCHRONOUS_BINDING_CURRENT_PAGE) {
-                // If the user leaves launcher, then we should just load items asynchronously when
-                // they return.
-                mModel.startLoader(PagedView.INVALID_RESTORE_PAGE);
-            } else {
-                // We only load the page synchronously if the user rotates (or triggers a
-                // configuration change) while launcher is in the foreground
-                mModel.startLoader(mWorkspace.getRestorePage());
-            }
-        }
+//        if (!mRestoring) {
+//            if (DISABLE_SYNCHRONOUS_BINDING_CURRENT_PAGE) {
+//                // If the user leaves launcher, then we should just load items asynchronously when
+//                // they return.
+//                mModel.startLoader(PagedView.INVALID_RESTORE_PAGE);
+//            } else {
+//                // We only load the page synchronously if the user rotates (or triggers a
+//                // configuration change) while launcher is in the foreground
+//                mModel.startLoader(mWorkspace.getRestorePage());
+//            }
+//        }
 
         // For handling default keys
         mDefaultKeySsb = new SpannableStringBuilder();
@@ -551,6 +551,25 @@ public class Launcher extends Activity
 //        LauncherModel model = getModel();
 //        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
 
+        LauncherLoadingDB launcherLoadingDB = new LauncherLoadingDB(app);
+        launcherLoadingDB.setOnListener(this);
+        launcherLoadingDB.start(this);
+
+    }
+
+    @Override
+    public void loadingFinish() {
+        if (!mRestoring) {
+            if (DISABLE_SYNCHRONOUS_BINDING_CURRENT_PAGE) {
+                // If the user leaves launcher, then we should just load items asynchronously when
+                // they return.
+                mModel.startLoader(PagedView.INVALID_RESTORE_PAGE);
+            } else {
+                // We only load the page synchronously if the user rotates (or triggers a
+                // configuration change) while launcher is in the foreground
+                mModel.startLoader(mWorkspace.getRestorePage());
+            }
+        }
     }
 
     @Override
@@ -3542,60 +3561,64 @@ public class Launcher extends Activity
     }
 
     public View getOrCreateQsbBar() {
-        if (mLauncherCallbacks != null && mLauncherCallbacks.providesSearch()) {
-            return mLauncherCallbacks.getQsbBar();
-        }
-
-        if (mQsb == null) {
-            AppWidgetProviderInfo searchProvider = Utilities.getSearchWidgetProvider(this);
-            if (searchProvider == null) {
-                return null;
-            }
-
-            Bundle opts = new Bundle();
-            opts.putInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY,
-                    AppWidgetProviderInfo.WIDGET_CATEGORY_SEARCHBOX);
-
-            SharedPreferences sp = getSharedPreferences(
-                    LauncherAppState.getSharedPreferencesKey(), MODE_PRIVATE);
-            int widgetId = sp.getInt(QSB_WIDGET_ID, -1);
-            AppWidgetProviderInfo widgetInfo = mAppWidgetManager.getAppWidgetInfo(widgetId);
-            if (!searchProvider.provider.flattenToString().equals(
-                    sp.getString(QSB_WIDGET_PROVIDER, null))
-                    || (widgetInfo == null)
-                    || !widgetInfo.provider.equals(searchProvider.provider)) {
-                // A valid widget is not already bound.
-                if (widgetId > -1) {
-                    mAppWidgetHost.deleteAppWidgetId(widgetId);
-                    widgetId = -1;
-                }
-
-                // Try to bind a new widget
-                widgetId = mAppWidgetHost.allocateAppWidgetId();
-
-                if (!AppWidgetManagerCompat.getInstance(this)
-                        .bindAppWidgetIdIfAllowed(widgetId, searchProvider, opts)) {
-                    mAppWidgetHost.deleteAppWidgetId(widgetId);
-                    widgetId = -1;
-                }
-
-                sp.edit()
-                        .putInt(QSB_WIDGET_ID, widgetId)
-                        .putString(QSB_WIDGET_PROVIDER, searchProvider.provider.flattenToString())
-                        .commit();
-            }
-
-            mAppWidgetHost.setQsbWidgetId(widgetId);
-            if (widgetId != -1) {
-                mQsb = mAppWidgetHost.createView(this, widgetId, searchProvider);
-                mQsb.setId(R.id.qsb_widget);
-                mQsb.updateAppWidgetOptions(opts);
-                mQsb.setPadding(0, 0, 0, 0);
-                mSearchDropTargetBar.addView(mQsb);
-                mSearchDropTargetBar.setQsbSearchBar(mQsb);
-            }
-        }
-        return mQsb;
+//        if (mLauncherCallbacks != null && mLauncherCallbacks.providesSearch()) {
+//            return mLauncherCallbacks.getQsbBar();
+//        }
+//
+//        if (mQsb == null) {
+//            AppWidgetProviderInfo searchProvider = Utilities.getSearchWidgetProvider(this);
+//            if (searchProvider == null) {
+//                return null;
+//            }
+//
+//            Bundle opts = new Bundle();
+//            opts.putInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY,
+//                    AppWidgetProviderInfo.WIDGET_CATEGORY_SEARCHBOX);
+//
+//            SharedPreferences sp = getSharedPreferences(
+//                    LauncherAppState.getSharedPreferencesKey(), MODE_PRIVATE);
+//            int widgetId = sp.getInt(QSB_WIDGET_ID, -1);
+//            AppWidgetProviderInfo widgetInfo = mAppWidgetManager.getAppWidgetInfo(widgetId);
+//            if (!searchProvider.provider.flattenToString().equals(
+//                    sp.getString(QSB_WIDGET_PROVIDER, null))
+//                    || (widgetInfo == null)
+//                    || !widgetInfo.provider.equals(searchProvider.provider)) {
+//                // A valid widget is not already bound.
+//                if (widgetId > -1) {
+//                    mAppWidgetHost.deleteAppWidgetId(widgetId);
+//                    widgetId = -1;
+//                }
+//
+//                // Try to bind a new widget
+//                widgetId = mAppWidgetHost.allocateAppWidgetId();
+//
+//                if (!AppWidgetManagerCompat.getInstance(this)
+//                        .bindAppWidgetIdIfAllowed(widgetId, searchProvider, opts)) {
+//                    mAppWidgetHost.deleteAppWidgetId(widgetId);
+//                    widgetId = -1;
+//                }
+//
+//                sp.edit()
+//                        .putInt(QSB_WIDGET_ID, widgetId)
+//                        .putString(QSB_WIDGET_PROVIDER, searchProvider.provider.flattenToString())
+//                        .commit();
+//            }
+//
+//            mAppWidgetHost.setQsbWidgetId(widgetId);
+//            if (widgetId != -1) {
+//                mQsb = mAppWidgetHost.createView(this, widgetId, searchProvider);
+//                mQsb.setId(R.id.qsb_widget);
+//                mQsb.updateAppWidgetOptions(opts);
+//                mQsb.setPadding(0, 0, 0, 0);
+//                mSearchDropTargetBar.addView(mQsb);
+//                mSearchDropTargetBar.setQsbSearchBar(mQsb);
+//            }
+//        }
+//        return mQsb;
+        /**
+         * 去掉快速搜索栏
+         */
+        return null;
     }
 
     private void reinflateQSBIfNecessary() {

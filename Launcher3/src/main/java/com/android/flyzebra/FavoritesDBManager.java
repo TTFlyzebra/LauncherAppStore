@@ -1,4 +1,4 @@
-package com.android.flyzebra.utils;
+package com.android.flyzebra;
 
 import android.content.Context;
 import android.net.Uri;

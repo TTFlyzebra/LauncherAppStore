@@ -1,4 +1,4 @@
-package com.android.flyzebra.utils.data;
+package com.android.flyzebra.data;
 
 public class Const {
     public static String FILTER_PACKNAMES[] = {

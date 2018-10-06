@@ -1,4 +1,4 @@
-package com.android.flyzebra.utils;
+package com.android.flyzebra;
 
 import android.content.Context;
 
@@ -8,7 +8,7 @@ import com.android.launcher3.compat.LauncherActivityInfoCompat;
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
-import com.android.flyzebra.utils.data.Const;
+import com.android.flyzebra.data.Const;
 
 import java.util.ArrayList;
 import java.util.List;

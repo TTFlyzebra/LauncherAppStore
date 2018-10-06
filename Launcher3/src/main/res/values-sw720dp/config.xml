@@ -7,5 +7,5 @@
     <integer name="config_workspaceSpringLoadShrinkPercentage">90</integer>
 
 <!-- Hotseat -->
-    <bool name="hotseat_transpose_layout_with_orientation">false</bool>
+    <bool name="hotseat_transpose_layout_with_orientation">true</bool>
 </resources>

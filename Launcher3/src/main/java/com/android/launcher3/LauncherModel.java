@@ -16,7 +16,6 @@
 
 package com.android.launcher3;
 
-import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -36,7 +35,6 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -45,8 +43,6 @@ import android.os.Parcelable;
 import android.os.Process;
 import android.os.SystemClock;
 import android.os.TransactionTooLargeException;
-import android.os.UserHandle;
-import android.os.UserManager;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.util.Log;
@@ -67,8 +63,8 @@ import com.android.launcher3.util.CursorIconInfo;
 import com.android.launcher3.util.LongArrayMap;
 import com.android.launcher3.util.ManagedProfileHeuristic;
 import com.android.launcher3.util.Thunk;
-import com.android.flyzebra.utils.FlyLog;
-import com.android.flyzebra.utils.PMUtils;
+import com.android.flyzebra.FlyLog;
+import com.android.flyzebra.PMUtils;
 
 import java.lang.ref.WeakReference;
 import java.net.URISyntaxException;
@@ -3917,7 +3913,7 @@ public class LauncherModel extends BroadcastReceiver
                 FlyLog.d("DELETE Activity=%s", workInfo.intent.toUri(0));
                 //TODO:删除数据库数据，如果这一页只有这一个的情况未考虑
                 cr.delete(LauncherSettings.Favorites.CONTENT_URI,
-                        LauncherSettings.Favorites._ID+"=?",
+                        LauncherSettings.Favorites._ID + "=?",
                         new String[]{String.valueOf(workInfo.id)});
                 for (UserHandleCompat user : mUserManager.getUserProfiles()) {
                     deletePackageFromDatabase(mContext, workInfo.intent.getPackage(), user);
@@ -3933,8 +3929,10 @@ public class LauncherModel extends BroadcastReceiver
          */
         Hashtable<String, Integer> lastPos = new Hashtable<>();
         int screen = 0;
-        int cellx = 5;
-        int celly = 1;
+        LauncherAppState app = LauncherAppState.getInstance();
+        InvariantDeviceProfile profile = app.getInvariantDeviceProfile();
+        int cellx = profile.numColumns - 1;
+        int celly = profile.numRows - 1;
         if (!favoritesApps.isEmpty()) {
             screen = (int) favoritesApps.get(0).screenId;
             cellx = favoritesApps.get(0).cellX;
@@ -3976,9 +3974,9 @@ public class LauncherModel extends BroadcastReceiver
                     FlyLog.e(e.toString());
                 }
 
-                if (lastPos.get(CELLX) == 5) {
+                if (lastPos.get(CELLX) == (profile.numColumns - 1)) {
                     lastPos.put(CELLX, 0);
-                    if (lastPos.get(CELLY) == 1) {
+                    if (lastPos.get(CELLY) == (profile.numRows - 1)) {
                         lastPos.put(CELLY, 0);
                         lastPos.put(SCREEN, lastPos.get(SCREEN) + 1);
                         //TODO：页面加1

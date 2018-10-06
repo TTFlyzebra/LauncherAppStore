@@ -1,4 +1,4 @@
-package com.android.flyzebra.utils;
+package com.android.flyzebra;
 
 import android.util.Log;
 
@@ -7,7 +7,7 @@ import android.util.Log;
  * Created by FlyZebra on 2016/3/24.
  */
 public class FlyLog {
-    public static final String TAG = "com.android.flyzebra.laun";
+    public static final String TAG = "com.flyzebra.laun";
     public static String[] filter = {
 //            "<MyOkHttp>",
 //            "<NavLayout>",

@@ -96,6 +96,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.flyzebra.FlyLog;
 import com.android.launcher3.DropTarget.DragObject;
 import com.android.launcher3.PagedView.PageSwitchListener;
 import com.android.launcher3.allapps.AllAppsContainerView;
@@ -111,7 +112,6 @@ import com.android.launcher3.util.Thunk;
 import com.android.launcher3.widget.PendingAddWidgetInfo;
 import com.android.launcher3.widget.WidgetHostViewLoader;
 import com.android.launcher3.widget.WidgetsContainerView;
-import com.android.flyzebra.FlyLog;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -132,7 +132,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Launcher extends Activity
         implements View.OnClickListener, OnLongClickListener, LauncherModel.Callbacks,
-        View.OnTouchListener, PageSwitchListener, LauncherProviderChangeListener,LauncherLoadingDB.ILoadingDB {
+        View.OnTouchListener, PageSwitchListener, LauncherProviderChangeListener, LauncherLoadingDB.ILoadingDB {
     static final String TAG = "Launcher";
     static final boolean LOGD = false;
 
@@ -426,7 +426,7 @@ public class Launcher extends Activity
         }
     };
 
-    public static boolean isFirst=true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (DEBUG_STRICT_MODE) {
@@ -449,7 +449,6 @@ public class Launcher extends Activity
         }
 
         super.onCreate(savedInstanceState);
-        isFirst = true;
 
         LauncherAppState.setApplicationContext(getApplicationContext());
         LauncherAppState app = LauncherAppState.getInstance();
@@ -460,7 +459,7 @@ public class Launcher extends Activity
                 app.getInvariantDeviceProfile().landscapeProfile
                 : app.getInvariantDeviceProfile().portraitProfile;
 
-        mSharedPrefs = getSharedPreferences(LauncherAppState.getSharedPreferencesKey(),Context.MODE_PRIVATE);
+        mSharedPrefs = getSharedPreferences(LauncherAppState.getSharedPreferencesKey(), Context.MODE_PRIVATE);
         mIsSafeModeEnabled = getPackageManager().isSafeMode();
         mModel = app.setLauncher(this);
         mIconCache = app.getIconCache();
@@ -550,7 +549,6 @@ public class Launcher extends Activity
 //        }
 //        LauncherModel model = getModel();
 //        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
-
         LauncherLoadingDB launcherLoadingDB = new LauncherLoadingDB(app);
         launcherLoadingDB.setOnListener(this);
         launcherLoadingDB.start(this);
@@ -4618,7 +4616,7 @@ public class Launcher extends Activity
 //            }
             //showAppsView(false, false, true, false);
             LauncherModel model = getModel();
-            model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
+            model.startLoader(PagedView.INVALID_RESTORE_PAGE, LauncherModel.LOADER_FLAG_NONE);
             SharedPreferences sp = getSharedPrefs();
             SharedPreferences.Editor editor = sp.edit();
             editor.putBoolean(LauncherClings.WORKSPACE_CLING_DISMISSED_KEY, true);

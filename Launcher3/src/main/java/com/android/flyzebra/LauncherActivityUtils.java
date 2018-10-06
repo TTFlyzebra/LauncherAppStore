@@ -2,18 +2,18 @@ package com.android.flyzebra;
 
 import android.content.Context;
 
+import com.android.flyzebra.data.Const;
 import com.android.launcher3.AppInfo;
 import com.android.launcher3.IconCache;
 import com.android.launcher3.compat.LauncherActivityInfoCompat;
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
-import com.android.flyzebra.data.Const;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PMUtils {
+public class LauncherActivityUtils {
 
     public static List<AppInfo> getAppInfos(String packageName, Context context, IconCache iconCache) {
         List<AppInfo> retList = new ArrayList<>();
@@ -30,7 +30,6 @@ public class PMUtils {
                     boolean isFilter = false;
                     try {
                         String myPackName = info.getComponentName().getPackageName();
-                        FlyLog.i("filter mypackname, mypackName=%s", myPackName);
                         for (String packName : Const.FILTER_PACKNAMES) {
                             if (packName.equals(myPackName)) {
                                 FlyLog.i("filter packname, packName=%s", packName);

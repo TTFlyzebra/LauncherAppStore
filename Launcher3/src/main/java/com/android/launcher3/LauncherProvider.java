@@ -49,6 +49,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 
+import com.android.flyzebra.FlyLog;
 import com.android.launcher3.AutoInstallsLayout.LayoutParserCallback;
 import com.android.launcher3.LauncherSettings.Favorites;
 import com.android.launcher3.compat.UserHandleCompat;
@@ -56,7 +57,6 @@ import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.config.ProviderConfig;
 import com.android.launcher3.util.ManagedProfileHeuristic;
 import com.android.launcher3.util.Thunk;
-import com.android.flyzebra.FlyLog;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -136,10 +136,12 @@ public class LauncherProvider extends ContentProvider {
             throw new RuntimeException("Error: attempting to add item without specifying an id");
         }
         helper.checkId(table, values);
+        long ret =  db.insert(table, nullColumnHack, values);
         if(values.get("screen")!=null){
-            FlyLog.d("dbInsertAndCheck--:2 screen="+values.get("screen")+",title="+values.get("title"));
+            FlyLog.d("dbInsertAndCheck--:2 screen="+values.get("screen")+",title="+values.get("title")+",ret="+ret);
         }
-        return db.insert(table, nullColumnHack, values);
+        return ret;
+
     }
 
     private void reloadLauncherIfExternal() {

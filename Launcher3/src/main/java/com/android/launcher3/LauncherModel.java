@@ -49,6 +49,8 @@ import android.util.Log;
 import android.util.LongSparseArray;
 import android.util.Pair;
 
+import com.android.flyzebra.FlyLog;
+import com.android.flyzebra.LauncherActivityUtils;
 import com.android.launcher3.compat.AppWidgetManagerCompat;
 import com.android.launcher3.compat.LauncherActivityInfoCompat;
 import com.android.launcher3.compat.LauncherAppsCompat;
@@ -63,8 +65,6 @@ import com.android.launcher3.util.CursorIconInfo;
 import com.android.launcher3.util.LongArrayMap;
 import com.android.launcher3.util.ManagedProfileHeuristic;
 import com.android.launcher3.util.Thunk;
-import com.android.flyzebra.FlyLog;
-import com.android.flyzebra.PMUtils;
 
 import java.lang.ref.WeakReference;
 import java.net.URISyntaxException;
@@ -1612,11 +1612,11 @@ public class LauncherModel extends BroadcastReceiver
                 waitForIdle();
 
                 // second step
-                if (DEBUG_LOADERS) Log.d(TAG, "step 2: loading all apps");
-                loadAndBindAllApps();
+//                if (DEBUG_LOADERS) Log.d(TAG, "step 2: loading all apps");
+//                loadAndBindAllApps();
 
-                allLauncherActivitys = PMUtils.getAppInfos(null, mContext, mIconCache);
-                checkItems(mContext);
+//                allLauncherActivitys = PMUtils.getAppInfos(null, mContext, mIconCache);
+//                checkItems(mContext);
 
             }
 
@@ -3090,7 +3090,7 @@ public class LauncherModel extends BroadcastReceiver
                         mBgAllAppsList.addPackage(context, packages[i], mUser);
 
                         //添加图标到桌面
-                        ArrayList<AppInfo> list = (ArrayList<AppInfo>) PMUtils.getAppInfos(packages[i], context, mIconCache);
+                        ArrayList<AppInfo> list = (ArrayList<AppInfo>) LauncherActivityUtils.getAppInfos(packages[i], context, mIconCache);
                         if (list != null && !list.isEmpty()) {
                             FlyLog.i("OP_ADD, addAndBindAddedWorkspaceItems=%s", packages[i]);
                             addAndBindAddedWorkspaceItems(context, list);

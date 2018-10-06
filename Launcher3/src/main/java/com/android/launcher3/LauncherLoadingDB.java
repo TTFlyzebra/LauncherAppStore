@@ -10,7 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.android.flyzebra.FlyLog;
-import com.android.flyzebra.PMUtils;
+import com.android.flyzebra.LauncherActivityUtils;
 import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
 
@@ -25,10 +25,11 @@ public class LauncherLoadingDB {
     private ILoadingDB iLoadingDB;
     private LauncherAppState launcherAppState;
     private List<AppInfo> allLauncherActivitys;
-    private static final String FIRST_CREATE_DB = "FIRST_CREATE_DB";
     private static final String CELLX = "cellx";
     private static final String CELLY = "celly";
     private static final String SCREEN = "screen";
+
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     public void setOnListener(ILoadingDB iLoadingDB) {
         this.iLoadingDB = iLoadingDB;
@@ -38,23 +39,22 @@ public class LauncherLoadingDB {
         void loadingFinish();
     }
 
-    public LauncherLoadingDB(LauncherAppState launcherAppStatep){
+    public LauncherLoadingDB(LauncherAppState launcherAppStatep) {
         this.launcherAppState = launcherAppStatep;
     }
 
-    private Handler mHandler = new Handler(Looper.getMainLooper());
-    public void start(final Context context){
+
+    public void start(final Context context) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                allLauncherActivitys = PMUtils.getAppInfos(null, context, launcherAppState.getIconCache());
+                LauncherAppState.getLauncherProvider().loadDefaultFavoritesIfNecessary();
+                allLauncherActivitys = LauncherActivityUtils.getAppInfos(null, context, launcherAppState.getIconCache());
                 checkItems(context);
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if(iLoadingDB!=null){
-                            iLoadingDB.loadingFinish();
-                        }
+                        iLoadingDB.loadingFinish();
                     }
                 });
             }
@@ -65,31 +65,14 @@ public class LauncherLoadingDB {
     /**
      * 每次启动检测workspace显示的图标，对比本机安装应用进行增减
      */
-    private synchronized void checkItems(Context mContext) {
+    private void checkItems(Context mContext) {
         if (allLauncherActivitys != null && !allLauncherActivitys.isEmpty()) {
             SharedPreferences sp = mContext.getSharedPreferences(LauncherAppState.getSharedPreferencesKey(), Context.MODE_PRIVATE);
-            if (sp.getBoolean(FIRST_CREATE_DB, true)) {
-                FlyLog.d("FIRST_CREATE_DB, start copy all apps to workspace");
-                ContentValues v = new ContentValues();
-                v.put(LauncherSettings.WorkspaceScreens._ID, 1);
-                v.put(LauncherSettings.WorkspaceScreens.SCREEN_RANK, 0);
-                final ContentResolver cr = mContext.getContentResolver();
-                cr.insert(LauncherSettings.WorkspaceScreens.CONTENT_URI, v);
-                if (checkFavorites(mContext, allLauncherActivitys)) {
-                }
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putBoolean(FIRST_CREATE_DB, false);
-                editor.apply();
-            } else {
-//                //TODO: 对比列表删除数据
-                FlyLog.d("checkFavorites() start!");
-                if (checkFavorites(mContext, allLauncherActivitys)) {
-                }
-            }
+            checkFavorites(mContext, allLauncherActivitys);
         }
     }
 
-    private synchronized boolean checkFavorites(Context mContext, List<AppInfo> allLauncherActivitys) {
+    private boolean checkFavorites(Context mContext, List<AppInfo> allLauncherActivitys) {
         boolean bMastLoad = false;
         final ContentResolver cr = mContext.getContentResolver();
         Cursor c = cr.query(LauncherSettings.Favorites.CONTENT_URI, null, null, null, null);
@@ -151,7 +134,7 @@ public class LauncherLoadingDB {
                 FlyLog.d("DELETE Activity=%s", workInfo.intent.toUri(0));
                 //TODO:删除数据库数据，如果这一页只有这一个的情况未考虑
                 cr.delete(LauncherSettings.Favorites.CONTENT_URI,
-                        LauncherSettings.Favorites._ID+"=?",
+                        LauncherSettings.Favorites._ID + "=?",
                         new String[]{String.valueOf(workInfo.id)});
                 for (UserHandleCompat user : UserManagerCompat.getInstance(mContext).getUserProfiles()) {
                     deletePackageFromDatabase(mContext, workInfo.intent.getPackage(), user);
@@ -167,18 +150,31 @@ public class LauncherLoadingDB {
          */
         Hashtable<String, Integer> lastPos = new Hashtable<>();
         int screen = 0;
-        int cellx = 5;
-        int celly = 1;
+        LauncherAppState app = LauncherAppState.getInstance();
+        InvariantDeviceProfile profile = app.getInvariantDeviceProfile();
+        int cellx = profile.numColumns - 1;
+        int celly = profile.numRows - 1;
         if (!favoritesApps.isEmpty()) {
             screen = (int) favoritesApps.get(0).screenId;
             cellx = favoritesApps.get(0).cellX;
             celly = favoritesApps.get(0).cellY;
-        }
-        for (AppInfo appInfo : favoritesApps) {
-            if ((appInfo.screenId * 10000 + appInfo.cellY * 100 + appInfo.cellX) > (screen * 10000 + celly * 100 + cellx)) {
-                screen = (int) appInfo.screenId;
-                cellx = appInfo.cellX;
-                celly = appInfo.cellY;
+            for (AppInfo appInfo : favoritesApps) {
+                if ((appInfo.screenId * 10000 + appInfo.cellY * 100 + appInfo.cellX) > (screen * 10000 + celly * 100 + cellx)) {
+                    screen = (int) appInfo.screenId;
+                    cellx = appInfo.cellX;
+                    celly = appInfo.cellY;
+                }
+            }
+        } else {
+            try {
+                screen = 1;
+                ContentValues v = new ContentValues();
+                v.put(LauncherSettings.WorkspaceScreens._ID, 1);
+                v.put(LauncherSettings.WorkspaceScreens.SCREEN_RANK, 0);
+                cr.insert(LauncherSettings.WorkspaceScreens.CONTENT_URI, v);
+                FlyLog.d("insertfly-> screen=%d", screen);
+            }catch (Exception e){
+                FlyLog.e(e.toString());
             }
         }
 
@@ -210,9 +206,9 @@ public class LauncherLoadingDB {
                     FlyLog.e(e.toString());
                 }
 
-                if (lastPos.get(CELLX) == 5) {
+                if (lastPos.get(CELLX) == (profile.numColumns - 1)) {
                     lastPos.put(CELLX, 0);
-                    if (lastPos.get(CELLY) == 1) {
+                    if (lastPos.get(CELLY) == (profile.numRows - 1)) {
                         lastPos.put(CELLY, 0);
                         lastPos.put(SCREEN, lastPos.get(SCREEN) + 1);
                         //TODO：页面加1
@@ -235,7 +231,7 @@ public class LauncherLoadingDB {
         return bMastLoad;
     }
 
-    public synchronized static void insertToDatabase(Context context, final ItemInfo item, final long container, final long screenId, final int cellX, final int cellY) {
+    private void insertToDatabase(Context context, final ItemInfo item, final long container, final long screenId, final int cellX, final int cellY) {
         FlyLog.d("insertfly-> screen=%d,cellx=%d,celly=%d,title=%s", screenId, cellX, cellY, item.title);
         item.container = container;
         item.cellX = cellX;

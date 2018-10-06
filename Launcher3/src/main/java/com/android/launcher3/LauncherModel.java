@@ -1612,8 +1612,8 @@ public class LauncherModel extends BroadcastReceiver
                 waitForIdle();
 
                 // second step
-//                if (DEBUG_LOADERS) Log.d(TAG, "step 2: loading all apps");
-//                loadAndBindAllApps();
+                if (DEBUG_LOADERS) Log.d(TAG, "step 2: loading all apps");
+                loadAndBindAllApps();
 
 //                allLauncherActivitys = PMUtils.getAppInfos(null, mContext, mIconCache);
 //                checkItems(mContext);

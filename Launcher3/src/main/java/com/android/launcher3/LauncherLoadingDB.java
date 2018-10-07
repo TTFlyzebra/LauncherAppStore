@@ -10,7 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.android.flyzebra.FlyLog;
-import com.android.flyzebra.LauncherActivityUtils;
+import com.android.flyzebra.LaunActivityUtil;
 import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
 
@@ -49,7 +49,7 @@ public class LauncherLoadingDB {
             @Override
             public void run() {
                 LauncherAppState.getLauncherProvider().loadDefaultFavoritesIfNecessary();
-                allLauncherActivitys = LauncherActivityUtils.getAppInfos(null, context, launcherAppState.getIconCache());
+                allLauncherActivitys = LaunActivityUtil.getAppInfos(null, context, launcherAppState.getIconCache());
                 checkItems(context);
                 mHandler.post(new Runnable() {
                     @Override

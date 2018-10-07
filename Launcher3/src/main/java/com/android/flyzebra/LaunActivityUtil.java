@@ -13,7 +13,7 @@ import com.android.launcher3.compat.UserManagerCompat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LauncherActivityUtils {
+public class LaunActivityUtil {
 
     public static List<AppInfo> getAppInfos(String packageName, Context context, IconCache iconCache) {
         List<AppInfo> retList = new ArrayList<>();

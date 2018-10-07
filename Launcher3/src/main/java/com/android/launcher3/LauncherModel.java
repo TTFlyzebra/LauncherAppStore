@@ -50,7 +50,7 @@ import android.util.LongSparseArray;
 import android.util.Pair;
 
 import com.android.flyzebra.FlyLog;
-import com.android.flyzebra.LauncherActivityUtils;
+import com.android.flyzebra.LaunActivityUtil;
 import com.android.launcher3.compat.AppWidgetManagerCompat;
 import com.android.launcher3.compat.LauncherActivityInfoCompat;
 import com.android.launcher3.compat.LauncherAppsCompat;
@@ -3090,7 +3090,7 @@ public class LauncherModel extends BroadcastReceiver
                         mBgAllAppsList.addPackage(context, packages[i], mUser);
 
                         //添加图标到桌面
-                        ArrayList<AppInfo> list = (ArrayList<AppInfo>) LauncherActivityUtils.getAppInfos(packages[i], context, mIconCache);
+                        ArrayList<AppInfo> list = (ArrayList<AppInfo>) LaunActivityUtil.getAppInfos(packages[i], context, mIconCache);
                         if (list != null && !list.isEmpty()) {
                             FlyLog.i("OP_ADD, addAndBindAddedWorkspaceItems=%s", packages[i]);
                             addAndBindAddedWorkspaceItems(context, list);

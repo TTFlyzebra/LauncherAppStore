@@ -222,4 +222,9 @@ public class RadioCellView extends SimpeCellView implements
     public void abandonRadioFocus() {
         FlyLog.d();
     }
+
+    @Override
+    public void onStereo(int freq, boolean bStereo) {
+
+    }
 }

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.jancar.BaseManager;
 import com.jancar.launcher.R;
+import com.jancar.launcher.utils.SPUtil;
 import com.jancar.launcher.view.flyview.NumTextView;
 import com.jancar.launcher.utils.FlyLog;
 import com.jancar.radio.RadioManager;
@@ -64,6 +65,27 @@ public class RadioCellView extends SimpeCellView implements
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        fmChannel = (int) SPUtil.get(getContext(),"FM_CHANNEL",87500000);
+        notifyView();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        mHandler.removeCallbacksAndMessages(null);
+        SPUtil.set(getContext(),"FM_CHANNEL",fmChannel);
+        super.onDetachedFromWindow();
+    }
+
+    private Runnable saveFMtask = new Runnable() {
+        @Override
+        public void run() {
+            SPUtil.set(getContext(),"FM_CHANNEL",fmChannel);
+        }
+    };
+
+    @Override
     public void notifyView() {
         super.notifyView();
         double f = 0f;
@@ -109,6 +131,8 @@ public class RadioCellView extends SimpeCellView implements
                 notifyView();
             }
         });
+        mHandler.removeCallbacks(saveFMtask);
+        mHandler.postDelayed(saveFMtask,2000);
     }
 
     @Override

@@ -30,6 +30,7 @@ public class MainActivity extends Activity {
 //        Settings.Secure.putInt(getContentResolver(), Settings.Secure.USER_SETUP_COMPLETE, 1);
 
         launcherView = (LauncherView) findViewById(R.id.ac_main_launcherview);
+        launcherView.setOffscreenPageLimit(10);
         naviForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
         String jsonStr = getAssetFileText("data.json", this);
         PageBean pageBean = GsonUtils.json2Object(jsonStr, PageBean.class);

@@ -2,6 +2,8 @@ package com.jancar.launcher.view.cellview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -17,9 +19,10 @@ public class RadioCellView extends SimpeCellView implements
     private NumTextView numTextView;
     private ImageView AMFM_ImageView;
     private ImageView KHZMHZ_ImageView;
-    private int fmChannel = 98880000;
+    private static int fmChannel = 87500000;
 
     private RadioManager radioManager;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     public RadioCellView(Context context) {
         super(context);
@@ -38,7 +41,6 @@ public class RadioCellView extends SimpeCellView implements
         super.initView(context);
         radioManager = new RadioManager(context, this, this, "com.jancar.media");
         FlyLog.d("RadioManager init()");
-        radioManager.open();
         AMFM_ImageView = new ImageView(context);
         LayoutParams params1 = new LayoutParams(-2, -2);
         params1.leftMargin = 10;
@@ -88,6 +90,7 @@ public class RadioCellView extends SimpeCellView implements
 
     @Override
     public void onServiceConnected() {
+        radioManager.open();
         FlyLog.d();
     }
 
@@ -97,10 +100,15 @@ public class RadioCellView extends SimpeCellView implements
     }
 
     @Override
-    public void onFreqChanged(int i) {
+    public void onFreqChanged(final int i) {
         FlyLog.d("radio i=%d", i);
-        fmChannel = i;
-        notifyView();
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                fmChannel = i;
+                notifyView();
+            }
+        });
     }
 
     @Override

@@ -37,11 +37,12 @@ public class Language {
                     text = zh_HK;
                 }
                 break;
+            case "en-":
             case "en-US":
                 text = en_US;
                 break;
             default:
-                text = zh_CN;
+                text = en_US;
         }
         return TextUtils.isEmpty(text)?"":text;
     }

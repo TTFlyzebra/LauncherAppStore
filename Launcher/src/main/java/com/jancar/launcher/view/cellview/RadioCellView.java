@@ -118,6 +118,7 @@ public class RadioCellView extends SimpeCellView implements
 
     @Override
     public void onServiceDisconnected() {
+//        radioManager.close();
         FlyLog.d();
     }
 

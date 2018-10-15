@@ -67,21 +67,21 @@ public class RadioCellView extends SimpeCellView implements
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        fmChannel = (int) SPUtil.get(getContext(),"FM_CHANNEL",87500000);
+        fmChannel = (int) SPUtil.get(getContext(), "FM_CHANNEL", 87500000);
         notifyView();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         mHandler.removeCallbacksAndMessages(null);
-        SPUtil.set(getContext(),"FM_CHANNEL",fmChannel);
+        SPUtil.set(getContext(), "FM_CHANNEL", fmChannel);
         super.onDetachedFromWindow();
     }
 
     private Runnable saveFMtask = new Runnable() {
         @Override
         public void run() {
-            SPUtil.set(getContext(),"FM_CHANNEL",fmChannel);
+            SPUtil.set(getContext(), "FM_CHANNEL", fmChannel);
         }
     };
 
@@ -89,25 +89,28 @@ public class RadioCellView extends SimpeCellView implements
     public void notifyView() {
         super.notifyView();
         double f = 0f;
-        if (fmChannel > 1000 * 1000) {
+
+        boolean flag = fmChannel >= 87500;
+        if (flag) {
             AMFM_ImageView.setImageResource(R.drawable.radio_fm);
             KHZMHZ_ImageView.setImageResource(R.drawable.radio_mhz);
-            f = fmChannel / 1000000f;
+            f = fmChannel / 1000f;
+            String str = String.format("%.2f", f);
+            int len = str.length();
+            if (len > 7) {
+                numTextView.setText("99999");
+            } else if (len > 5) {
+                numTextView.setText(str.substring(0, 5));
+            } else {
+                numTextView.setText(str);
+            }
         } else {
             AMFM_ImageView.setImageResource(R.drawable.radio_am);
             KHZMHZ_ImageView.setImageResource(R.drawable.radio_khz);
-            f = fmChannel / 1000f;
+            numTextView.setText(""+fmChannel);
         }
 
-        String str = String.format("%.2f", f);
-        int len = str.length();
-        if (len > 7) {
-            numTextView.setText("99999");
-        } else if (len > 5) {
-            numTextView.setText(str.substring(0, 5));
-        } else {
-            numTextView.setText(str);
-        }
+
     }
 
     @Override
@@ -133,7 +136,7 @@ public class RadioCellView extends SimpeCellView implements
             }
         });
         mHandler.removeCallbacks(saveFMtask);
-        mHandler.postDelayed(saveFMtask,2000);
+        mHandler.postDelayed(saveFMtask, 2000);
     }
 
     @Override

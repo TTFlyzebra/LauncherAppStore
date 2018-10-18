@@ -549,10 +549,6 @@ public class Launcher extends Activity
 //        }
 //        LauncherModel model = getModel();
 //        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
-        LauncherLoadingDB launcherLoadingDB = new LauncherLoadingDB(app);
-        launcherLoadingDB.setOnListener(this);
-        launcherLoadingDB.start(this);
-
     }
 
     @Override
@@ -1024,6 +1020,9 @@ public class Launcher extends Activity
     @Override
     protected void onStart() {
         super.onStart();
+        LauncherLoadingDB launcherLoadingDB = new LauncherLoadingDB(LauncherAppState.getInstance());
+        launcherLoadingDB.setOnListener(this);
+        launcherLoadingDB.start(this);
         FirstFrameAnimatorHelper.setIsVisible(true);
 
         if (mLauncherCallbacks != null) {

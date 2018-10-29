@@ -1,6 +1,5 @@
 package com.jancar.launcher.view.cellview;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -9,9 +8,9 @@ import android.widget.ImageView;
 
 import com.jancar.BaseManager;
 import com.jancar.launcher.R;
+import com.jancar.launcher.utils.FlyLog;
 import com.jancar.launcher.utils.SPUtil;
 import com.jancar.launcher.view.flyview.NumTextView;
-import com.jancar.launcher.utils.FlyLog;
 import com.jancar.radio.RadioManager;
 
 public class RadioCellView extends SimpeCellView implements
@@ -75,6 +74,13 @@ public class RadioCellView extends SimpeCellView implements
     protected void onDetachedFromWindow() {
         mHandler.removeCallbacksAndMessages(null);
         SPUtil.set(getContext(), "FM_CHANNEL", fmChannel);
+        try {
+            if(radioManager!=null){
+                radioManager.close();
+            }
+        }catch (Exception e){
+            FlyLog.e(e.toString());
+        }
         super.onDetachedFromWindow();
     }
 
@@ -121,7 +127,13 @@ public class RadioCellView extends SimpeCellView implements
 
     @Override
     public void onServiceDisconnected() {
-//        radioManager.close();
+        try {
+            if(radioManager!=null){
+                radioManager.close();
+            }
+        }catch (Exception e){
+            FlyLog.e(e.toString());
+        }
         FlyLog.d();
     }
 

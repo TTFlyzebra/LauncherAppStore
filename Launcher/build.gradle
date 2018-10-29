@@ -35,15 +35,6 @@ android {
     }
 }
 
-dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    //    implementation files('libs/ICS.jar')
-    implementation files('libs/gson-2.8.5.jar')
-    implementation files('libs/glide-3.7.0.jar')
-    implementation 'com.android.support:support-v4:23.1.0'
-    implementation files('libs/framworks.jar')
-    implementation 'com.android.support:multidex:1.0.3'
-}
 preBuild {
     doLast {
         def imlFile = file(project.name + ".iml")
@@ -60,3 +51,14 @@ preBuild {
         }
     }
 }
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //    implementation files('libs/ICS.jar')
+    implementation files('libs/gson-2.8.5.jar')
+    implementation files('libs/glide-3.7.0.jar')
+    implementation 'com.android.support:support-v4:23.1.0'
+    compileOnly files('libs/framworks.jar')
+    implementation 'com.android.support:multidex:1.0.3'
+}
+

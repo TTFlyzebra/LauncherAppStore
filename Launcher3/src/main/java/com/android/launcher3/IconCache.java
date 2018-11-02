@@ -41,6 +41,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.flyzebra.FlyLog;
 import com.android.launcher3.compat.LauncherActivityInfoCompat;
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.compat.UserHandleCompat;
@@ -48,7 +49,6 @@ import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.model.PackageItemInfo;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.Thunk;
-import com.android.flyzebra.FlyLog;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -248,7 +248,10 @@ public class IconCache {
         mIconDb.getWritableDatabase().delete(IconDB.TABLE_NAME,
                 IconDB.COLUMN_COMPONENT + " LIKE ? AND " + IconDB.COLUMN_USER + " = ?",
                 new String[]{packageName + "/%", Long.toString(userSerial)});
-//        LauncherModel.deletePackageFromDatabase(mContext,packageName,user);
+        /**
+         *后台删除应用不会删除wackspace图标，添加下面代码同步删除
+         */
+        LauncherModel.deletePackageFromDatabase(mContext,packageName,user);
     }
 
     public void updateDbIcons(Set<String> ignorePackagesForMainUser) {
@@ -376,7 +379,6 @@ public class IconCache {
         values.put(IconDB.COLUMN_USER, userSerial);
         values.put(IconDB.COLUMN_LAST_UPDATED, info.lastUpdateTime);
         values.put(IconDB.COLUMN_VERSION, info.versionCode);
-        FlyLog.d(values.toString());
         FlyLog.d("addIconToDB packName=%s", info.packageName);
         mIconDb.getWritableDatabase().insertWithOnConflict(IconDB.TABLE_NAME, null, values,
                 SQLiteDatabase.CONFLICT_REPLACE);

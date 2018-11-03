@@ -3109,6 +3109,12 @@ public class LauncherModel extends BroadcastReceiver
                         mIconCache.updateIconsForPkg(packages[i], mUser);
                         mBgAllAppsList.updatePackage(context, packages[i], mUser);
                         mApp.getWidgetCache().removePackage(packages[i], mUser);
+                        //添加图标到桌面
+                        ArrayList<AppInfo> list = (ArrayList<AppInfo>) LaunActivityUtil.getAppInfos(packages[i], context, mIconCache);
+                        if (list != null && !list.isEmpty()) {
+                            FlyLog.i("OP_UPDATE, addAndBindAddedWorkspaceItems=%s", packages[i]);
+                            addAndBindAddedWorkspaceItems(context, list);
+                        }
                     }
                     break;
                 case OP_REMOVE: {

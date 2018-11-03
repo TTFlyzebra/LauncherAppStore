@@ -28,7 +28,7 @@ public class UninstallDropTarget extends ButtonDropTarget {
         // Get the hover color
         mHoverColor = getResources().getColor(R.color.uninstall_target_hover_tint);
 
-        setDrawable(R.drawable.ic_uninstall_launcher);
+        setDrawable(R.drawable.ic_uninstall);
     }
 
     @Override

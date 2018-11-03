@@ -394,18 +394,18 @@ public class DeviceProfile {
         if (hasVerticalBarLayout) {
             // Vertical search bar space -- The search bar is fixed in the layout to be on the left
             //                              of the screen regardless of RTL
-            lp.gravity = Gravity.LEFT;
+            lp.gravity = Gravity.RIGHT;
             lp.width = searchBarSpaceHeightPx;
 
             LinearLayout targets = (LinearLayout) searchBar.findViewById(R.id.drag_target_bar);
             targets.setOrientation(LinearLayout.VERTICAL);
             FrameLayout.LayoutParams targetsLp = (FrameLayout.LayoutParams) targets.getLayoutParams();
-            targetsLp.gravity = Gravity.TOP;
+            targetsLp.gravity = Gravity.BOTTOM;
             targetsLp.height = LayoutParams.WRAP_CONTENT;
 
         } else {
             // Horizontal search bar space
-            lp.gravity = Gravity.TOP;
+            lp.gravity = Gravity.BOTTOM;
             lp.height = searchBarSpaceHeightPx;
 
             LinearLayout targets = (LinearLayout) searchBar.findViewById(R.id.drag_target_bar);

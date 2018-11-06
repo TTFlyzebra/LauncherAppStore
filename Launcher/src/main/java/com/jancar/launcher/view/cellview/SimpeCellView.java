@@ -14,19 +14,17 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.jancar.JancarManager;
-import com.jancar.launcher.R;
 import com.jancar.launcher.bean.CellBean;
+import com.jancar.launcher.utils.CommondUtils;
+import com.jancar.launcher.utils.FlyLog;
 import com.jancar.launcher.view.flyview.FlyImageView;
 import com.jancar.launcher.view.flyview.FlyTextView;
 import com.jancar.launcher.view.flyview.MirrorView;
-import com.jancar.launcher.utils.CommondUtils;
-import com.jancar.launcher.utils.FlyLog;
 
 public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouchListener, View.OnClickListener {
     private CellBean appInfo;
@@ -123,7 +121,7 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
             return;
         if (CommondUtils.execStartActivity(getContext(), appInfo.action)) return;
         if (!CommondUtils.execStartPackage(getContext(), appInfo.packName)) {
-            Toast.makeText(getContext(), getContext().getResources().getString(R.string.startAppFailed), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), getContext().getResources().getString(R.string.startAppFailed), Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -1,11 +1,11 @@
 {
   "columns": 4,
   "rows": 1,
-  "itemPadding":12,
-  "itemWidth":212,
-  "itemHeight":317,
-  "x":0,
-  "y":-69,
+  "itemPadding": 12,
+  "itemWidth": 212,
+  "itemHeight": 317,
+  "x": 0,
+  "y": -69,
   "cells": [
     {
       "jancar": "gps",
@@ -16,10 +16,24 @@
       "focusImageUrl": "file:///android_asset/image/page01_focus_2.png",
       "type": 1,
       "textTitle": {
-        "zh_CN":"导航",
-        "zh_TW":"導航",
-        "zh_HK":"導航",
-        "en_US":"navigation"
+        "en": "Navigate",
+        "zh": "导航",
+        "ru": "управлять",
+        "el": "πλοηγηθείτε",
+        "pl": "nawigować",
+        "tr": "gezinme",
+        "ar": "التنقل",
+        "fa": "حرکت",
+        "ro": "Navigați",
+        "fr": "naviguer",
+        "hu": "navigálni",
+        "it": "navigare",
+        "th": "นำทาง",
+        "de": "navigieren",
+        "uk": "управляти",
+        "es": "Navegue",
+        "pt": "navegar",
+        "zh_TW": "航行"
       },
       "textSize": 26,
       "textColor": "#FFFFFF",
@@ -28,8 +42,8 @@
       "textTop": 0,
       "textBottom": 28,
       "sort": 1,
-      "width":212,
-      "height":317
+      "width": 212,
+      "height": 317
     },
     {
       "jancar": "elink",
@@ -40,10 +54,24 @@
       "focusImageUrl": "file:///android_asset/image/page01_focus_1.png",
       "type": 1,
       "textTitle": {
-        "zh_CN":"手机互联",
-        "zh_TW":"手機互聯",
-        "zh_HK":"手機互聯",
-        "en_US":"Mobile internet"
+        "en": "Mobile internet",
+        "zh": "手机互联",
+        "ru": "мобильный интернет",
+        "el": "Το κινητό Διαδίκτυο",
+        "pl": "Mobilny internet",
+        "tr": "Mobil internet",
+        "ar": "الإنترنت عبر الهاتف النقال",
+        "fa": "اینترنت موبایل",
+        "ro": "Internet mobil",
+        "fr": "Internet mobile",
+        "hu": "Mobil internet",
+        "it": "Internet mobile",
+        "th": "อินเทอร์เน็ตบนมือถือ",
+        "de": "Mobiles Internet",
+        "uk": "Мобільний Інтернет",
+        "es": "Internet movil",
+        "pt": "Internet movil",
+        "zh_TW": "手機互聯"
       },
       "textSize": 26,
       "textColor": "#FFFFFF",
@@ -52,8 +80,8 @@
       "textTop": 0,
       "textBottom": 28,
       "sort": 4,
-      "width":212,
-      "height":317
+      "width": 212,
+      "height": 317
     },
     {
       "jancar": "fm",
@@ -64,10 +92,24 @@
       "focusImageUrl": "file:///android_asset/image/page01_focus_3.png",
       "type": 2,
       "textTitle": {
-        "zh_CN":"收音机",
-        "zh_TW":"收音機",
-        "zh_HK":"收音機",
-        "en_US":"radio"
+        "en": "Radio",
+        "zh": "收音机",
+        "ru": "радио",
+        "el": "ραδιόφωνο",
+        "pl": "Radio",
+        "tr": "telsiz",
+        "ar": "راديو",
+        "fa": "رادیویی",
+        "ro": "radio",
+        "fr": "Radio",
+        "hu": "Rádió",
+        "it": "radio",
+        "th": "วิทยุ",
+        "de": "Radio",
+        "uk": "радіо",
+        "es": "Radio",
+        "pt": "rádio",
+        "zh_TW": "廣播"
       },
       "textSize": 26,
       "textColor": "#FFFFFF",
@@ -76,8 +118,8 @@
       "textTop": 0,
       "textBottom": 28,
       "sort": 2,
-      "width":212,
-      "height":317
+      "width": 212,
+      "height": 317
     },
     {
       "jancar": "btdial",
@@ -88,10 +130,24 @@
       "focusImageUrl": "file:///android_asset/image/page01_focus_4.png",
       "type": 1,
       "textTitle": {
-        "zh_CN":"电话",
-        "zh_TW":"電話",
-        "zh_HK":"電話",
-        "en_US":"phone"
+        "en": "Phone",
+        "zh": "电话",
+        "ru": "Телефон",
+        "el": "Τηλέφωνο",
+        "pl": "Telefon",
+        "tr": "Telefon",
+        "ar": "الهاتف",
+        "fa": "تلفن",
+        "ro": "Telefon",
+        "fr": "Téléphone",
+        "hu": "Telefon",
+        "it": "Telefono",
+        "th": "โทรศัพท์",
+        "de": "Telefon",
+        "uk": "Телефон",
+        "es": "Teléfono",
+        "pt": "Telefone",
+        "zh_TW": "電話"
       },
       "textSize": 26,
       "textColor": "#FFFFFF",
@@ -100,8 +156,8 @@
       "textTop": 0,
       "textBottom": 28,
       "sort": 3,
-      "width":212,
-      "height":317
+      "width": 212,
+      "height": 317
     },
     {
       "jancar": "video",
@@ -112,10 +168,24 @@
       "focusImageUrl": "file:///android_asset/image/page02_focus_1.png",
       "type": 1,
       "textTitle": {
-        "zh_CN":"视频",
-        "zh_TW":"視頻",
-        "zh_HK":"視頻",
-        "en_US":"video"
+        "en": "Video",
+        "zh": "视频",
+        "ru": "видео",
+        "el": "βίντεο",
+        "pl": "wideo",
+        "tr": "video",
+        "ar": "فيديو",
+        "fa": "تصویری",
+        "ro": "video",
+        "fr": "Vidéo",
+        "hu": "videó",
+        "it": "Video",
+        "th": "วีดีโอ",
+        "de": "Video",
+        "uk": "відео",
+        "es": "vídeo",
+        "pt": "vídeo",
+        "zh_TW": "視頻"
       },
       "textSize": 26,
       "textColor": "#FFFFFF",
@@ -124,8 +194,8 @@
       "textTop": 0,
       "textBottom": 28,
       "sort": 5,
-      "width":212,
-      "height":317
+      "width": 212,
+      "height": 317
     },
     {
       "jancar": "a2dp",
@@ -136,10 +206,24 @@
       "focusImageUrl": "file:///android_asset/image/page02_focus_2.png",
       "type": 1,
       "textTitle": {
-        "zh_CN":"蓝牙音乐",
-        "zh_TW":"藍牙音樂",
-        "zh_HK":"藍牙音樂",
-        "en_US":"Bluetooth music"
+        "en": "BTMusic",
+        "zh": "蓝牙音乐",
+        "ru": "Bluetooth музыки",
+        "el": "μουσικής Bluetooth",
+        "pl": "muzyka Bluetooth",
+        "tr": "Bluetooth müzik",
+        "ar": "الموسيقى بلوتوث",
+        "fa": "موسیقی بلوتوث",
+        "ro": "muzică Bluetooth",
+        "fr": "Musique Bluetooth",
+        "hu": "Bluetooth zene",
+        "it": "musica di Bluetooth",
+        "th": "เพลงบลูทู ธ",
+        "de": "Bluetooth Musik",
+        "uk": "Bluetooth музики",
+        "es": "lista de reproducción actual",
+        "pt": "música Bluetooth",
+        "zh_TW": "藍牙音樂"
       },
       "textSize": 26,
       "textColor": "#FFFFFF",
@@ -148,8 +232,8 @@
       "textTop": 0,
       "textBottom": 28,
       "sort": 6,
-      "width":212,
-      "height":317
+      "width": 212,
+      "height": 317
     },
     {
       "jancar": "music",
@@ -160,10 +244,24 @@
       "focusImageUrl": "file:///android_asset/image/page02_focus_3.png",
       "type": 1,
       "textTitle": {
-        "zh_CN":"音乐",
-        "zh_TW":"音樂",
-        "zh_HK":"音樂",
-        "en_US":"music"
+        "en": "Music",
+        "zh": "音乐",
+        "ru": "Музыка",
+        "el": "μουσική",
+        "pl": "muzyka",
+        "tr": "müzik",
+        "ar": "موسيقى",
+        "fa": "موسیقی",
+        "ro": "muzică",
+        "fr": "Musique",
+        "hu": "zene",
+        "it": "video",
+        "th": "วิดีโอ",
+        "de": "Musik",
+        "uk": "Музика",
+        "es": "música",
+        "pt": "música",
+        "zh_TW": "音樂"
       },
       "textSize": 26,
       "textColor": "#FFFFFF",
@@ -172,8 +270,8 @@
       "textTop": 0,
       "textBottom": 28,
       "sort": 7,
-      "width":212,
-      "height":317
+      "width": 212,
+      "height": 317
     },
     {
       "jancar": "image",
@@ -184,10 +282,24 @@
       "focusImageUrl": "file:///android_asset/image/page02_focus_4.png",
       "type": 1,
       "textTitle": {
-        "zh_CN":"图片",
-        "zh_TW":"圖片",
-        "zh_HK":"圖片",
-        "en_US":"image"
+        "en": "Photo",
+        "zh": "图片",
+        "ru": "фото",
+        "el": "φωτογραφία",
+        "pl": "fotografia",
+        "tr": "fotoğraf",
+        "ar": "صورة فوتوغرافية",
+        "fa": "عکس",
+        "ro": "fotografie",
+        "fr": "photo",
+        "hu": "Fénykép",
+        "it": "foto",
+        "th": "ภาพถ่าย",
+        "de": "Foto",
+        "uk": "фото",
+        "es": "foto",
+        "pt": "foto",
+        "zh_TW": "圖片"
       },
       "textSize": 26,
       "textColor": "#FFFFFF",
@@ -196,8 +308,8 @@
       "textTop": 0,
       "textBottom": 28,
       "sort": 8,
-      "width":212,
-      "height":317
+      "width": 212,
+      "height": 317
     },
     {
       "jancar": "setting",
@@ -208,10 +320,25 @@
       "focusImageUrl": "file:///android_asset/image/page03_focus_1.png",
       "type": 1,
       "textTitle": {
-        "zh_CN":"设置",
-        "zh_TW":"設置",
-        "zh_HK":"設置",
-        "en_US":"Setting"
+        "en": "Settings",
+        "zh": "设置",
+        "ru": "Настройки",
+        "el": "Ρυθμίσεις",
+        "pl": "Ustawienia",
+        "tr": "Ayarlar",
+        "ar": "الإعدادات",
+        "fa": "تنظیمات",
+        "ro": "Setări",
+        "fr": "Paramètres",
+        "hu": "Beállítások",
+        "it": "Impostazioni",
+        "th": "การตั้งค่า",
+        "de": "Einstellungen",
+        "uk": "Налаштування",
+        "es": "Ajustes",
+        "pt": "Configurações",
+        "zh_HK": "設定"
+
       },
       "textSize": 26,
       "textColor": "#FFFFFF",
@@ -220,8 +347,8 @@
       "textTop": 0,
       "textBottom": 28,
       "sort": 9,
-      "width":212,
-      "height":317
+      "width": 212,
+      "height": 317
     },
     {
       "jancar": "avin",
@@ -232,10 +359,24 @@
       "focusImageUrl": "file:///android_asset/image/page03_focus_2.png",
       "type": 1,
       "textTitle": {
-        "zh_CN":"AUX",
-        "zh_TW":"AUX",
-        "zh_HK":"AUX",
-        "en_US":"AUX"
+        "en": "AUX",
+        "zh": "AUX",
+        "ru": "AUX",
+        "el": "AUX",
+        "pl": "AUX",
+        "tr": "AUX",
+        "ar": "AUX",
+        "fa": "AUX",
+        "ro": "AUX",
+        "fr": "AUX",
+        "hu": "AUX",
+        "it": "AUX",
+        "th": "AUX",
+        "de": "AUX",
+        "uk": "AUX",
+        "es": "AUX",
+        "pt": "AUX",
+        "zh_HK": "AUX"
       },
       "textSize": 26,
       "textColor": "#FFFFFF",
@@ -244,8 +385,8 @@
       "textTop": 0,
       "textBottom": 28,
       "sort": 10,
-      "width":212,
-      "height":317
+      "width": 212,
+      "height": 317
     },
     {
       "jancar": "app",
@@ -256,10 +397,24 @@
       "focusImageUrl": "file:///android_asset/image/page03_focus_3.png",
       "type": 1,
       "textTitle": {
-        "zh_CN":"应用",
-        "zh_TW":"應用",
-        "zh_HK":"應用",
-        "en_US":"application"
+        "en": "Apps",
+        "zh": "应用",
+        "ru": "Приложения",
+        "el": "Εφαρμογές Google",
+        "pl": "Aplikacje",
+        "tr": "Google Apps",
+        "ar": "تطبيقات",
+        "fa": "برنامه‌های کاربردی",
+        "ro": "Aplicaţii",
+        "fr": "Applications",
+        "hu": "Alkalmazások",
+        "it": "Applicazioni",
+        "th": "Apps",
+        "de": "Apps",
+        "uk": "Служби",
+        "es": "Aplicaciones	A",
+        "pt": "plicativos",
+        "zh_HK": "應用程式"
       },
       "textSize": 26,
       "textColor": "#FFFFFF",
@@ -268,8 +423,8 @@
       "textTop": 0,
       "textBottom": 28,
       "sort": 11,
-      "width":212,
-      "height":317
+      "width": 212,
+      "height": 317
     }
   ]
 }

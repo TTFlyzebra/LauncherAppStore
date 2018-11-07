@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.jancar.launcher.R;
+import com.jancar.launcher.utils.FlyLog;
 
 
 /**
@@ -41,11 +42,11 @@ public class NavForViewPager extends View {
     public NavForViewPager(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initPaint();
-        nav_off= BitmapFactory.decodeResource(getResources(), R.drawable.nav_off);
-        nav_on= BitmapFactory.decodeResource(getResources(), R.drawable.nav_on);
+        nav_off = BitmapFactory.decodeResource(getResources(), R.drawable.nav_off);
+        nav_on = BitmapFactory.decodeResource(getResources(), R.drawable.nav_on);
     }
 
-    public void setViewPager(final ViewPager viewPager){
+    public void setViewPager(final ViewPager viewPager) {
         setCurrentItem(viewPager.getCurrentItem());
         setSumItem(viewPager.getAdapter().getCount());
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -55,7 +56,15 @@ public class NavForViewPager extends View {
 
             @Override
             public void onPageSelected(int position) {
-                setCurrentItem(viewPager.getCurrentItem());
+                int item = viewPager.getCurrentItem();
+                if (sumItem > 1) {
+                    if (item == sumItem - 1) {
+                        item = sumItem - 2;
+                    } else if (item == 0) {
+                        item = 1;
+                    }
+                }
+                setCurrentItem(item);
             }
 
             @Override
@@ -98,15 +107,19 @@ public class NavForViewPager extends View {
             float x = width / 2 - (sumItem * circleWidth * 2 - circleWidth) / 2;
             for (int i = 0; i < sumItem; i++) {
                 if (i == currentItem) {
-                    if(nav_on==null){
-                        nav_on= BitmapFactory.decodeResource(getResources(), R.drawable.nav_on);
+                    if (nav_on == null) {
+                        nav_on = BitmapFactory.decodeResource(getResources(), R.drawable.nav_on);
                     }
-                    canvas.drawBitmap(nav_on,x + i * circleWidth * 2, circleWidth,paint);
+                    if (sumItem > 1 && i > 0 && i < sumItem - 1) {
+                        canvas.drawBitmap(nav_on, x + i * circleWidth * 2, circleWidth, paint);
+                    }
                 } else {
-                    if(nav_off==null){
-                        nav_off= BitmapFactory.decodeResource(getResources(), R.drawable.nav_off);
+                    if (nav_off == null) {
+                        nav_off = BitmapFactory.decodeResource(getResources(), R.drawable.nav_off);
                     }
-                    canvas.drawBitmap(nav_off,x + i * circleWidth * 2, circleWidth,paint);
+                    if (sumItem > 1 && i > 0 && i < sumItem - 1) {
+                        canvas.drawBitmap(nav_off, x + i * circleWidth * 2, circleWidth, paint);
+                    }
                 }
             }
         }

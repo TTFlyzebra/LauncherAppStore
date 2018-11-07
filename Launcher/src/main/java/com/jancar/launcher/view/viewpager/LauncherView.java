@@ -14,9 +14,10 @@ import com.jancar.launcher.view.pageview.SimplePageView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LauncherView extends ViewPager implements ILauncher{
-    List<PageBean> pageList = new ArrayList<>();
+public class LauncherView extends ViewPager implements ILauncher {
+    private List<PageBean> pageList = new ArrayList<>();
     private MyPgaeAdapter myPgaeAdapter = new MyPgaeAdapter();
+
     public LauncherView(Context context) {
         this(context, null);
     }
@@ -35,19 +36,28 @@ public class LauncherView extends ViewPager implements ILauncher{
     public void setData(PageBean pageBean) {
         List<CellBean> pages = pageBean.cells;
         int size = pageBean.cells.size();
-        int pageNum = pageBean.columns*pageBean.rows;
-        for(int i= 0;i<=(size-1)/pageNum;i++){
-            int start = i*pageNum;
-            int end = Math.min(size,i*pageNum+pageNum);
+        int pageNum = pageBean.columns * pageBean.rows;
+        List<PageBean> tmpList = new ArrayList<>();
+        for (int i = 0; i <= (size - 1) / pageNum; i++) {
+            int start = i * pageNum;
+            int end = Math.min(size, i * pageNum + pageNum);
             List<CellBean> list = new ArrayList<>(pages.subList(start, end));
             try {
                 PageBean page = pageBean.clone();
                 page.cells.addAll(list);
-                pageList.add(page);
+                tmpList.add(page);
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }
         }
+        if (tmpList.size() > 1) {
+            pageList.add(tmpList.get(tmpList.size() - 1));
+            pageList.addAll(tmpList);
+            pageList.add(tmpList.get(0));
+        } else {
+            pageList.addAll(tmpList);
+        }
+        setCurrentItem(1);
         myPgaeAdapter.notifyDataSetChanged();
     }
 
@@ -83,10 +93,15 @@ public class LauncherView extends ViewPager implements ILauncher{
 
         @Override
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            if (position == 0 && pageList != null && pageList.size() > 1) {
+                setCurrentItem(pageList.size() - 2, false);
+            }
+            if (position == pageList.size() - 1 && pageList != null && pageList.size() > 1) {
+                setCurrentItem(1, false);
+            }
         }
 
     }
-
 
 
 }

@@ -337,7 +337,7 @@
         "uk": "Налаштування",
         "es": "Ajustes",
         "pt": "Configurações",
-        "zh_HK": "設定"
+        "zh_TW": "設定"
 
       },
       "textSize": 26,
@@ -376,7 +376,7 @@
         "uk": "AUX",
         "es": "AUX",
         "pt": "AUX",
-        "zh_HK": "AUX"
+        "zh_TW": "AUX"
       },
       "textSize": 26,
       "textColor": "#FFFFFF",
@@ -414,7 +414,7 @@
         "uk": "Служби",
         "es": "Aplicaciones	A",
         "pt": "plicativos",
-        "zh_HK": "應用程式"
+        "zh_TW": "應用程式"
       },
       "textSize": 26,
       "textColor": "#FFFFFF",

@@ -1025,6 +1025,7 @@ public class Launcher extends Activity
         launcherLoadingDB.start(this);
         FirstFrameAnimatorHelper.setIsVisible(true);
 
+
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.onStart();
         }

@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.os.Handler;
-import android.os.Looper;
 
 import com.android.flyzebra.FlyLog;
 import com.android.flyzebra.LaunActivityUtil;
@@ -29,7 +27,6 @@ public class LauncherLoadingDB {
     private static final String CELLY = "celly";
     private static final String SCREEN = "screen";
 
-    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     public void setOnListener(ILoadingDB iLoadingDB) {
         this.iLoadingDB = iLoadingDB;
@@ -45,21 +42,11 @@ public class LauncherLoadingDB {
 
 
     public void start(final Context context) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                LauncherAppState.getLauncherProvider().loadDefaultFavoritesIfNecessary();
-                allLauncherActivitys = LaunActivityUtil.getAppInfos(null, context, launcherAppState.getIconCache());
-                checkItems(context);
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        iLoadingDB.loadingFinish();
-                    }
-                });
-            }
-        }).start();
-
+        FlyLog.d("start");
+        LauncherAppState.getLauncherProvider().loadDefaultFavoritesIfNecessary();
+        allLauncherActivitys = LaunActivityUtil.getAppInfos(null, context, launcherAppState.getIconCache());
+        checkItems(context);
+        iLoadingDB.loadingFinish();
     }
 
     /**
@@ -131,7 +118,7 @@ public class LauncherLoadingDB {
                 }
             }
             if (!isFind) {
-                FlyLog.d("DELETE Activity=%s", workInfo.intent.toUri(0));
+                FlyLog.e("DELETE Activity=%s", workInfo.intent.toUri(0));
                 //TODO:删除数据库数据，如果这一页只有这一个的情况未考虑
                 cr.delete(LauncherSettings.Favorites.CONTENT_URI,
                         LauncherSettings.Favorites._ID + "=?",
@@ -173,7 +160,7 @@ public class LauncherLoadingDB {
                 v.put(LauncherSettings.WorkspaceScreens.SCREEN_RANK, 0);
                 cr.insert(LauncherSettings.WorkspaceScreens.CONTENT_URI, v);
                 FlyLog.d("insertfly-> screen=%d", screen);
-            }catch (Exception e){
+            } catch (Exception e) {
                 FlyLog.e(e.toString());
             }
         }

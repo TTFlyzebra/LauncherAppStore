@@ -64,6 +64,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LauncherProvider extends ContentProvider {
     private static final String TAG = "LauncherProvider";
@@ -143,11 +145,24 @@ public class LauncherProvider extends ContentProvider {
          * 检查是否已经添加了该图标
          */
         boolean hasInsert = false;
-        String intent = (String) values.get("intent");
+        String str = (String) values.get("intent");
         try {
-            if (!TextUtils.isEmpty(intent)) {
-                Cursor c = db.query(table, null, "intent=?", new String[]{intent}, null, null, null, null);
-                hasInsert = c != null && c.moveToNext();
+            if (!TextUtils.isEmpty(str)) {
+                String v = "component=.*;";
+                Pattern p = Pattern.compile(v);
+                Matcher m = p.matcher(str);
+                FlyLog.e(m.toString());
+                if (m.find()) {
+                    String component = m.group();
+                    Cursor c = db.query(table, null,
+                            "intent LIKE ?",
+                            new String[]{"%"+component+"%"},
+                            null,
+                            null,
+                            null,
+                            null);
+                    hasInsert = c != null && c.moveToNext();
+                }
             }
         } catch (Exception e) {
             FlyLog.e(e.toString());
@@ -157,10 +172,10 @@ public class LauncherProvider extends ContentProvider {
         if (!hasInsert) {
             ret = db.insert(table, nullColumnHack, values);
         } else {
-            FlyLog.e("is already insert intent=%s", intent);
+            FlyLog.e("is already insert intent=%s", str);
         }
         if (values.get("screen") != null) {
-            FlyLog.d("dbInsertAndCheck--:2 screen=" + values.get("screen") + ",title=" + values.get("title") + ",ret=" + ret);
+            FlyLog.d("dbInsertAndCheck--: intent=" + str);
         }
         return ret;
 

@@ -190,9 +190,9 @@
         <receiver
             android:name="com.android.launcher3.InstallShortcutReceiver"
             android:permission="com.android.launcher.permission.INSTALL_SHORTCUT">
-            <intent-filter>
-                <action android:name="com.android.launcher.action.INSTALL_SHORTCUT" />
-            </intent-filter>
+            <!--<intent-filter>-->
+                <!--<action android:name="com.android.launcher.action.INSTALL_SHORTCUT" />-->
+            <!--</intent-filter>-->
         </receiver>
 
         <!-- Intent received used to initialize a restored widget -->

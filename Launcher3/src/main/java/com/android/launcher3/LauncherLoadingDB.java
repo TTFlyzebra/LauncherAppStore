@@ -14,6 +14,8 @@ import com.android.launcher3.compat.UserManagerCompat;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -45,6 +47,26 @@ public class LauncherLoadingDB {
         FlyLog.d("start");
         LauncherAppState.getLauncherProvider().loadDefaultFavoritesIfNecessary();
         allLauncherActivitys = LaunActivityUtil.getAppInfos(null, context, launcherAppState.getIconCache());
+
+        Collections.sort(allLauncherActivitys, new Comparator<AppInfo>() {
+            public int compare(AppInfo p1, AppInfo p2) {
+                try {
+                    String str1 = p1.componentName.toString();
+                    String str2 = p2.componentName.toString();
+                    if (str1.contains("com.google")||str1.contains("com.android.vending")) {
+                        return 1;
+                    } else if (str2.contains("com.google")||str2.contains("com.android.vending")) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                } catch (Exception e) {
+                    FlyLog.e(e.toString());
+                    return 0;
+                }
+            }
+        });
+
         checkItems(context);
         iLoadingDB.loadingFinish();
     }

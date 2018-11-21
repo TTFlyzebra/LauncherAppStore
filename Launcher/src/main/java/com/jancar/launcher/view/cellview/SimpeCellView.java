@@ -50,7 +50,7 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
         super(context, attrs, defStyleAttr);
         try {
             jancarManager = (JancarManager) context.getSystemService("jancar_manager");
-        }catch (Exception e){
+        } catch (Exception e) {
             FlyLog.e(e.toString());
         }
         initView(context);
@@ -85,7 +85,10 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
         params.topMargin = appInfo.textTop;
         params.rightMargin = appInfo.textRight;
         params.bottomMargin = appInfo.textBottom;
+        params.height = (int) (appInfo.textSize * 2.5f);
         textView.setLayoutParams(params);
+        textView.setGravity(Gravity.START | Gravity.CENTER);
+        textView.setLines(2);
         requestLayout();
     }
 
@@ -109,11 +112,11 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
      */
     @Override
     public void runAction() {
-        if (!TextUtils.isEmpty(appInfo.jancar)&&jancarManager!=null) {
-            if(jancarManager.requestPage(appInfo.jancar)){
-                FlyLog.d("start app by jancarManager id=%s",appInfo.jancar);
+        if (!TextUtils.isEmpty(appInfo.jancar) && jancarManager != null) {
+            if (jancarManager.requestPage(appInfo.jancar)) {
+                FlyLog.d("start app by jancarManager id=%s", appInfo.jancar);
                 return;
-            }else{
+            } else {
                 FlyLog.d("start app by jancarManager failed!");
             }
         }

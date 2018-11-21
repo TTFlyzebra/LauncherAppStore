@@ -13,6 +13,8 @@ import com.jancar.launcher.utils.SPUtil;
 import com.jancar.launcher.view.flyview.NumTextView;
 import com.jancar.radio.RadioManager;
 
+import java.util.Locale;
+
 public class RadioCellView extends SimpeCellView implements
         BaseManager.ConnectListener,
         RadioManager.RadioListener {
@@ -101,7 +103,7 @@ public class RadioCellView extends SimpeCellView implements
             AMFM_ImageView.setImageResource(R.drawable.radio_fm);
             KHZMHZ_ImageView.setImageResource(R.drawable.radio_mhz);
             f = fmChannel / 1000f;
-            String str = String.format("%.2f", f);
+            String str = String.format(Locale.ENGLISH,"%.2f", f);
             int len = str.length();
             if (len > 7) {
                 numTextView.setText("99999");

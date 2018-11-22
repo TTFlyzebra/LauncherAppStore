@@ -22,6 +22,7 @@ import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.flyzebra.FlyLog;
 import com.android.launcher3.util.FocusLogic;
 import com.android.launcher3.util.Thunk;
 
@@ -31,7 +32,13 @@ import com.android.launcher3.util.Thunk;
 class IconKeyEventListener implements View.OnKeyListener {
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        return FocusHelper.handleIconKeyEvent(v, keyCode, event);
+        boolean flag = true;
+        try {
+            flag = FocusHelper.handleIconKeyEvent(v, keyCode, event);
+        }catch (Exception e){
+            FlyLog.e(e.toString());
+        }
+        return flag;
     }
 }
 

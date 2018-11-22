@@ -21,6 +21,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.flyzebra.FlyLog;
 import com.android.launcher3.CellLayout;
 import com.android.launcher3.ShortcutAndWidgetContainer;
 
@@ -225,7 +226,11 @@ public class FocusLogic {
                         (!includeAllappsicon && cy > allappsiconRank)) {
                         delta = -1;
                 }
-                matrix[iconLayout.getCountX()][cy + delta] = iconParent.getChildCount() + i;
+                try {
+                    matrix[iconLayout.getCountX()][cy + delta] = iconParent.getChildCount() + i;
+                }catch (Exception e){
+                    FlyLog.e(e.toString());
+                }
             }
         }
         if (DEBUG) {

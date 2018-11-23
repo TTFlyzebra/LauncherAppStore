@@ -48,6 +48,7 @@ import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.Interpolator;
 
+import com.android.flyzebra.FlyLog;
 import com.android.launcher3.util.LauncherEdgeEffect;
 import com.android.launcher3.util.Thunk;
 
@@ -1237,17 +1238,22 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
     @Override
     public void addFocusables(ArrayList<View> views, int direction, int focusableMode) {
         // XXX-RTL: This will be fixed in a future CL
-        if (mCurrentPage >= 0 && mCurrentPage < getPageCount()) {
-            getPageAt(mCurrentPage).addFocusables(views, direction, focusableMode);
-        }
-        if (direction == View.FOCUS_LEFT) {
-            if (mCurrentPage > 0) {
-                getPageAt(mCurrentPage - 1).addFocusables(views, direction, focusableMode);
+        try {
+            if (mCurrentPage >= 0 && mCurrentPage < getPageCount()) {
+                getPageAt(mCurrentPage).addFocusables(views, direction, focusableMode);
             }
-        } else if (direction == View.FOCUS_RIGHT){
-            if (mCurrentPage < getPageCount() - 1) {
-                getPageAt(mCurrentPage + 1).addFocusables(views, direction, focusableMode);
+            if (direction == View.FOCUS_LEFT) {
+                if (mCurrentPage > 0) {
+                    getPageAt(mCurrentPage - 1).addFocusables(views, direction, focusableMode);
+                }
+            } else if (direction == View.FOCUS_RIGHT) {
+                if (mCurrentPage < getPageCount() - 1) {
+                    getPageAt(mCurrentPage + 1).addFocusables(views, direction, focusableMode);
+                }
             }
+        }catch (Exception e){
+            FlyLog.e(e.toString());
+            e.printStackTrace();
         }
     }
 

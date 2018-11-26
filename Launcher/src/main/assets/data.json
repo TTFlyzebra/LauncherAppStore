@@ -161,8 +161,8 @@
     },
     {
       "jancar": "video",
-      "packName": "com.jancar.media",
-      "className": "com.jancar.media.activity.VideoActivity",
+      "packName": "com.jancar.player.video",
+      "className": "com.jancar.player.video.VideoActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page02_default_1.png",
       "focusImageUrl": "file:///android_asset/image/page02_focus_1.png",
@@ -237,8 +237,8 @@
     },
     {
       "jancar": "music",
-      "packName": "com.jancar.media",
-      "className": "com.jancar.media.activity.MusicActivity",
+      "packName": "com.jancar.player.music",
+      "className": "com.jancar.player.music.MusicActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page02_default_3.png",
       "focusImageUrl": "file:///android_asset/image/page02_focus_3.png",
@@ -275,8 +275,8 @@
     },
     {
       "jancar": "image",
-      "packName": "com.jancar.media",
-      "className": "com.jancar.media.activity.PhotoActivity",
+      "packName": "com.jancar.player.photo",
+      "className": "com.jancar.player.photo.PhotoActivity",
       "action": "",
       "defaultImageUrl": "file:///android_asset/image/page02_default_4.png",
       "focusImageUrl": "file:///android_asset/image/page02_focus_4.png",

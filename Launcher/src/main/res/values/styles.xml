@@ -1,6 +1,12 @@
 <resources>
 
-    <style name="AppTheme" parent="@android:style/Theme.Holo.Wallpaper.NoTitleBar">
-        <item name="android:windowActionBar">false</item>
+    <style name="BaseWallpaperTheme" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
+
+    <style name="AppTheme" parent="@style/BaseWallpaperTheme"></style>
+
 </resources>

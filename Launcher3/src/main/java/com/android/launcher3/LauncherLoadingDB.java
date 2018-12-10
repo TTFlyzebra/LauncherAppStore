@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.text.TextUtils;
 
 import com.android.flyzebra.FlyLog;
 import com.android.flyzebra.LaunActivityUtil;
@@ -107,10 +108,14 @@ public class LauncherLoadingDB {
                 AppInfo info = new AppInfo();
                 info.id = c.getInt(idIndex);
                 String intentDescription = c.getString(intentIndex);
+                if(TextUtils.isEmpty(intentDescription)){
+                    continue;
+                }
                 try {
                     info.intent = Intent.parseUri(intentDescription, 0);
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    FlyLog.e(e.toString());
+                    continue;
                 }
                 info.screenId = c.getInt(screenIndex);
                 info.cellX = c.getInt(cellXIndex);

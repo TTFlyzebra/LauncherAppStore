@@ -5,17 +5,15 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 
-import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.bean.PageBean;
+import com.jancar.launcher.utils.GsonUtils;
 import com.jancar.launcher.view.viewpager.LauncherView;
 import com.jancar.launcher.view.viewpager.NavForViewPager;
-import com.jancar.launcher.utils.GsonUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.List;
 
 
 public class MainActivity extends Activity {
@@ -32,17 +30,10 @@ public class MainActivity extends Activity {
         launcherView = (LauncherView) findViewById(R.id.ac_main_launcherview);
         launcherView.setOffscreenPageLimit(10);
         naviForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
-        String jsonStr = getAssetFileText("data.json", this);
-        PageBean pageBean = GsonUtils.json2Object(jsonStr, PageBean.class);
+        String jsonStr = getAssetFileText("AA2.json", this);
+        List<PageBean> pageBean = GsonUtils.json2ListObject(jsonStr, PageBean.class);
 
-        if (pageBean != null && pageBean.cells != null) {
-            //排序
-            Collections.sort(pageBean.cells, new Comparator<CellBean>() {
-                @Override
-                public int compare(CellBean lhs, CellBean rhs) {
-                    return lhs.sort - rhs.sort;
-                }
-            });
+        if (pageBean != null && !pageBean.isEmpty()) {
             launcherView.setData(pageBean);
             naviForViewPager.setViewPager(launcherView);
         }

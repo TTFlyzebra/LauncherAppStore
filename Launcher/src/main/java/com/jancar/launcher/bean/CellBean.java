@@ -17,8 +17,10 @@ public class CellBean implements Cloneable{
     public int textTop = 0;
     public int textBottom = 28;
     public int sort;
-    public int width = 212;
-    public int height = 317;
+    public int x = 0;
+    public int y = 0;
+    public int width = 0;
+    public int height = 0;
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
@@ -36,7 +38,7 @@ public class CellBean implements Cloneable{
                 ", defaultImageUrl='" + defaultImageUrl + '\'' +
                 ", focusImageUrl='" + focusImageUrl + '\'' +
                 ", type=" + type +
-                ", textTitle='" + textTitle + '\'' +
+                ", textTitle=" + textTitle +
                 ", textSize=" + textSize +
                 ", textColor='" + textColor + '\'' +
                 ", textLeft=" + textLeft +
@@ -44,6 +46,8 @@ public class CellBean implements Cloneable{
                 ", textTop=" + textTop +
                 ", textBottom=" + textBottom +
                 ", sort=" + sort +
+                ", x=" + x +
+                ", y=" + y +
                 ", width=" + width +
                 ", height=" + height +
                 '}';

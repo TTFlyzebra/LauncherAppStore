@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.bean.PageBean;
 import com.jancar.launcher.view.pageview.SimplePageView;
 
@@ -33,30 +32,35 @@ public class LauncherView extends ViewPager implements ILauncher {
 
 
     @Override
-    public void setData(PageBean pageBean) {
-        List<CellBean> pages = pageBean.cells;
-        int size = pageBean.cells.size();
-        int pageNum = pageBean.columns * pageBean.rows;
-        List<PageBean> tmpList = new ArrayList<>();
-        for (int i = 0; i <= (size - 1) / pageNum; i++) {
-            int start = i * pageNum;
-            int end = Math.min(size, i * pageNum + pageNum);
-            List<CellBean> list = new ArrayList<>(pages.subList(start, end));
-            try {
-                PageBean page = pageBean.clone();
-                page.cells.addAll(list);
-                tmpList.add(page);
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
-        }
-        if (tmpList.size() > 1) {
-            pageList.add(tmpList.get(tmpList.size() - 1));
-            pageList.addAll(tmpList);
-            pageList.add(tmpList.get(0));
+    public void setData(List<PageBean> mPageBeanList) {
+        if (mPageBeanList.size() > 1) {
+            pageList.add(mPageBeanList.get(mPageBeanList.size() - 1));
+            pageList.addAll(mPageBeanList);
+            pageList.add(mPageBeanList.get(0));
         } else {
-            pageList.addAll(tmpList);
+            pageList.addAll(mPageBeanList);
         }
+
+//        Gson gson2=new Gson();
+//        String str=gson2.toJson(pageList);
+//        FlyLog.e("pageList="+str);
+//        File file = new File("/sdcard/data.json");
+//        if(!file.exists()){
+//            try {
+//                file.createNewFile();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        try {
+//            RandomAccessFile raf = new RandomAccessFile(file,"rwd");
+//            raf.write(str.getBytes());
+//            raf.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
         setCurrentItem(1);
         myPgaeAdapter.notifyDataSetChanged();
     }

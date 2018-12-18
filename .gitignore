@@ -2,7 +2,5 @@
 .gradle
 .idea
 .git
-Launcher/build
-Launcher3/build
-wallpaperpick/build
+/build
 local.properties

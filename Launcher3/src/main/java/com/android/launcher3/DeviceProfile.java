@@ -420,7 +420,7 @@ public class DeviceProfile {
         Rect padding = getWorkspacePadding(isLayoutRtl);
         workspace.setLayoutParams(lp);
         //@FlyZebra
-        workspace.setPadding(30, padding.top, 30, padding.bottom);
+        workspace.setPadding(30, 0, 30, 200);
         workspace.setPageSpacing(getWorkspacePageSpacing(isLayoutRtl));
 
         // Layout the hotseat
@@ -450,10 +450,11 @@ public class DeviceProfile {
 //            hotseat.findViewById(R.id.layout).setPadding(2 * edgeMarginPx, 0,
 //                    2 * edgeMarginPx, 0);
 //        }
-        lp.gravity = Gravity.CENTER|Gravity.CENTER;
-        lp.width = 1;
-        lp.height = 1;
+        lp.gravity = Gravity.BOTTOM|Gravity.CENTER;
+        lp.width = -1;
+        lp.height = 200;
         hotseat.setLayoutParams(lp);
+        hotseat.setPadding(30, 0, 30, 0);
 
         // Layout the page indicators
         View pageIndicator = launcher.findViewById(R.id.page_indicator);
@@ -467,7 +468,7 @@ public class DeviceProfile {
             lp.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
             lp.width = LayoutParams.WRAP_CONTENT;
             lp.height = LayoutParams.WRAP_CONTENT;
-            lp.bottomMargin = 48;
+            lp.bottomMargin = 180;
             pageIndicator.setLayoutParams(lp);
 //            }
         }

@@ -14,24 +14,56 @@
      limitations under the License.
 -->
 
-<favorites>
+<favorites xmlns:launcher="http://schemas.android.com/apk/res-auto/com.android.launcher3">
 
     <!-- Hotseat -->
     <!--<include launcher:workspace="@xml/dw_tablet_hotseat" />-->
 
     <!--&lt;!&ndash; Bottom row &ndash;&gt;-->
-    <!--<favorite-->
-        <!--launcher:screen="0"-->
-        <!--launcher:x="0"-->
-        <!--launcher:y="1"-->
-        <!--launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_CONTACTS;end" />-->
+    <resolve
+        launcher:container="-101"
+        launcher:screen="0"
+        launcher:x="0"
+        launcher:y="0" >
+        <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=com.android.browser/.BrowserActivity;l.profile=0;end" />
+    </resolve>
 
-    <!--<resolve-->
-        <!--launcher:screen="0"-->
-        <!--launcher:x="5"-->
-        <!--launcher:y="1" >-->
-        <!--<favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_MARKET;end" />-->
-        <!--<favorite launcher:uri="market://details?id=com.android.launcher" />-->
-    <!--</resolve>-->
+    <resolve
+        launcher:container="-101"
+        launcher:screen="1"
+        launcher:x="1"
+        launcher:y="0" >
+        <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_MESSAGING;end" />
+    </resolve>
+
+    <resolve
+        launcher:container="-101"
+        launcher:screen="2"
+        launcher:x="2"
+        launcher:y="0" >
+        <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_MESSAGING;end" />
+        <favorite launcher:uri="sms:" />
+        <favorite launcher:uri="smsto:" />
+        <favorite launcher:uri="mms:" />
+        <favorite launcher:uri="mmsto:" />
+    </resolve>
+
+    <resolve
+        launcher:container="-101"
+        launcher:screen="3"
+        launcher:x="3"
+        launcher:y="0" >
+        <favorite
+            launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_BROWSER;end" />
+        <favorite launcher:uri="http://www.example.com/" />
+    </resolve>
+
+    <resolve
+        launcher:container="-101"
+        launcher:screen="4"
+        launcher:x="4"
+        launcher:y="0" >
+        <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10200000;component=com.autonavi.amapauto/com.autonavi.auto.remote.fill.UsbFillActivity;l.profile=0;end" />
+    </resolve>
 
 </favorites>

@@ -192,7 +192,6 @@ public class CellLayout extends ViewGroup implements BubbleTextShadowHandler {
         mCellWidth = mCellHeight = -1;
         mFixedCellWidth = mFixedCellHeight = -1;
         mWidthGap = mOriginalWidthGap = 0;
-        //@FlyZebra set Top
         mHeightGap = mOriginalHeightGap = 0;
         mMaxGap = Integer.MAX_VALUE;
         mCountX = (int) grid.inv.numColumns;
@@ -2860,7 +2859,6 @@ public class CellLayout extends ViewGroup implements BubbleTextShadowHandler {
                 height = myCellVSpan * cellHeight + ((myCellVSpan - 1) * heightGap) -
                         topMargin - bottomMargin;
                 x = (int) (myCellX * (cellWidth + widthGap) + leftMargin);
-                //@FlyZebra set cell top margin
                 y = (int) (myCellY * (cellHeight + heightGap) + topMargin);
             }
         }

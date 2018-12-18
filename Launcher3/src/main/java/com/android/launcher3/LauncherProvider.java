@@ -151,7 +151,6 @@ public class LauncherProvider extends ContentProvider {
                 String v = "component=.*;";
                 Pattern p = Pattern.compile(v);
                 Matcher m = p.matcher(str);
-                FlyLog.e(m.toString());
                 if (m.find()) {
                     String component = m.group();
                     Cursor c = db.query(table, null,

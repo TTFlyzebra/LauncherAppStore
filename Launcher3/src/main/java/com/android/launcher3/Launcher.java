@@ -1435,7 +1435,7 @@ public class Launcher extends Activity
         // Setup the hotseat
         mHotseat = (Hotseat) findViewById(R.id.hotseat);
         if (mHotseat != null) {
-//            mHotseat.setOnLongClickListener(this);
+            mHotseat.setOnLongClickListener(this);
         }
 
         mOverviewPanel = (ViewGroup) findViewById(R.id.overview_panel);
@@ -3399,13 +3399,13 @@ public class Launcher extends Activity
 
     //@FlyZebra no small show wiget show all apps
     void showOverviewMode(boolean animated) {
-        onLongClickAllAppsButton(null);
-//        mWorkspace.setVisibility(View.VISIBLE);
-//        mStateTransitionAnimation.startAnimationToWorkspace(mState, mWorkspace.getState(),
-//                Workspace.State.OVERVIEW,
-//                WorkspaceStateTransitionAnimation.SCROLL_TO_CURRENT_PAGE, animated,
-//                null /* onCompleteRunnable */);
-//        mState = State.WORKSPACE;
+//        onLongClickAllAppsButton(null);
+        mWorkspace.setVisibility(View.VISIBLE);
+        mStateTransitionAnimation.startAnimationToWorkspace(mState, mWorkspace.getState(),
+                Workspace.State.OVERVIEW,
+                WorkspaceStateTransitionAnimation.SCROLL_TO_CURRENT_PAGE, animated,
+                null /* onCompleteRunnable */);
+        mState = State.WORKSPACE;
     }
 
     /**

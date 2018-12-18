@@ -54,9 +54,9 @@ public class LauncherLoadingDB {
                 try {
                     String str1 = p1.componentName.toString();
                     String str2 = p2.componentName.toString();
-                    if (str1.contains("com.google")||str1.contains("com.android.vending")) {
+                    if (str1.contains("com.google") || str1.contains("com.android.vending")) {
                         return 1;
-                    } else if (str2.contains("com.google")||str2.contains("com.android.vending")) {
+                    } else if (str2.contains("com.google") || str2.contains("com.android.vending")) {
                         return -1;
                     } else {
                         return 0;
@@ -88,7 +88,7 @@ public class LauncherLoadingDB {
         Cursor c = cr.query(LauncherSettings.Favorites.CONTENT_URI, null, null, null, null);
         ArrayList<AppInfo> favoritesApps = new ArrayList<>();
         try {
-            while (c.moveToNext()) {
+            while (c != null && c.moveToNext()) {
                 final int idIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites._ID);
                 final int intentIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.INTENT);
                 final int titleIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.TITLE);
@@ -99,16 +99,16 @@ public class LauncherLoadingDB {
                 final int screenIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.SCREEN);
                 final int cellXIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.CELLX);
                 final int cellYIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.CELLY);
-//                final int spanXIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.SPANX);
-//                final int spanYIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.SPANY);
-//                final int rankIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.RANK);
+                final int spanXIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.SPANX);
+                final int spanYIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.SPANY);
+                final int rankIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.RANK);
 //                final int restoredIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.RESTORED);
 //                final int profileIdIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.PROFILE_ID);
 //                final int optionsIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.OPTIONS);
                 AppInfo info = new AppInfo();
                 info.id = c.getInt(idIndex);
                 String intentDescription = c.getString(intentIndex);
-                if(TextUtils.isEmpty(intentDescription)){
+                if (TextUtils.isEmpty(intentDescription)) {
                     continue;
                 }
                 try {
@@ -120,9 +120,10 @@ public class LauncherLoadingDB {
                 info.screenId = c.getInt(screenIndex);
                 info.cellX = c.getInt(cellXIndex);
                 info.cellY = c.getInt(cellYIndex);
-                info.spanX = 1;
-                info.spanY = 1;
                 info.title = c.getString(titleIndex);
+                info.spanX = c.getInt(spanXIndex);
+                info.spanY = c.getInt(spanYIndex);
+                info.rank = c.getInt(rankIndex);
                 favoritesApps.add(info);
             }
         } finally {
@@ -137,11 +138,15 @@ public class LauncherLoadingDB {
             AppInfo workInfo = favoritesApps.get(i);
             boolean isFind = false;
             for (AppInfo appInfo : allLauncherActivitys) {
-                String it1 = workInfo.intent.toUri(0);
-                String it2 = appInfo.intent.toUri(0);
-                if (it1.equals(it2)) {
-                    isFind = true;
-                    break;
+                try {
+                    String it1 = workInfo.intent == null ? "FLY" : workInfo.intent.toUri(0);
+                    String it2 = appInfo.intent.toUri(0);
+                    if (it1.equals(it2)) {
+                        isFind = true;
+                        break;
+                    }
+                }catch (Exception e){
+                    FlyLog.e(e.toString());
                 }
             }
             if (!isFind) {

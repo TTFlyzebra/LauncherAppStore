@@ -14,8 +14,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Created by 李宗源 on 2016/8/12.
- * E-mail:lizy@ppfuns.com
  * 倒影显示控件
  */
 public class MirrorView extends ImageView {
@@ -95,8 +93,7 @@ public class MirrorView extends ImageView {
                         FlyLog.d("createReflectedImage failed");
                     }
                 } catch (OutOfMemoryError | Exception error) {
-                    error.printStackTrace();
-                    FlyLog.d(error.toString());
+                    FlyLog.e(error.toString());
                 }
             }
         });

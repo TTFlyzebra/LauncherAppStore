@@ -6,12 +6,14 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.bean.PageBean;
+import com.jancar.launcher.utils.FlyLog;
 import com.jancar.launcher.view.cellview.CellViewFactory;
 import com.jancar.launcher.view.cellview.ICellView;
-import com.jancar.launcher.utils.FlyLog;
+import com.jancar.launcher.view.flyview.MirrorView;
 
 import java.util.List;
 
@@ -35,10 +37,10 @@ public class SimplePageView extends FrameLayout implements IPage {
 
     private void init(Context context) {
         DisplayMetrics dm = new DisplayMetrics();
-        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
         width = dm.widthPixels;
         height = dm.heightPixels;
-        FlyLog.d("width=%d,height=%d",width,height);
+        FlyLog.d("width=%d,height=%d", width, height);
     }
 
     @Override
@@ -57,33 +59,34 @@ public class SimplePageView extends FrameLayout implements IPage {
 
     private void addAllItemView(List<CellBean> appInfoList) {
         requestLayout();
-        int sx= 0;
+        int sx = 0;
         int sy = 0;
-        if(width!=0){
-            sx = (width - (pageBean.itemWidth+pageBean.itemPadding*2) * pageBean.columns) / 2;
+        if (width != 0) {
+            sx = (width - (pageBean.itemWidth + pageBean.itemPadding * 2) * pageBean.columns) / 2;
         }
-        if(height!=0){
-            sy = (height - (pageBean.itemHeight+pageBean.itemPadding*2) * pageBean.rows) / 2;
+        if (height != 0) {
+            sy = (height - (pageBean.itemHeight + pageBean.itemPadding * 2) * pageBean.rows) / 2;
         }
-        FlyLog.d("sx=%d,sy=%d",sx,sy);
+        FlyLog.d("sx=%d,sy=%d", sx, sy);
         for (int i = 0; i < appInfoList.size(); i++) {
             //多出的Cell不进行绘制
             if (i > pageBean.columns * pageBean.rows) break;
             CellBean appInfo = appInfoList.get(i);
             LayoutParams lp = new LayoutParams(pageBean.itemWidth, pageBean.itemHeight);
-            lp.setMarginStart(sx + pageBean.x + (i % pageBean.columns) * (pageBean.itemWidth + pageBean.itemPadding*2)+pageBean.itemPadding);
-            lp.topMargin = sy + pageBean.y + (i / pageBean.columns) * (pageBean.itemHeight + pageBean.itemPadding*2)+pageBean.itemPadding;
+            lp.setMarginStart(sx + pageBean.x + (i % pageBean.columns) * (pageBean.itemWidth + pageBean.itemPadding * 2) + pageBean.itemPadding);
+            lp.topMargin = sy + pageBean.y + (i / pageBean.columns) * (pageBean.itemHeight + pageBean.itemPadding * 2) + pageBean.itemPadding;
             ICellView iCellView = CellViewFactory.createView(getContext(), appInfo);
             addView((View) iCellView, lp);
 
             //添加镜像
-//            LayoutParams lpMirror = new LayoutParams(pageBean.itemWidth, pageBean.itemHeight);
-//            lpMirror.leftMargin = lp.leftMargin;
-//            lpMirror.topMargin = lp.topMargin+pageBean.itemHeight+12;
-//            MirrorView mirrorView = new MirrorView(getContext());
-//            mirrorView.setScaleType(ImageView.ScaleType.FIT_XY);
-//            iCellView.setMirrorView(mirrorView);
-//            addView(mirrorView,lpMirror);
+            LayoutParams lpMirror = new LayoutParams(pageBean.itemWidth, MirrorView.MIRRORHIGHT);
+            lpMirror.leftMargin = lp.leftMargin;
+            lpMirror.topMargin = lp.topMargin + pageBean.itemHeight + 8;
+            MirrorView mirrorView = new MirrorView(getContext());
+            mirrorView.setScaleType(ImageView.ScaleType.FIT_XY);
+            iCellView.setMirrorView(mirrorView);
+            mirrorView.setRefHeight(MirrorView.MIRRORHIGHT);
+            addView(mirrorView, lpMirror);
 
             iCellView.notifyView();
         }

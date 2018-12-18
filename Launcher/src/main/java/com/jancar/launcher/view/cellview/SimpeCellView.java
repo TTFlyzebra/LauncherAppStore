@@ -102,7 +102,9 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
             @Override
             public void onResourceReady(final Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
                 imageView.setImageBitmap(bitmap);
-                if (mirrorView != null) mirrorView.showImage(bitmap);
+                setDrawingCacheEnabled(true);
+                Bitmap bmp = getDrawingCache();
+                if (mirrorView != null) mirrorView.showImage(bmp);
             }
         });
     }

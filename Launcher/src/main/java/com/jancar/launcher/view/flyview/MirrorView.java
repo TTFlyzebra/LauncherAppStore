@@ -19,7 +19,8 @@ import java.util.concurrent.Executors;
  * 倒影显示控件
  */
 public class MirrorView extends ImageView {
-    private int mRefHeight = 60;
+    public static final int MIRRORHIGHT = 60;
+    private int mRefHeight = MIRRORHIGHT;
     private Handler mHander = new Handler(Looper.getMainLooper());
     private final static ExecutorService executors = Executors.newCachedThreadPool();
     private Bitmap mBitmap;

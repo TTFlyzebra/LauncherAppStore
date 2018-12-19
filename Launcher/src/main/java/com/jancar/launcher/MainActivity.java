@@ -24,13 +24,16 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 //        Settings.Global.putInt(getContentResolver(), Settings.Global.DEVICE_PROVISIONED, 1);
 //        Settings.Secure.putInt(getContentResolver(), Settings.Secure.USER_SETUP_COMPLETE, 1);
 
         launcherView = (LauncherView) findViewById(R.id.ac_main_launcherview);
+
+//        new ViewPagerScroller(launcherView.getContext()).initViewPagerScroll(launcherView);
         launcherView.setOffscreenPageLimit(10);
         naviForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
-        String jsonStr = getAssetFileText("AA2.json", this);
+        String jsonStr = getAssetFileText("AA3.json", this);
         List<PageBean> pageBean = GsonUtils.json2ListObject(jsonStr, PageBean.class);
 
         if (pageBean != null && !pageBean.isEmpty()) {

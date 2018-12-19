@@ -6,14 +6,12 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.bean.PageBean;
 import com.jancar.launcher.utils.FlyLog;
 import com.jancar.launcher.view.cellview.CellViewFactory;
 import com.jancar.launcher.view.cellview.ICellView;
-import com.jancar.launcher.view.flyview.MirrorView;
 
 import java.util.List;
 
@@ -61,7 +59,7 @@ public class SimplePageView extends FrameLayout implements IPage {
         if (appInfoList == null || appInfoList.isEmpty()) return;
         int sx = 0;
         int sy = 0;
-        boolean autoSize = (appInfoList.get(0).x == 0 || appInfoList.get(0).width == 0);
+        boolean autoSize = (pageBean.itemWidth != 0 && pageBean.itemHeight != 0);
         if (autoSize) {
             if (width != 0) {
                 sx = (width - (pageBean.itemWidth + pageBean.itemPadding * 2) * pageBean.columns) / 2;
@@ -73,7 +71,6 @@ public class SimplePageView extends FrameLayout implements IPage {
         FlyLog.d("sx=%d,sy=%d", sx, sy);
         for (int i = 0; i < appInfoList.size(); i++) {
             //多出的Cell不进行绘制
-
             if (autoSize) {
                 if (i > pageBean.columns * pageBean.rows) break;
             }
@@ -87,28 +84,32 @@ public class SimplePageView extends FrameLayout implements IPage {
                 lp.topMargin = sy + pageBean.y + (i / pageBean.columns) * (pageBean.itemHeight + pageBean.itemPadding * 2) + pageBean.itemPadding;
 
             } else {
-                lp = new LayoutParams(appInfo.width, appInfo.height);
+                if (appInfo.textBottom <= 0) {
+                    lp = new LayoutParams(appInfo.width, appInfo.height - appInfo.textBottom);
+                } else {
+                    lp = new LayoutParams(appInfo.width, appInfo.height);
+                }
                 lp.setMarginStart(appInfo.x);
                 lp.topMargin = appInfo.y;
             }
             addView((View) iCellView, lp);
 
             //添加镜像
-            LayoutParams lpMirror;
-            if (autoSize) {
-                lpMirror = new LayoutParams(pageBean.itemWidth, MirrorView.MIRRORHIGHT);
-                lpMirror.setMarginStart(sx + pageBean.x + (i % pageBean.columns) * (pageBean.itemWidth + pageBean.itemPadding * 2) + pageBean.itemPadding);
-                lpMirror.topMargin = lp.topMargin + pageBean.itemHeight;
-            }else{
-                lpMirror = new LayoutParams(appInfo.width, MirrorView.MIRRORHIGHT);
-                lpMirror.setMarginStart(appInfo.x);
-                lpMirror.topMargin = lp.topMargin + appInfo.height;
-            }
-            MirrorView mirrorView = new MirrorView(getContext());
-            mirrorView.setScaleType(ImageView.ScaleType.FIT_XY);
-            iCellView.setMirrorView(mirrorView);
-            mirrorView.setRefHeight(MirrorView.MIRRORHIGHT);
-            addView(mirrorView, lpMirror);
+//            LayoutParams lpMirror;
+//            if (autoSize) {
+//                lpMirror = new LayoutParams(pageBean.itemWidth, MirrorView.MIRRORHIGHT);
+//                lpMirror.setMarginStart(sx + pageBean.x + (i % pageBean.columns) * (pageBean.itemWidth + pageBean.itemPadding * 2) + pageBean.itemPadding);
+//                lpMirror.topMargin = lp.topMargin + pageBean.itemHeight;
+//            }else{
+//                lpMirror = new LayoutParams(appInfo.width, MirrorView.MIRRORHIGHT);
+//                lpMirror.setMarginStart(appInfo.x);
+//                lpMirror.topMargin = lp.topMargin + appInfo.height;
+//            }
+//            MirrorView mirrorView = new MirrorView(getContext());
+//            mirrorView.setScaleType(ImageView.ScaleType.FIT_XY);
+//            iCellView.setMirrorView(mirrorView);
+//            mirrorView.setRefHeight(MirrorView.MIRRORHIGHT);
+//            addView(mirrorView, lpMirror);
 
             iCellView.notifyView();
         }

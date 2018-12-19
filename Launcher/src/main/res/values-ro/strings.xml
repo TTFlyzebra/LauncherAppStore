@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">ACASĂ</string>
+	<string name="tv_str_sunday">duminică</string>
+	<string name="tv_str_monday">luni</string>
+	<string name="tv_str_tuesday">marţi</string>
+	<string name="tv_str_wednesday">miercuri</string>
+	<string name="tv_str_thursday">joi</string>
+	<string name="tv_str_friday">vineri</string>
+	<string name="tv_str_saturday">sâmbătă</string>
 </resources>

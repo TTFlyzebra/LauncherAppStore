@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">主界面</string>
+	<string name="tv_str_sunday">星期日</string>
+	<string name="tv_str_monday">星期一</string>
+	<string name="tv_str_tuesday">星期二</string>
+	<string name="tv_str_wednesday">星期三</string>
+	<string name="tv_str_thursday">星期四</string>
+	<string name="tv_str_friday">星期五</string>
+	<string name="tv_str_saturday">星期六</string>
 </resources>

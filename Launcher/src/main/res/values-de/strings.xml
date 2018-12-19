@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">ZUHAUSE</string>
+	<string name="tv_str_sunday">Sonntag</string>
+	<string name="tv_str_monday">Montag</string>
+	<string name="tv_str_tuesday">Dienstag</string>
+	<string name="tv_str_wednesday">Mittwoch</string>
+	<string name="tv_str_thursday">Donnerstag</string>
+	<string name="tv_str_friday">Freitag</string>
+	<string name="tv_str_saturday">Samstag</string>
 </resources>

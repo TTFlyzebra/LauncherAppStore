@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">EV</string>
+	<string name="tv_str_sunday">Pazar</string>
+	<string name="tv_str_monday">Pazartesi</string>
+	<string name="tv_str_tuesday">Salı</string>
+	<string name="tv_str_wednesday">Çarşamba</string>
+	<string name="tv_str_thursday">Perşembe</string>
+	<string name="tv_str_friday">Cuma</string>
+	<string name="tv_str_saturday">Cumartesi</string>
 </resources>

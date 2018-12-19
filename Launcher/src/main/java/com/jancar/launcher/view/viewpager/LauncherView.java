@@ -24,6 +24,7 @@ public class LauncherView extends ViewPager implements ILauncher {
     public LauncherView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
+        setPageTransformer(true, new Switch3DPageTransformer());
     }
 
     private void init(Context context) {
@@ -90,6 +91,7 @@ public class LauncherView extends ViewPager implements ILauncher {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             SimplePageView simplePageView = new SimplePageView(getContext());
+            simplePageView.setTag(position);
             simplePageView.setData(pageList.get(position));
             container.addView(simplePageView);
             return simplePageView;
@@ -99,9 +101,19 @@ public class LauncherView extends ViewPager implements ILauncher {
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
             if (position == 0 && pageList != null && pageList.size() > 1) {
                 setCurrentItem(pageList.size() - 2, false);
+                for(int i=0;i<getCount();i++){
+                    View view = getChildAt(i);
+                    view.setTranslationX(0);
+                    view.setRotation(0);
+                }
             }
             if (position == pageList.size() - 1 && pageList != null && pageList.size() > 1) {
                 setCurrentItem(1, false);
+                for(int i=0;i<getCount();i++){
+                    View view = getChildAt(i);
+                    view.setTranslationX(0);
+                    view.setRotation(0);
+                }
             }
         }
 

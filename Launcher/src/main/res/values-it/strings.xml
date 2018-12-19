@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">CASA</string>
+	<string name="tv_str_sunday">Domenica</string>
+	<string name="tv_str_monday">Lunedi</string>
+	<string name="tv_str_tuesday">martedì</string>
+	<string name="tv_str_wednesday">mercoledì</string>
+	<string name="tv_str_thursday">giovedi</string>
+	<string name="tv_str_friday">Venerdì</string>
+	<string name="tv_str_saturday">Sabato</string>
 </resources>

@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">ΣΠΙΤΙ</string>
+	<string name="tv_str_sunday">Κυριακή</string>
+	<string name="tv_str_monday">Δευτέρα</string>
+	<string name="tv_str_tuesday">Τρίτη</string>
+	<string name="tv_str_wednesday">Τετάρτη</string>
+	<string name="tv_str_thursday">Πέμπτη</string>
+	<string name="tv_str_friday">Παρασκευή</string>
+	<string name="tv_str_saturday">Σάββατο</string>
 </resources>

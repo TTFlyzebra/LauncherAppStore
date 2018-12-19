@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PageBean implements Cloneable{
-    public int columns = 4;
-    public int rows = 1;
-    public int itemPadding = 10;
+    public int columns = 0;
+    public int rows = 0;
+    public int itemPadding = 0;
     public int itemWidth= 0;
     public int itemHeight = 0;
     public int x = 0;

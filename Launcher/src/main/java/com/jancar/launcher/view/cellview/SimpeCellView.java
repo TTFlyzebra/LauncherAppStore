@@ -32,8 +32,6 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
     private MirrorView mirrorView;
     private TextView textView;
     private Handler mHandler = new Handler();
-    private float clickAlpha = 0.75f;
-    private float normalAlphe = 1.0f;
     private JancarManager jancarManager;
 
 
@@ -59,7 +57,6 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
 
     @Override
     public void initView(Context context) {
-        FlyLog.d();
         imageView = new FlyImageView(context);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         addView(imageView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -72,6 +69,13 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
     @Override
     public void setData(CellBean appInfo) {
         this.appInfo = appInfo;
+        if (appInfo.width > 0 || appInfo.height > 0) {
+            LayoutParams params = (LayoutParams) imageView.getLayoutParams();
+            params.width = appInfo.width;
+            params.height = appInfo.height;
+            imageView.setLayoutParams(params);
+        }
+
         textView.setGravity(Gravity.CENTER);
         try {
             textView.setTextColor(Color.parseColor(appInfo.textColor));
@@ -79,17 +83,16 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
             textView.setTextColor(0xffffffff);
         }
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, appInfo.textSize);
-        LayoutParams params = (LayoutParams) textView.getLayoutParams();
-        params.gravity = Gravity.BOTTOM;
-        params.leftMargin = appInfo.textLeft;
-        params.topMargin = appInfo.textTop;
-        params.rightMargin = appInfo.textRight;
-        params.bottomMargin = appInfo.textBottom;
-        params.height = (int) (appInfo.textSize * 1.5f);
-        textView.setLayoutParams(params);
+        LayoutParams params2 = (LayoutParams) textView.getLayoutParams();
+        params2.gravity = Gravity.BOTTOM;
+        params2.leftMargin = appInfo.textLeft;
+        params2.topMargin = appInfo.textTop;
+        params2.rightMargin = appInfo.textRight;
+        params2.bottomMargin = Math.max(0, appInfo.textBottom);
+        params2.height = (int) (appInfo.textSize * 2f);
+        textView.setLayoutParams(params2);
         textView.setGravity(Gravity.CENTER);
         textView.setLines(1);
-        requestLayout();
     }
 
     @Override
@@ -102,9 +105,11 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
             @Override
             public void onResourceReady(final Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
                 imageView.setImageBitmap(bitmap);
-                setDrawingCacheEnabled(true);
-                Bitmap bmp = getDrawingCache();
-                if (mirrorView != null) mirrorView.showImage(bmp);
+                if (mirrorView != null) {
+                    setDrawingCacheEnabled(true);
+                    Bitmap bmp = getDrawingCache();
+                    mirrorView.showImage(bmp);
+                }
             }
         });
     }
@@ -163,9 +168,11 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
         if (flag) {
             mHandler.removeCallbacks(show);
             mHandler.postDelayed(show, 300);
-            imageView.setAlpha(clickAlpha);
+//            imageView.setAlpha(clickAlpha);
+            imageView.setColorFilter(0x3FFFFFFF);
         } else {
-            imageView.setAlpha(normalAlphe);
+//            imageView.setAlpha(normalAlphe);
+            imageView.clearColorFilter();
         }
     }
 
@@ -190,7 +197,6 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
         int top = location[1];
         int right = left + view.getMeasuredWidth();
         int bottom = top + view.getMeasuredHeight();
-        //view.isClickable() &&
         if (y >= top && y <= bottom && x >= left
                 && x <= right) {
             return true;

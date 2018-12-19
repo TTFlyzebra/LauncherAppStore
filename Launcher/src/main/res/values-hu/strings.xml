@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">ITTHON</string>
+	<string name="tv_str_sunday">vasárnap</string>
+	<string name="tv_str_monday">hétfő</string>
+	<string name="tv_str_tuesday">kedd</string>
+	<string name="tv_str_wednesday">szerda</string>
+	<string name="tv_str_thursday">csütörtök</string>
+	<string name="tv_str_friday">péntek</string>
+	<string name="tv_str_saturday">szombat</string>
 </resources>

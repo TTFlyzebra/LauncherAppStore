@@ -11,14 +11,22 @@ import com.jancar.launcher.bean.CellBean;
 public class CellViewFactory {
     /**
      * 根据传入的AppInfo构建对应的自定义pageItemView
+     *
      * @param context
      */
     public static ICellView createView(Context context, CellBean appInfo) {
         ICellView iCellView;
-        switch (appInfo.type){
+        switch (appInfo.type) {
+            case CellType.TYPE_BACKGROUND:
+                iCellView = new StaticCellView(context);
+                break;
             case CellType.TYPE_APP_RADIO:
                 iCellView = new RadioCellView(context);
                 break;
+            case CellType.TYPE_APP_TIME:
+                iCellView = new TimeCellView(context);
+                break;
+            case CellType.TYPE_APP_NORMAL:
             default:
                 iCellView = new SimpeCellView(context);
                 break;

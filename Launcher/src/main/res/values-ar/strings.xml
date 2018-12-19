@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">الصفحة الرئيسية</string>
+	<string name="tv_str_sunday">الأحد</string>
+	<string name="tv_str_monday">الإثنين</string>
+	<string name="tv_str_tuesday">الثلاثاء</string>
+	<string name="tv_str_wednesday">الأربعاء</string>
+	<string name="tv_str_thursday">الخميس</string>
+	<string name="tv_str_friday">يوم الجمعة</string>
+	<string name="tv_str_saturday">يوم السبت</string>
 </resources>

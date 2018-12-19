@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">DOM</string>
+	<string name="tv_str_sunday">niedziela</string>
+	<string name="tv_str_monday">poniedziałek</string>
+	<string name="tv_str_tuesday">wtorek</string>
+	<string name="tv_str_wednesday">środa</string>
+	<string name="tv_str_thursday">czwartek</string>
+	<string name="tv_str_friday">piątek</string>
+	<string name="tv_str_saturday">sobota</string>
 </resources>

@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">خانه</string>
+	<string name="tv_str_sunday">یکشنبه</string>
+	<string name="tv_str_monday">دوشنبه</string>
+	<string name="tv_str_tuesday">سهشنبه</string>
+	<string name="tv_str_wednesday">چهار شنبه</string>
+	<string name="tv_str_thursday">پنج شنبه</string>
+	<string name="tv_str_friday">جمعه</string>
+	<string name="tv_str_saturday">شنبه</string>
 </resources>

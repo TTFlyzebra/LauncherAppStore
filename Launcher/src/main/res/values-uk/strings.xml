@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">ГОЛОВНА</string>
+	<string name="tv_str_sunday">Неділя</string>
+	<string name="tv_str_monday">Понеділок</string>
+	<string name="tv_str_tuesday">Вівторок</string>
+	<string name="tv_str_wednesday">Середа</string>
+	<string name="tv_str_thursday">Четвер</string>
+	<string name="tv_str_friday">П'ятниця</string>
+	<string name="tv_str_saturday">Субота</string>
 </resources>

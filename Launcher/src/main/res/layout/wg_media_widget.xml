@@ -1,0 +1,201 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/wg_music"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/mediainfo_id3img"
+            android:layout_width="146px"
+            android:layout_height="146px"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mediainfo_fm" />
+
+        <LinearLayout
+            android:layout_width="280px"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50px"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/mediainfo_music_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text=""
+                android:textColor="#FFF"
+                android:textSize="24px" />
+
+            <ProgressBar
+                android:id="@+id/mediainfo_music_progressbar"
+                style="@android:style/Widget.Holo.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20px" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/mediainfo_music_starttime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="00:00"
+                    android:textColor="#FFF"
+                    android:textSize="18px" />
+
+                <TextView
+                    android:id="@+id/mediainfo_music_endtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="00:00"
+                    android:textColor="#FFF"
+                    android:textSize="18px" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="20px"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left">
+
+                    <ImageView
+                        android:id="@+id/wg_music_prev"
+                        android:layout_width="42px"
+                        android:layout_height="38px"
+                        android:src="@drawable/mediainfo_prev" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right">
+
+                    <ImageView
+                        android:id="@+id/wg_music_next"
+                        android:layout_width="42px"
+                        android:layout_height="38px"
+                        android:src="@drawable/mediainfo_next" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/wg_radio"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="146px"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            android:src="@drawable/mediainfo_fm" />
+
+        <LinearLayout
+            android:layout_width="280px"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50px"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100px">
+
+                <TextView
+                    android:id="@+id/wg_fm_tv01"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:gravity="start"
+                    android:maxLines="1"
+                    android:text="FM"
+                    android:textColor="#FFF"
+                    android:textSize="22px" />
+
+                <TextView
+                    android:id="@+id/wg_fm_tv02"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingTop="22px"
+                    android:text="87.50"
+                    android:textColor="#FFF"
+                    android:textSize="64px" />
+
+                <TextView
+                    android:id="@+id/wg_fm_tv03"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:text="MHZ"
+                    android:textColor="#FFF"
+                    android:textSize="22px" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="20px"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start">
+
+                    <ImageView
+                        android:id="@+id/wg_fm_prev"
+                        android:layout_width="42px"
+                        android:layout_height="38px"
+                        android:src="@drawable/mediainfo_prev" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end">
+
+                    <ImageView
+                        android:id="@+id/wg_fm_next"
+                        android:layout_width="42px"
+                        android:layout_height="38px"
+                        android:src="@drawable/mediainfo_next" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

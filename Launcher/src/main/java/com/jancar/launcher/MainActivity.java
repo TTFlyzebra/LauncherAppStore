@@ -8,8 +8,10 @@ import android.content.IntentFilter;
 import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
+import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.bean.PageBean;
 import com.jancar.launcher.utils.FlyLog;
 import com.jancar.launcher.utils.GsonUtils;
@@ -123,13 +125,26 @@ public class MainActivity extends Activity {
     private void switchUI(String name) {
         String jsonStr = null;
         File file = new File(name);
-        if(file.exists()){
+        boolean isInFile = file.exists();
+        if(isInFile){
             jsonStr = getFileText(name,this);
         }else{
             jsonStr = getAssetFileText(name,this);
         }
         List<PageBean> pageBean = GsonUtils.json2ListObject(jsonStr, PageBean.class);
         if (pageBean != null && !pageBean.isEmpty()) {
+
+            if(isInFile) {
+                String rootPath = name.substring(0,name.lastIndexOf("/"));
+                for (PageBean page : pageBean) {
+                    for (CellBean cellBean : page.cells) {
+                        if (!TextUtils.isEmpty(cellBean.defaultImageUrl)) {
+                            cellBean.defaultImageUrl.replace("file:///android_asset",rootPath);
+                        }
+                    }
+                }
+            }
+
             launcherView.setData(pageBean);
             navForViewPager.setViewPager(launcherView);
         }

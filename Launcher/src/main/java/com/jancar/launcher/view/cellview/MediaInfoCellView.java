@@ -1,5 +1,6 @@
 package com.jancar.launcher.view.cellview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,23 +15,24 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.jancar.JancarServer;
 import com.jancar.launcher.R;
 import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.utils.FlyLog;
 import com.jancar.launcher.view.flyview.FlyImageView;
 import com.jancar.launcher.view.flyview.MirrorView;
 import com.jancar.media.JacMediaController;
+import com.jancar.source.Page;
 
 import java.util.Locale;
+import java.util.Objects;
 
 public class MediaInfoCellView extends FrameLayout implements ICellView, View.OnClickListener {
     private CellBean appInfo;
     private FlyImageView imageView;
     private MirrorView mirrorView;
     private JacMediaController controller;
-    private static final int SHOW_MUSIC = 0;
-    private static final int SHOW_FM = 1;
-    private int mSession = SHOW_MUSIC;
+    private String mSession = "music";
     private String mTitle = "";
     private long mCurrent;
     private long mDuration;
@@ -46,7 +48,7 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
     private ImageView fmNext, fmPrev, musicPrev, musicNext;
     private TextView musicTv01, musicTvStart, musicTvEnd;
     private ProgressBar mProgressBar;
-    private ImageView musicId3img;
+    private ImageView musicId3img,fmimg;
 
     public MediaInfoCellView(Context context) {
         this(context, null);
@@ -77,15 +79,20 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
         fmNext = (ImageView) view.findViewById(R.id.wg_fm_next);
         musicPrev = (ImageView) view.findViewById(R.id.wg_music_prev);
         musicNext = (ImageView) view.findViewById(R.id.wg_music_next);
-        fmPrev.setOnClickListener(this);
-        fmNext.setOnClickListener(this);
-        musicPrev.setOnClickListener(this);
-        musicNext.setOnClickListener(this);
         musicTv01 = (TextView) view.findViewById(R.id.mediainfo_music_title);
         musicTvStart = (TextView) view.findViewById(R.id.mediainfo_music_starttime);
         musicTvEnd = (TextView) view.findViewById(R.id.mediainfo_music_endtime);
         mProgressBar = (ProgressBar) view.findViewById(R.id.mediainfo_music_progressbar);
         musicId3img = (ImageView) view.findViewById(R.id.mediainfo_id3img);
+        fmimg = (ImageView) view.findViewById(R.id.mediainfo_fmimg);
+
+        fmPrev.setOnClickListener(this);
+        fmNext.setOnClickListener(this);
+        musicPrev.setOnClickListener(this);
+        musicNext.setOnClickListener(this);
+
+        musicId3img.setOnClickListener(this);
+        fmimg.setOnClickListener(this);
     }
 
     @Override
@@ -129,19 +136,7 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
             @Override
             public void onSession(String page) {
                 FlyLog.d("onSession page=%s", page);
-                switch (page) {
-                    case "music":
-                    case "a2dp":
-                        mSession = SHOW_MUSIC;
-                        break;
-                    case "fm":
-                        mSession = SHOW_FM;
-                        break;
-                    default:
-                        mSession = SHOW_MUSIC;
-                        break;
-
-                }
+                mSession = page;
                 upWidgetView();
             }
 
@@ -166,8 +161,7 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
 
             @Override
             public void onProgress(long current, long duration) {
-//                FlyLog.d("onProgress current=%d,duration=%d", current, duration);
-                mSession = SHOW_MUSIC;
+                FlyLog.d("onProgress current=%d,duration=%d", current, duration);
                 mCurrent = current;
                 mDuration = duration;
                 upWidgetView();
@@ -186,7 +180,6 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
             @Override
             public void onID3(String title, String artist, String album, byte[] artWork) {
                 FlyLog.d("onID3 title=%s,artist=%s,album=%s", title, artist, album);
-                mSession = SHOW_MUSIC;
                 mTitle = title;
                 if (artWork == null) {
                     mBitmap = null;
@@ -199,7 +192,6 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
             @Override
             public void onMediaEvent(String action, Bundle extras) {
                 FlyLog.d("onMediaEvent action=%s,extras=" + extras, action);
-                mSession = SHOW_FM;
                 try {
                     int fmType = extras.getInt("Band");
                     fmText = fmType == 0 ? "FM1" : fmType == 1 ? "FM2" : fmType == 2 ? "FM3" : fmType == 3 ? "AM1" : "AM2";
@@ -216,13 +208,13 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
 
     @Override
     protected void onDetachedFromWindow() {
-        controller.DisConnect();
+        controller.release();
         super.onDetachedFromWindow();
     }
 
     private void upWidgetView() {
         switch (mSession) {
-            case SHOW_FM:
+            case Page.PAGE_FM:
                 mViewMusic.setVisibility(View.GONE);
                 mViewFm.setVisibility(View.VISIBLE);
                 fmTv01.setText(fmText);
@@ -230,7 +222,8 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
                 fmTv03.setText(fmKz);
                 FlyLog.d("upWidgetView fm");
                 break;
-            case SHOW_MUSIC:
+            case Page.PAGE_A2DP:
+            case Page.PAGE_MUSIC:
                 mViewMusic.setVisibility(View.VISIBLE);
                 mViewFm.setVisibility(View.GONE);
                 //更新标题
@@ -242,31 +235,38 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
                 mProgressBar.setProgress((int) (mCurrent / 1000));
                 musicTvStart.setText(str1);
                 musicTvEnd.setText(str2);
-
                 //更新图片
                 if (mBitmap == null) {
-                    musicId3img.setImageResource(R.drawable.mediainfo_fm);
+                    musicId3img.setImageResource(Page.PAGE_MUSIC.endsWith(mSession) ?
+                            R.drawable.mediainfo_music_default : R.drawable.mediainfo_bt_default);
                 } else {
                     musicId3img.setImageBitmap(mBitmap);
                 }
                 FlyLog.d("upWidgetView music");
                 break;
         }
-
     }
 
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onClick(View view) {
-
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.wg_fm_next:
             case R.id.wg_music_next:
                 controller.requestNext();
                 break;
             case R.id.wg_fm_prev:
-                controller.requestPrev();
             case R.id.wg_music_prev:
+                controller.requestPrev();
+                break;
+            case R.id.mediainfo_fmimg:
+            case R.id.mediainfo_id3img:
+                try {
+                    ((JancarServer) Objects.requireNonNull(getContext().getSystemService("jancar_manager"))).requestPage(mSession);
+                } catch (Exception e) {
+                    FlyLog.e(e.toString());
+                }
                 break;
         }
     }

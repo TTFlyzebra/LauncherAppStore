@@ -112,6 +112,7 @@
         android:visibility="visible">
 
         <ImageView
+            android:id="@+id/mediainfo_fmimg"
             android:layout_width="146px"
             android:layout_height="match_parent"
             android:scaleType="center"

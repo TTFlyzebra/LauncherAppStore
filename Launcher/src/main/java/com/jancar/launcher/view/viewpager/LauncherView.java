@@ -34,12 +34,16 @@ public class LauncherView extends ViewPager implements ILauncher {
 
     @Override
     public void setData(List<PageBean> mPageBeanList) {
+        pageList.clear();
         if (mPageBeanList.size() > 1) {
             pageList.add(mPageBeanList.get(mPageBeanList.size() - 1));
             pageList.addAll(mPageBeanList);
             pageList.add(mPageBeanList.get(0));
+            myPgaeAdapter.notifyDataSetChanged();
+            setCurrentItem(1);
         } else {
             pageList.addAll(mPageBeanList);
+            myPgaeAdapter.notifyDataSetChanged();
         }
 
 //        Gson gson2=new Gson();
@@ -62,8 +66,6 @@ public class LauncherView extends ViewPager implements ILauncher {
 //            e.printStackTrace();
 //        }
 
-        setCurrentItem(1);
-        myPgaeAdapter.notifyDataSetChanged();
     }
 
     public class MyPgaeAdapter extends PagerAdapter {

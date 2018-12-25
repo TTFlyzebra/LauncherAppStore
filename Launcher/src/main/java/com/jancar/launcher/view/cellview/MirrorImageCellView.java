@@ -82,7 +82,7 @@ public class MirrorImageCellView extends FrameLayout implements ICellView, View.
 
             LayoutParams params2 = (LayoutParams) mirrorImageView.getLayoutParams();
             params2.width = appInfo.width;
-            params2.height = appInfo.height/3;
+            params2.height = (int) (appInfo.height/2.5);
             params2.topMargin = appInfo.height;
             mirrorImageView.setLayoutParams(params2);
         }

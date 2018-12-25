@@ -40,7 +40,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 26,
+          "textSize": 24,
           "textTitle": {
             "ar": "راديو",
             "de": "Radio",
@@ -80,7 +80,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 26,
+          "textSize": 24,
           "textTitle": {
             "ar": "التنقل",
             "de": "navigieren",
@@ -120,7 +120,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 26,
+          "textSize": 24,
           "textTitle": {
             "ar": "الإنترنت عبر الهاتف النقال",
             "de": "Mobiles Internet",
@@ -160,7 +160,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 26,
+          "textSize": 24,
           "textTitle": {
             "ar": "الهاتف",
             "de": "Telefon",
@@ -200,7 +200,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 26,
+          "textSize": 24,
           "textTitle": {
             "ar": "الموسيقى بلوتوث",
             "de": "Bluetooth Musik",
@@ -240,7 +240,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 26,
+          "textSize": 24,
           "textTitle": {
             "ar": "فيديو",
             "de": "Video",
@@ -286,7 +286,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 26,
+          "textSize": 24,
           "textTitle": {
             "ar": "موسيقى",
             "de": "Musik",
@@ -326,7 +326,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 26,
+          "textSize": 24,
           "textTitle": {
             "ar": "صورة فوتوغرافية",
             "de": "Foto",
@@ -366,7 +366,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 26,
+          "textSize": 24,
           "textTitle": {
             "ar": "الإعدادات",
             "de": "Einstellungen",
@@ -406,7 +406,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 26,
+          "textSize": 24,
           "textTitle": {
             "ar": "AVIN",
             "de": "AVIN",
@@ -446,7 +446,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 26,
+          "textSize": 24,
           "textTitle": {
             "ar": "تطبيقات",
             "de": "Apps",

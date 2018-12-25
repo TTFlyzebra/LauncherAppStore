@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
 //        new ViewPagerScroller(launcherView.getContext()).initViewPagerScroll(launcherView);
         launcherView.setOffscreenPageLimit(10);
         navForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
-        switchUI("AA4.json");
+        switchUI("AA2.json");
 
         receiver = new USBReceiver();
 
@@ -150,6 +150,7 @@ public class MainActivity extends Activity {
             if (templateBean.x != 0 || templateBean.y != 0 || templateBean.width != 0 || templateBean.height != 0) {
                 FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) pagesView.getLayoutParams();
                 lp.setMargins(templateBean.x, templateBean.y, 0, 0);
+                lp.setMarginStart(templateBean.x);
                 lp.width = templateBean.width;
                 lp.height = templateBean.height;
                 pagesView.setLayoutParams(lp);
@@ -163,6 +164,7 @@ public class MainActivity extends Activity {
             }else{
                 FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) pagesView.getLayoutParams();
                 lp.setMargins(templateBean.x, templateBean.y, 0, 0);
+                lp.setMarginStart(templateBean.x);
                 lp.width = -1;
                 lp.height = -1;
                 pagesView.setLayoutParams(lp);

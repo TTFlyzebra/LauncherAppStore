@@ -89,10 +89,10 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
         params2.topMargin = appInfo.textTop;
         params2.rightMargin = appInfo.textRight;
         params2.bottomMargin = Math.max(0, appInfo.textBottom);
-        params2.height = (int) (appInfo.textSize * 2f);
+        params2.height = (int) (appInfo.textSize * 2.5f);
         textView.setLayoutParams(params2);
         textView.setGravity(Gravity.CENTER);
-        textView.setLines(1);
+        textView.setLines(2);
     }
 
     @Override

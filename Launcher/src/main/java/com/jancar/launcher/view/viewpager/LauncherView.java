@@ -24,7 +24,7 @@ public class LauncherView extends ViewPager implements ILauncher {
     public LauncherView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
-        setPageTransformer(true, new Switch3DPageTransformer());
+//        setPageTransformer(true, new Switch3DPageTransformer());
     }
 
     private void init(Context context) {
@@ -45,26 +45,6 @@ public class LauncherView extends ViewPager implements ILauncher {
             pageList.addAll(mPageBeanList);
             myPgaeAdapter.notifyDataSetChanged();
         }
-
-//        Gson gson2=new Gson();
-//        String str=gson2.toJson(pageList);
-//        FlyLog.e("pageList="+str);
-//        File file = new File("/sdcard/data.json");
-//        if(!file.exists()){
-//            try {
-//                file.createNewFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        try {
-//            RandomAccessFile raf = new RandomAccessFile(file,"rwd");
-//            raf.write(str.getBytes());
-//            raf.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
 
     }
 

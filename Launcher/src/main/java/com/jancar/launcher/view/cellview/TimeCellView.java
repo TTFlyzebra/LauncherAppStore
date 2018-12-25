@@ -1,6 +1,7 @@
 package com.jancar.launcher.view.cellview;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jancar.launcher.R;
+import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.utils.FlyLog;
 
 import java.text.SimpleDateFormat;
@@ -21,6 +23,7 @@ import java.util.TimerTask;
 
 public class TimeCellView extends StaticCellView {
     private TextView timeView, dateView, weekView;
+    private LinearLayout rootLayout;
 
     public TimeCellView(Context context) {
         super(context);
@@ -37,25 +40,20 @@ public class TimeCellView extends StaticCellView {
     @Override
     public void initView(Context context) {
         super.initView(context);
-        LinearLayout textLayout = new LinearLayout(context);
-        textLayout.setOrientation(LinearLayout.VERTICAL);
-        addView(textLayout, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        rootLayout = new LinearLayout(context);
+        rootLayout.setOrientation(LinearLayout.VERTICAL);
+        rootLayout.setGravity(Gravity.CENTER);
+        addView(rootLayout, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+
         timeView = new TextView(context);
-        timeView.setTextColor(0xFFFFFFFF);
-        timeView.setTextSize(TypedValue.COMPLEX_UNIT_PX, 64);
         timeView.setGravity(Gravity.CENTER);
-        timeView.setPadding(0, 20, 0, 0);
-        textLayout.addView(timeView, LayoutParams.MATCH_PARENT, 120);
+        rootLayout.addView(timeView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         weekView = new TextView(context);
-        weekView.setTextColor(0xFFFFFFFF);
-        weekView.setTextSize(TypedValue.COMPLEX_UNIT_PX, 26);
         weekView.setGravity(Gravity.CENTER);
-        textLayout.addView(weekView, LayoutParams.MATCH_PARENT, 50);
+        rootLayout.addView(weekView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         dateView = new TextView(context);
-        dateView.setTextColor(0xFFFFFFFF);
-        dateView.setTextSize(TypedValue.COMPLEX_UNIT_PX, 26);
         dateView.setGravity(Gravity.CENTER);
-        textLayout.addView(dateView, LayoutParams.MATCH_PARENT, 50);
+        rootLayout.addView(dateView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         upView();
     }
 
@@ -68,6 +66,39 @@ public class TimeCellView extends StaticCellView {
         } catch (Exception e) {
             FlyLog.e(e.toString());
         }
+    }
+
+    @Override
+    public void setData(CellBean appInfo) {
+        this.appInfo = appInfo;
+
+        rootLayout.setPadding(appInfo.textLeft, appInfo.textTop, appInfo.textRight, appInfo.textBottom);
+
+        int color = 0xFFFFFFFF;
+        try {
+            color = Color.parseColor(appInfo.textColor);
+        } catch (Exception e) {
+            color = 0xFFFFFFFF;
+        }
+        int margin = (appInfo.height - appInfo.textSize * 3 - appInfo.textBottom - appInfo.textTop) / 6;
+        LinearLayout.LayoutParams tlp = (LinearLayout.LayoutParams) timeView.getLayoutParams();
+        tlp.height = (int) (appInfo.textSize * 1.5f);
+        tlp.setMargins(0, margin, 0, margin);
+        timeView.setLayoutParams(tlp);
+        LinearLayout.LayoutParams wlp = (LinearLayout.LayoutParams) weekView.getLayoutParams();
+        wlp.height = (int) (appInfo.textSize / 2 * 1.5f);
+        wlp.setMargins(0, margin, 0, margin);
+        weekView.setLayoutParams(wlp);
+        LinearLayout.LayoutParams dlp = (LinearLayout.LayoutParams) dateView.getLayoutParams();
+        dlp.height = (int) (appInfo.textSize / 2 * 1.5f);
+        dlp.setMargins(0, margin, 0, margin);
+        dateView.setLayoutParams(dlp);
+        timeView.setTextColor(color);
+        timeView.setTextSize(TypedValue.COMPLEX_UNIT_PX, appInfo.textSize);
+        weekView.setTextColor(color);
+        weekView.setTextSize(TypedValue.COMPLEX_UNIT_PX, appInfo.textSize * 32 / 64);
+        dateView.setTextColor(color);
+        dateView.setTextSize(TypedValue.COMPLEX_UNIT_PX, appInfo.textSize * 32 / 64);
     }
 
     private static String getCurrentDate(String dateFormat) {

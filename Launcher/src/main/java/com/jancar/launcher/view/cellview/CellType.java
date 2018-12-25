@@ -21,4 +21,8 @@ public interface CellType {
      * 媒体小部件
      */
     int TYPE_APP_MEDIA = 4;
+    /**
+     * 可镜像的小部件
+     */
+    int TYPE_APP_MIRRORIMG = 5;
 }

@@ -6,20 +6,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.bean.PageBean;
+import com.jancar.launcher.bean.TemplateBean;
 import com.jancar.launcher.utils.FlyLog;
 import com.jancar.launcher.utils.GsonUtils;
+import com.jancar.launcher.utils.SystemProperties;
 import com.jancar.launcher.view.flyview.FlyDialog;
+import com.jancar.launcher.view.pageview.SimplePageView;
 import com.jancar.launcher.view.viewpager.LauncherView;
 import com.jancar.launcher.view.viewpager.NavForViewPager;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -31,6 +43,8 @@ import java.util.List;
 
 public class MainActivity extends Activity {
     private LauncherView launcherView;
+    private SimplePageView topView;
+    private RelativeLayout pagesView;
     private NavForViewPager navForViewPager;
     private USBReceiver receiver;
 
@@ -38,23 +52,18 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 //        Settings.Global.putInt(getContentResolver(), Settings.Global.DEVICE_PROVISIONED, 1);
 //        Settings.Secure.putInt(getContentResolver(), Settings.Secure.USER_SETUP_COMPLETE, 1);
 
         launcherView = (LauncherView) findViewById(R.id.ac_main_launcherview);
+        topView = (SimplePageView) findViewById(R.id.ac_main_topview);
+        pagesView = (RelativeLayout) findViewById(R.id.ac_main_pages);
+
 
 //        new ViewPagerScroller(launcherView.getContext()).initViewPagerScroll(launcherView);
         launcherView.setOffscreenPageLimit(10);
         navForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
-//        String jsonStr = getAssetFileText("AA2.json", this);
-//        List<PageBean> pageBean = GsonUtils.json2ListObject(jsonStr, PageBean.class);
-//
-//        if (pageBean != null && !pageBean.isEmpty()) {
-//            launcherView.setData(pageBean);
-//            navForViewPager.setViewPager(launcherView);
-//        }
-        switchUI("AP1.json");
+        switchUI("AA4.json");
 
         receiver = new USBReceiver();
 
@@ -63,8 +72,12 @@ public class MainActivity extends Activity {
         f.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
         f.addDataScheme("file");
         registerReceiver(receiver, f);
+    }
 
-
+    public byte[] getBytesByBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(bitmap.getByteCount());
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        return outputStream.toByteArray();
     }
 
     @Override
@@ -103,15 +116,15 @@ public class MainActivity extends Activity {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            if(bf!=null){
+        } finally {
+            if (bf != null) {
                 try {
                     bf.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(ins!=null){
+            if (ins != null) {
                 try {
                     ins.close();
                 } catch (IOException e) {
@@ -126,30 +139,81 @@ public class MainActivity extends Activity {
         String jsonStr = null;
         File file = new File(name);
         boolean isInFile = file.exists();
-        if(isInFile){
-            jsonStr = getFileText(name,this);
-        }else{
-            jsonStr = getAssetFileText(name,this);
+        if (isInFile) {
+            jsonStr = getFileText(name, this);
+        } else {
+            jsonStr = getAssetFileText(name, this);
         }
-        List<PageBean> pageBean = GsonUtils.json2ListObject(jsonStr, PageBean.class);
-        if (pageBean != null && !pageBean.isEmpty()) {
+        TemplateBean templateBean = GsonUtils.json2Object(jsonStr, TemplateBean.class);
+        if (templateBean != null) {
+            List<PageBean> pageBeans = templateBean.pageList;
+            if (templateBean.x != 0 || templateBean.y != 0 || templateBean.width != 0 || templateBean.height != 0) {
+                FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) pagesView.getLayoutParams();
+                lp.setMargins(templateBean.x, templateBean.y, 0, 0);
+                lp.width = templateBean.width;
+                lp.height = templateBean.height;
+                pagesView.setLayoutParams(lp);
+                for (PageBean pageBean : pageBeans) {
+                    if (pageBean.cells == null || pageBean.cells.isEmpty()) continue;
+                    for (CellBean cellBean : pageBean.cells) {
+                        cellBean.x = cellBean.x - templateBean.x;
+                        cellBean.y = cellBean.y - templateBean.y;
+                    }
+                }
+            }else{
+                FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) pagesView.getLayoutParams();
+                lp.setMargins(templateBean.x, templateBean.y, 0, 0);
+                lp.width = -1;
+                lp.height = -1;
+                pagesView.setLayoutParams(lp);
+            }
 
-            if(isInFile) {
-                String rootPath = name.substring(0,name.lastIndexOf("/"));
-                for (PageBean page : pageBean) {
-                    for (CellBean cellBean : page.cells) {
-                        if (!TextUtils.isEmpty(cellBean.defaultImageUrl)) {
-                            cellBean.defaultImageUrl.replace("file:///android_asset",rootPath);
+            if (pageBeans != null && !pageBeans.isEmpty()) {
+
+                if (isInFile) {
+                    String rootPath = name.substring(0, name.lastIndexOf("/"));
+                    for (PageBean page : pageBeans) {
+                        for (CellBean cellBean : page.cells) {
+                            if (!TextUtils.isEmpty(cellBean.defaultImageUrl)) {
+                                cellBean.defaultImageUrl.replace("file:///android_asset", rootPath);
+                            }
                         }
                     }
                 }
+
+                launcherView.setData(pageBeans);
+                navForViewPager.setViewPager(launcherView);
             }
 
-            launcherView.setData(pageBean);
-            navForViewPager.setViewPager(launcherView);
+            topView.removeAllViews();
+            if (templateBean.topPage != null && templateBean.topPage.cells != null && !templateBean.topPage.cells.isEmpty()) {
+                topView.setData(templateBean.topPage);
+            }
+
+            //设置壁纸
+            if (!TextUtils.isEmpty(templateBean.bkimg))
+                setBackGround(templateBean.bkimg);
         }
     }
 
+    private void setBackGround(String bkimg) {
+        Glide.with(this).load(bkimg).into(new SimpleTarget<GlideDrawable>() {
+            @Override
+            public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                getWindow().getDecorView().setBackground(glideDrawable);
+            }
+        });
+
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        FlyLog.d(event.toString());
+        if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_MENU) {
+            findUSBTemplate("/storage/udisk2");
+        }
+        return super.dispatchKeyEvent(event);
+    }
 
     public class USBReceiver extends BroadcastReceiver {
         @Override
@@ -158,45 +222,53 @@ public class MainActivity extends Activity {
             if (action != null) {
                 switch (action) {
                     case Intent.ACTION_MEDIA_MOUNTED:
-                        FlyLog.d("Intent.ACTION_MEDIA_MOUNTED");
-                        FlyLog.d(intent.toUri(0));
-                        final Uri uri = intent.getData();
-                        if (uri == null) return;
-                        if (!uri.getScheme().equals("file")) return;
-                        String path = uri.getPath();
-                        if (path == null) return;
-                        FlyLog.d("MEDIA_MOUNTED path=%s", path);
-                        String str = path + File.separator + "Launcher";
-                        File file = new File(str);
-                        if (file.exists() && file.isDirectory()) {
-                            File f[] = file.listFiles();
-                            if (f != null && f.length > 0) {
-                                List<String> list = new ArrayList<>();
-                                for (File tmeFile : f) {
-                                    String fileName = tmeFile.getAbsolutePath();
-                                    if(fileName.endsWith(".json")){
-                                        list.add(fileName);
-                                    }
-                                }
-
-                                if(!list.isEmpty()){
-//                                    switchUI("AA3.json");
-                                    showSwitchDialog(list);
-                                }
-                            }
+                        if ("1".equals(SystemProperties.get(MainActivity.this, SystemProperties.Property.PERSIST_KEY_TEMPLATE, "0"))) {
+                            FlyLog.d("Intent.ACTION_MEDIA_MOUNTED");
+                            FlyLog.d(intent.toUri(0));
+                            final Uri uri = intent.getData();
+                            if (uri == null) return;
+                            if (!uri.getScheme().equals("file")) return;
+                            String path = uri.getPath();
+                            findUSBTemplate(path);
                         }
                         break;
                     case Intent.ACTION_MEDIA_UNMOUNTED:
-                        FlyLog.d("Intent.ACTION_MEDIA_UNMOUNTED");
-                        FlyLog.d(intent.toUri(0));
-                        switchUI("AP1.json");
+                        if ("1".equals(SystemProperties.get(MainActivity.this, SystemProperties.Property.PERSIST_KEY_TEMPLATE, "0"))) {
+                            FlyLog.d("Intent.ACTION_MEDIA_UNMOUNTED");
+                            FlyLog.d(intent.toUri(0));
+                            switchUI("AP1.json");
+                        }
                         break;
                 }
             }
         }
     }
 
-    private void showSwitchDialog(List<String>  list) {
+    private void findUSBTemplate(String path) {
+        if (path == null) return;
+        FlyLog.d("MEDIA_MOUNTED path=%s", path);
+        String str = path + File.separator + "Launcher";
+        File file = new File(str);
+        if (file.exists() && file.isDirectory()) {
+            File f[] = file.listFiles();
+            if (f != null && f.length > 0) {
+                List<String> list = new ArrayList<>();
+                for (File tmeFile : f) {
+                    String fileName = tmeFile.getAbsolutePath();
+                    if (fileName.endsWith(".json")) {
+                        list.add(fileName);
+                    }
+                }
+
+                if (!list.isEmpty()) {
+//                                    switchUI("AA3.json");
+                    showSwitchDialog(list);
+                }
+            }
+        }
+    }
+
+    private void showSwitchDialog(List<String> list) {
         final FlyDialog flyDialog = new FlyDialog(this);
         flyDialog.setData(list);
         flyDialog.setIsBlur(true);

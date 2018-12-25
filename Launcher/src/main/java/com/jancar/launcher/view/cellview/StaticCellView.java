@@ -14,7 +14,7 @@ import com.jancar.launcher.view.flyview.FlyImageView;
 import com.jancar.launcher.view.flyview.MirrorView;
 
 public class StaticCellView extends FrameLayout implements ICellView{
-    private CellBean appInfo;
+    protected CellBean appInfo;
     private FlyImageView imageView;
     private MirrorView mirrorView;
 

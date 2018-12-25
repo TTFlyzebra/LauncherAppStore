@@ -29,6 +29,9 @@ public class CellViewFactory {
             case CellType.TYPE_APP_MEDIA:
                 iCellView = new MediaInfoCellView(context);
                 break;
+            case CellType.TYPE_APP_MIRRORIMG:
+                iCellView = new MirrorImageCellView(context);
+                break;
             case CellType.TYPE_APP_NORMAL:
             default:
                 iCellView = new SimpeCellView(context);

@@ -31,6 +31,10 @@ public class LauncherView extends ViewPager implements ILauncher {
         setAdapter(myPgaeAdapter);
     }
 
+    @Override
+    public void setPageTransformer(boolean reverseDrawingOrder, PageTransformer transformer) {
+        super.setPageTransformer(reverseDrawingOrder, transformer);
+    }
 
     @Override
     public void setData(List<PageBean> mPageBeanList) {

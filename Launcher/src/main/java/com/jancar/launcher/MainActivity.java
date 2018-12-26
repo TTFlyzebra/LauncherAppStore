@@ -29,6 +29,7 @@ import com.jancar.launcher.view.flyview.FlyDialog;
 import com.jancar.launcher.view.pageview.SimplePageView;
 import com.jancar.launcher.view.viewpager.LauncherView;
 import com.jancar.launcher.view.viewpager.NavForViewPager;
+import com.jancar.launcher.view.viewpager.Switch3DPageTransformer;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -63,7 +64,9 @@ public class MainActivity extends Activity {
 //        new ViewPagerScroller(launcherView.getContext()).initViewPagerScroll(launcherView);
         launcherView.setOffscreenPageLimit(10);
         navForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
-        switchUI("AA2.json");
+
+        String template = SystemProperties.get(this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_NAME, "AP1") + ".json";
+        switchUI(template);
 
         receiver = new USBReceiver();
 
@@ -161,7 +164,7 @@ public class MainActivity extends Activity {
                         cellBean.y = cellBean.y - templateBean.y;
                     }
                 }
-            }else{
+            } else {
                 FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) pagesView.getLayoutParams();
                 lp.setMargins(templateBean.x, templateBean.y, 0, 0);
                 lp.setMarginStart(templateBean.x);
@@ -181,6 +184,15 @@ public class MainActivity extends Activity {
                             }
                         }
                     }
+                }
+
+                switch (templateBean.animtor) {
+                    case 1:
+                        launcherView.setPageTransformer(true, new Switch3DPageTransformer());
+                        break;
+                    default:
+                        launcherView.setPageTransformer(true, null);
+                        break;
                 }
 
                 launcherView.setData(pageBeans);
@@ -224,7 +236,7 @@ public class MainActivity extends Activity {
             if (action != null) {
                 switch (action) {
                     case Intent.ACTION_MEDIA_MOUNTED:
-                        if ("1".equals(SystemProperties.get(MainActivity.this, SystemProperties.Property.PERSIST_KEY_TEMPLATE, "0"))) {
+                        if ("1".equals(SystemProperties.get(MainActivity.this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_ON, "0"))) {
                             FlyLog.d("Intent.ACTION_MEDIA_MOUNTED");
                             FlyLog.d(intent.toUri(0));
                             final Uri uri = intent.getData();
@@ -235,7 +247,7 @@ public class MainActivity extends Activity {
                         }
                         break;
                     case Intent.ACTION_MEDIA_UNMOUNTED:
-                        if ("1".equals(SystemProperties.get(MainActivity.this, SystemProperties.Property.PERSIST_KEY_TEMPLATE, "0"))) {
+                        if ("1".equals(SystemProperties.get(MainActivity.this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_ON, "0"))) {
                             FlyLog.d("Intent.ACTION_MEDIA_UNMOUNTED");
                             FlyLog.d(intent.toUri(0));
                             switchUI("AP1.json");

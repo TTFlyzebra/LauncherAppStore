@@ -12,7 +12,8 @@ public class SystemProperties {
      * 系统属性相关常量
      */
     public interface Property{
-        String PERSIST_KEY_TEMPLATE = "persist.jancar.template";                // 导航混音比例
+        String PERSIST_KEY_TEMPLATE_ON = "persist.jancar.template.on";                // 导航混音比例
+        String PERSIST_KEY_TEMPLATE_NAME = "persist.jancar.template.name";
     }
 
     /**

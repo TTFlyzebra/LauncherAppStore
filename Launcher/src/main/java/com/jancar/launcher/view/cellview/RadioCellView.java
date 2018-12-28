@@ -129,7 +129,7 @@ public class RadioCellView extends SimpeCellView {
     private void upWidgetView() {
         boolean isFM = fmText.startsWith("FM");
         boolean isKHz = fmKz.endsWith("KHz");
-        AMFM_ImageView.setImageResource(isFM ? R.drawable.radio_am : R.drawable.radio_fm);
+        AMFM_ImageView.setImageResource(isFM ? R.drawable.radio_fm : R.drawable.radio_am);
         KHZMHZ_ImageView.setImageResource(isKHz ? R.drawable.radio_khz : R.drawable.radio_mhz);
         numTextView.setText(fmName);
     }

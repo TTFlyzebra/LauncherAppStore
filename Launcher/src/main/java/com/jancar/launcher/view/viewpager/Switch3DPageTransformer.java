@@ -13,7 +13,6 @@ public class Switch3DPageTransformer implements ViewPager.PageTransformer {
     public void transformPage(View view, float position) {
         float rotation = 45f * position;
         if (position >= 0) {
-            view.setTranslationX(view.getWidth() * position);
             view.setPivotX(0);
         } else {
             view.setPivotX(view.getWidth());

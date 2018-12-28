@@ -50,9 +50,9 @@
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="com.jancar.launcher.module.GlideConfiguration"
-            android:value="GlideModule" />
+        <!--<meta-data-->
+            <!--android:name="com.jancar.launcher.module.GlideConfiguration"-->
+            <!--android:value="GlideModule" />-->
     </application>
 
 </manifest>

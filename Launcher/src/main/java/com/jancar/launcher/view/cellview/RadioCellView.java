@@ -21,8 +21,6 @@ public class RadioCellView extends SimpeCellView {
     private String fmText = "FM1";
     private String fmName = "87.5";
     private String fmKz = "MHz";
-    private Bundle fmBundle;
-
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
     public RadioCellView(Context context) {
@@ -66,7 +64,13 @@ public class RadioCellView extends SimpeCellView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        fmBundle = (Bundle) SPUtil.get(getContext(), "FM_CHANNEL", null);
+        String temStr = (String) SPUtil.get(getContext(), "FM_CHANNEL", "");
+        String strs[] = temStr.split("##");
+        if(strs.length == 3){
+            fmText = strs[0];
+            fmKz = strs[1];
+            fmName = strs[2];
+        }
         controller = new JacMediaController(getContext().getApplicationContext()) {
             @Override
             public void onSession(String page) {
@@ -104,7 +108,14 @@ public class RadioCellView extends SimpeCellView {
             public void onMediaEvent(String action, Bundle extras) {
                 FlyLog.d("onMediaEvent action=%s,extras=" + extras, action);
                 if(extras!=null){
-                    fmBundle = extras;
+                    try {
+                        int fmType = extras.getInt("Band");
+                        fmText = fmType == 0 ? "FM1" : fmType == 1 ? "FM2" : fmType == 2 ? "FM3" : fmType == 3 ? "AM1" : "AM2";
+                        fmKz = fmType < 3 ? "MHz" : "KHz";
+                        fmName = extras.getString("name");
+                    } catch (Exception e) {
+                        FlyLog.e(e.toString());
+                    }
                 }
                 upWidgetView();
                 mHandler.removeCallbacks(saveFMtask);
@@ -116,16 +127,6 @@ public class RadioCellView extends SimpeCellView {
     }
 
     private void upWidgetView() {
-        if(fmBundle!=null) {
-            try {
-                int fmType = fmBundle.getInt("Band");
-                fmText = fmType == 0 ? "FM1" : fmType == 1 ? "FM2" : fmType == 2 ? "FM3" : fmType == 3 ? "AM1" : "AM2";
-                fmKz = fmType < 3 ? "MHz" : "KHz";
-                fmName = fmBundle.getString("name");
-            } catch (Exception e) {
-                FlyLog.e(e.toString());
-            }
-        }
         boolean isFM = fmText.startsWith("FM");
         boolean isKHz = fmKz.endsWith("KHz");
         AMFM_ImageView.setImageResource(isFM ? R.drawable.radio_am : R.drawable.radio_fm);
@@ -136,7 +137,7 @@ public class RadioCellView extends SimpeCellView {
     @Override
     protected void onDetachedFromWindow() {
         mHandler.removeCallbacksAndMessages(null);
-        SPUtil.set(getContext(), "FM_CHANNEL", fmBundle);
+        SPUtil.set(getContext(), "FM_CHANNEL", fmText+"##"+fmKz+"##"+fmName);
         controller.release();
         super.onDetachedFromWindow();
     }
@@ -144,7 +145,7 @@ public class RadioCellView extends SimpeCellView {
     private Runnable saveFMtask = new Runnable() {
         @Override
         public void run() {
-            SPUtil.set(getContext(), "FM_CHANNEL", fmBundle);
+            SPUtil.set(getContext(), "FM_CHANNEL", fmText+"##"+fmKz+"##"+fmName);
         }
     };
 

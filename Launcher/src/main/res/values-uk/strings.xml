@@ -6,6 +6,6 @@
 	<string name="tv_str_tuesday">Вівторок</string>
 	<string name="tv_str_wednesday">Середа</string>
 	<string name="tv_str_thursday">Четвер</string>
-	<string name="tv_str_friday">П'ятниця</string>
+	<string name="tv_str_friday">П\'ятниця</string>
 	<string name="tv_str_saturday">Субота</string>
 </resources>

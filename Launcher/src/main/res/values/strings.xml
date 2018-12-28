@@ -8,4 +8,6 @@
     <string name="tv_str_thursday">Thursday</string>
     <string name="tv_str_friday">Friday</string>
     <string name="tv_str_saturday">Saturday</string>
+
+    <string name="switchui">Switch UI</string>
 </resources>

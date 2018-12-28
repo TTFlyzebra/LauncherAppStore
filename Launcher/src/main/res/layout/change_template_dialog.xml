@@ -19,7 +19,7 @@
             android:layout_marginTop="40px"
             android:gravity="left"
             android:textColor="#FFF"
-            android:text="切换UI模板"
+            android:text="@string/switchui"
             android:textSize="36px" />
 
         <HorizontalScrollView

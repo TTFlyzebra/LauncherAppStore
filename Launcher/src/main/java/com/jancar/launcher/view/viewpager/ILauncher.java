@@ -1,9 +1,8 @@
 package com.jancar.launcher.view.viewpager;
 
-import com.jancar.launcher.bean.PageBean;
+import com.jancar.launcher.bean.TemplateBean;
 
-import java.util.List;
 
 public interface ILauncher {
-    void setData(List<PageBean> mPageBeanList);
+    void setData(TemplateBean templateBean);
 }

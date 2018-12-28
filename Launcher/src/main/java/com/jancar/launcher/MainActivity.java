@@ -195,7 +195,7 @@ public class MainActivity extends Activity {
                         break;
                 }
 
-                launcherView.setData(pageBeans);
+                launcherView.setData(templateBean);
                 navForViewPager.setViewPager(launcherView);
             }
 

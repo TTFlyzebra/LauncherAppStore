@@ -16,4 +16,5 @@ public class TemplateBean {
     public int width = 0;
     public int height = 0;
     public int animtor = 0;
+    public int mirror = 0;
 }

@@ -1,29 +1,28 @@
 package com.jancar.launcher.view.cellview;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.jancar.BaseManager;
 import com.jancar.launcher.R;
 import com.jancar.launcher.utils.FlyLog;
 import com.jancar.launcher.utils.SPUtil;
 import com.jancar.launcher.view.flyview.NumTextView;
-import com.jancar.radio.RadioManager;
+import com.jancar.media.JacMediaController;
 
-import java.util.Locale;
-
-public class RadioCellView extends SimpeCellView implements
-        BaseManager.ConnectListener,
-        RadioManager.RadioListener {
+public class RadioCellView extends SimpeCellView {
     private NumTextView numTextView;
     private ImageView AMFM_ImageView;
     private ImageView KHZMHZ_ImageView;
-    private static int fmChannel = 87500000;
+    private JacMediaController controller;
+    private String fmText = "FM1";
+    private String fmName = "87.5";
+    private String fmKz = "MHz";
+    private Bundle fmBundle;
 
-    private RadioManager radioManager;
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
     public RadioCellView(Context context) {
@@ -41,7 +40,6 @@ public class RadioCellView extends SimpeCellView implements
     @Override
     public void initView(Context context) {
         super.initView(context);
-        radioManager = new RadioManager(context, this, this, "com.jancar.media");
         FlyLog.d("RadioManager init()");
         AMFM_ImageView = new ImageView(context);
         LayoutParams params1 = new LayoutParams(-2, -2);
@@ -68,213 +66,91 @@ public class RadioCellView extends SimpeCellView implements
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        fmChannel = (int) SPUtil.get(getContext(), "FM_CHANNEL", 87500000);
-        notifyView();
+        fmBundle = (Bundle) SPUtil.get(getContext(), "FM_CHANNEL", null);
+        controller = new JacMediaController(getContext().getApplicationContext()) {
+            @Override
+            public void onSession(String page) {
+            }
+
+            @Override
+            public void onPlayUri(String uri) {
+            }
+
+            @Override
+            public void onPlayId(int currentId, int total) {
+            }
+
+            @Override
+            public void onPlayState(int state) {
+            }
+
+            @Override
+            public void onProgress(long current, long duration) {
+            }
+
+            @Override
+            public void onRepeat(int repeat) {
+            }
+
+            @Override
+            public void onFavor(boolean bFavor) {
+            }
+
+            @Override
+            public void onID3(String title, String artist, String album, byte[] artWork) {
+            }
+
+            @Override
+            public void onMediaEvent(String action, Bundle extras) {
+                FlyLog.d("onMediaEvent action=%s,extras=" + extras, action);
+                if(extras!=null){
+                    fmBundle = extras;
+                }
+                upWidgetView();
+                mHandler.removeCallbacks(saveFMtask);
+                mHandler.postDelayed(saveFMtask, 2000);
+            }
+        };
+        controller.Connect();
+        upWidgetView();
+    }
+
+    private void upWidgetView() {
+        if(fmBundle!=null) {
+            try {
+                int fmType = fmBundle.getInt("Band");
+                fmText = fmType == 0 ? "FM1" : fmType == 1 ? "FM2" : fmType == 2 ? "FM3" : fmType == 3 ? "AM1" : "AM2";
+                fmKz = fmType < 3 ? "MHz" : "KHz";
+                fmName = fmBundle.getString("name");
+            } catch (Exception e) {
+                FlyLog.e(e.toString());
+            }
+        }
+        boolean isFM = fmText.startsWith("FM");
+        boolean isKHz = fmKz.endsWith("KHz");
+        AMFM_ImageView.setImageResource(isFM ? R.drawable.radio_am : R.drawable.radio_fm);
+        KHZMHZ_ImageView.setImageResource(isKHz ? R.drawable.radio_khz : R.drawable.radio_mhz);
+        numTextView.setText(fmName);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         mHandler.removeCallbacksAndMessages(null);
-        SPUtil.set(getContext(), "FM_CHANNEL", fmChannel);
-        try {
-            if(radioManager!=null){
-                radioManager.close();
-            }
-        }catch (Exception e){
-            FlyLog.e(e.toString());
-        }
+        SPUtil.set(getContext(), "FM_CHANNEL", fmBundle);
+        controller.release();
         super.onDetachedFromWindow();
     }
 
     private Runnable saveFMtask = new Runnable() {
         @Override
         public void run() {
-            SPUtil.set(getContext(), "FM_CHANNEL", fmChannel);
+            SPUtil.set(getContext(), "FM_CHANNEL", fmBundle);
         }
     };
 
     @Override
     public void notifyView() {
         super.notifyView();
-        double f = 0f;
-
-        boolean flag = fmChannel >= 87500;
-        if (flag) {
-            AMFM_ImageView.setImageResource(R.drawable.radio_fm);
-            KHZMHZ_ImageView.setImageResource(R.drawable.radio_mhz);
-            f = fmChannel / 1000f;
-            String str = String.format(Locale.ENGLISH,"%.2f", f);
-            int len = str.length();
-            if (len > 7) {
-                numTextView.setText("99999");
-            } else if (len > 5) {
-                numTextView.setText(str.substring(0, 5));
-            } else {
-                numTextView.setText(str);
-            }
-        } else {
-            AMFM_ImageView.setImageResource(R.drawable.radio_am);
-            KHZMHZ_ImageView.setImageResource(R.drawable.radio_khz);
-            numTextView.setText(""+fmChannel);
-        }
-
-
     }
 
-    @Override
-    public void onServiceConnected() {
-        radioManager.open();
-        FlyLog.d();
-    }
-
-    @Override
-    public void onServiceDisconnected() {
-        try {
-            if(radioManager!=null){
-                radioManager.close();
-            }
-        }catch (Exception e){
-            FlyLog.e(e.toString());
-        }
-        FlyLog.d();
-    }
-
-    @Override
-    public void onFreqChanged(final int i) {
-        FlyLog.d("radio i=%d", i);
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                fmChannel = i;
-                notifyView();
-            }
-        });
-        mHandler.removeCallbacks(saveFMtask);
-        mHandler.postDelayed(saveFMtask, 2000);
-    }
-
-    @Override
-    public void onScanResult(int i, int i1) {
-        FlyLog.d();
-    }
-
-    @Override
-    public void onScanStart(boolean b) {
-        FlyLog.d();
-    }
-
-    @Override
-    public void onScanEnd(boolean b) {
-        FlyLog.d();
-    }
-
-    @Override
-    public void onScanAbort(boolean b) {
-        FlyLog.d();
-    }
-
-    @Override
-    public void onSignalUpdate(int i, int i1) {
-        FlyLog.d();
-    }
-
-    @Override
-    public void suspend() {
-        FlyLog.d();
-    }
-
-    @Override
-    public void resume() {
-        FlyLog.d();
-    }
-
-    @Override
-    public void pause() {
-        FlyLog.d();
-    }
-
-    @Override
-    public void play() {
-        FlyLog.d();
-    }
-
-    @Override
-    public void playPause() {
-        FlyLog.d();
-    }
-
-    @Override
-    public void stop() {
-        FlyLog.d();
-    }
-
-    @Override
-    public void next() {
-        FlyLog.d();
-    }
-
-    @Override
-    public void prev() {
-        FlyLog.d();
-    }
-
-    @Override
-    public void quitApp() {
-        FlyLog.d();
-    }
-
-    @Override
-    public void select(int i) {
-        FlyLog.d();
-    }
-
-    @Override
-    public void setFavour(boolean b) {
-        FlyLog.d();
-    }
-
-    @Override
-    public void onRdsPsChanged(int i, int i1, String s) {
-        FlyLog.d();
-    }
-
-    @Override
-    public void onRdsRtChanged(int i, int i1, String s) {
-        FlyLog.d();
-    }
-
-    @Override
-    public void onRdsMaskChanged(int i, int i1, int i2, int i3, int i4) {
-        FlyLog.d();
-    }
-
-    @Override
-    public void scanUp() {
-        FlyLog.d();
-    }
-
-    @Override
-    public void scanDown() {
-        FlyLog.d();
-    }
-
-    @Override
-    public void scanAll() {
-        FlyLog.d();
-    }
-
-    @Override
-    public void requestRadioFocus() {
-        FlyLog.d();
-    }
-
-    @Override
-    public void abandonRadioFocus() {
-        FlyLog.d();
-    }
-
-    @Override
-    public void onStereo(int freq, boolean bStereo) {
-
-    }
 }

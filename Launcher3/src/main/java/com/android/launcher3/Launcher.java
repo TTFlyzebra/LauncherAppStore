@@ -70,6 +70,7 @@ import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.TextKeyListener;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -549,6 +550,20 @@ public class Launcher extends Activity
 //        }
 //        LauncherModel model = getModel();
 //        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
+
+        /**
+         * 初始化后门配置
+         */
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        rect[1].left = dm.widthPixels-50;
+        rect[1].right = dm.widthPixels;
+        rect[2].top = dm.heightPixels-50;
+        rect[2].bottom = dm.heightPixels;
+        rect[3].left = dm.widthPixels-50;
+        rect[3].right = dm.widthPixels;
+        rect[3].top = dm.heightPixels-50;
+        rect[3].bottom = dm.heightPixels;
     }
 
     @Override
@@ -3399,7 +3414,7 @@ public class Launcher extends Activity
 
     //@FlyZebra no small show wiget show all apps
     void showOverviewMode(boolean animated) {
-        onLongClickAllAppsButton(null);
+//        onLongClickAllAppsButton(null);
 //        mWorkspace.setVisibility(View.VISIBLE);
 //        mStateTransitionAnimation.startAnimationToWorkspace(mState, mWorkspace.getState(),
 //                Workspace.State.OVERVIEW,
@@ -4834,6 +4849,45 @@ public class Launcher extends Activity
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
         }
+    }
+
+    /**
+     * 添加进入AllApps后门
+     */
+    int passWordCount = 0;
+    Rect rect[] = new Rect[]{new Rect(0, 59, 50, 109),
+            new Rect(974, 59, 1024, 109),
+            new Rect(0, 550, 50, 600),
+            new Rect(974, 550, 1024, 600)};
+    int passWords[] = new int[]{0, 0, 1, 1, 3, 3, 2, 2};
+
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            try {
+                int x = (int) ev.getX();
+                int y = (int) ev.getY();
+                if (rect[passWords[passWordCount]].contains(x, y)) {
+                    FlyLog.d("contains x=%d,y=%d",x,y);
+                    passWordCount++;
+                } else {
+                    FlyLog.d("not contains x=%d,y=%d",x,y);
+                    passWordCount = 0;
+                    if(rect[passWords[passWordCount]].contains(x,y)){
+                        passWordCount++;
+                    }
+                }
+                if (passWordCount >= passWords.length) {
+                    onLongClickAllAppsButton(null);
+                    passWordCount = 0;
+                }
+            } catch (Exception e) {
+                FlyLog.e(e.toString());
+            }
+            FlyLog.d("passWordCount=%d",passWordCount);
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }
 

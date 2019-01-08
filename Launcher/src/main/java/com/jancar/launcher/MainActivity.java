@@ -236,7 +236,7 @@ public class MainActivity extends Activity {
             if (action != null) {
                 switch (action) {
                     case Intent.ACTION_MEDIA_MOUNTED:
-                        if ("1".equals(SystemProperties.get(MainActivity.this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_ON, "0"))) {
+                        if ("1".equals(SystemProperties.get(MainActivity.this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_ON, "1"))) {
                             FlyLog.d("Intent.ACTION_MEDIA_MOUNTED");
                             FlyLog.d(intent.toUri(0));
                             final Uri uri = intent.getData();
@@ -247,7 +247,7 @@ public class MainActivity extends Activity {
                         }
                         break;
                     case Intent.ACTION_MEDIA_UNMOUNTED:
-                        if ("1".equals(SystemProperties.get(MainActivity.this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_ON, "0"))) {
+                        if ("1".equals(SystemProperties.get(MainActivity.this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_ON, "1"))) {
                             FlyLog.d("Intent.ACTION_MEDIA_UNMOUNTED");
                             FlyLog.d(intent.toUri(0));
                             switchUI("AP1.json");

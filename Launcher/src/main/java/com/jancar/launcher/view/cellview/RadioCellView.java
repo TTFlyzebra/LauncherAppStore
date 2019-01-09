@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -66,7 +67,7 @@ public class RadioCellView extends SimpeCellView {
         super.onAttachedToWindow();
         String temStr = (String) SPUtil.get(getContext(), "FM_CHANNEL", "");
         String strs[] = temStr.split("##");
-        if(strs.length == 3){
+        if (strs.length == 3) {
             fmText = strs[0];
             fmKz = strs[1];
             fmName = strs[2];
@@ -107,7 +108,7 @@ public class RadioCellView extends SimpeCellView {
             @Override
             public void onMediaEvent(String action, Bundle extras) {
                 FlyLog.d("onMediaEvent action=%s,extras=" + extras, action);
-                if(extras!=null){
+                if (extras != null) {
                     try {
                         int fmType = extras.getInt("Band");
                         fmText = fmType == 0 ? "FM1" : fmType == 1 ? "FM2" : fmType == 2 ? "FM3" : fmType == 3 ? "AM1" : "AM2";
@@ -115,6 +116,11 @@ public class RadioCellView extends SimpeCellView {
                         fmName = extras.getString("name");
                     } catch (Exception e) {
                         FlyLog.e(e.toString());
+                    }
+                    if (TextUtils.isEmpty(fmName)) {
+                        fmText = "FM1";
+                        fmName = "87.5";
+                        fmKz = "MHz";
                     }
                 }
                 upWidgetView();
@@ -127,17 +133,21 @@ public class RadioCellView extends SimpeCellView {
     }
 
     private void upWidgetView() {
-        boolean isFM = fmText.startsWith("FM");
-        boolean isKHz = fmKz.endsWith("KHz");
-        AMFM_ImageView.setImageResource(isFM ? R.drawable.radio_fm : R.drawable.radio_am);
-        KHZMHZ_ImageView.setImageResource(isKHz ? R.drawable.radio_khz : R.drawable.radio_mhz);
-        numTextView.setText(fmName);
+        try {
+            boolean isFM = fmText.startsWith("FM");
+            boolean isKHz = fmKz.endsWith("KHz");
+            AMFM_ImageView.setImageResource(isFM ? R.drawable.radio_fm : R.drawable.radio_am);
+            KHZMHZ_ImageView.setImageResource(isKHz ? R.drawable.radio_khz : R.drawable.radio_mhz);
+            numTextView.setText(fmName);
+        }catch (Exception e){
+            FlyLog.e(e.toString());
+        }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         mHandler.removeCallbacksAndMessages(null);
-        SPUtil.set(getContext(), "FM_CHANNEL", fmText+"##"+fmKz+"##"+fmName);
+        SPUtil.set(getContext(), "FM_CHANNEL", fmText + "##" + fmKz + "##" + fmName);
         controller.release();
         super.onDetachedFromWindow();
     }
@@ -145,7 +155,7 @@ public class RadioCellView extends SimpeCellView {
     private Runnable saveFMtask = new Runnable() {
         @Override
         public void run() {
-            SPUtil.set(getContext(), "FM_CHANNEL", fmText+"##"+fmKz+"##"+fmName);
+            SPUtil.set(getContext(), "FM_CHANNEL", fmText + "##" + fmKz + "##" + fmName);
         }
     };
 

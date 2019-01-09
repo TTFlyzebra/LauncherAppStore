@@ -115,6 +115,9 @@ public class RadioCellView extends SimpeCellView {
                         fmKz = fmType < 3 ? "MHz" : "KHz";
                         fmName = extras.getString("name");
                     } catch (Exception e) {
+                        fmText = "FM1";
+                        fmName = "87.5";
+                        fmKz = "MHz";
                         FlyLog.e(e.toString());
                     }
                     if (TextUtils.isEmpty(fmName)) {

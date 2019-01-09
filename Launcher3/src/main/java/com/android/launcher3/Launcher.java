@@ -556,13 +556,13 @@ public class Launcher extends Activity
          */
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-        rect[1].left = dm.widthPixels-50;
+        rect[1].left = dm.widthPixels - setp;
         rect[1].right = dm.widthPixels;
-        rect[2].top = dm.heightPixels-50;
+        rect[2].top = dm.heightPixels - setp;
         rect[2].bottom = dm.heightPixels;
-        rect[3].left = dm.widthPixels-50;
+        rect[3].left = dm.widthPixels - setp;
         rect[3].right = dm.widthPixels;
-        rect[3].top = dm.heightPixels-50;
+        rect[3].top = dm.heightPixels - setp;
         rect[3].bottom = dm.heightPixels;
     }
 
@@ -4855,10 +4855,11 @@ public class Launcher extends Activity
      * 添加进入AllApps后门
      */
     int passWordCount = 0;
-    Rect rect[] = new Rect[]{new Rect(0, 59, 50, 109),
-            new Rect(974, 59, 1024, 109),
-            new Rect(0, 550, 50, 600),
-            new Rect(974, 550, 1024, 600)};
+    int setp = 150;
+    Rect rect[] = new Rect[]{new Rect(0, 59, setp, 59 + setp),
+            new Rect(1024 - setp, 59, 1024, 59 + setp),
+            new Rect(0, 600 - setp, setp, 600),
+            new Rect(1024 - setp, 600 - setp, 1024, 600)};
     int passWords[] = new int[]{0, 0, 1, 1, 3, 3, 2, 2};
 
 
@@ -4869,12 +4870,12 @@ public class Launcher extends Activity
                 int x = (int) ev.getX();
                 int y = (int) ev.getY();
                 if (rect[passWords[passWordCount]].contains(x, y)) {
-                    FlyLog.d("contains x=%d,y=%d",x,y);
+                    FlyLog.d("contains x=%d,y=%d", x, y);
                     passWordCount++;
                 } else {
-                    FlyLog.d("not contains x=%d,y=%d",x,y);
+                    FlyLog.d("not contains x=%d,y=%d", x, y);
                     passWordCount = 0;
-                    if(rect[passWords[passWordCount]].contains(x,y)){
+                    if (rect[passWords[passWordCount]].contains(x, y)) {
                         passWordCount++;
                     }
                 }
@@ -4885,7 +4886,7 @@ public class Launcher extends Activity
             } catch (Exception e) {
                 FlyLog.e(e.toString());
             }
-            FlyLog.d("passWordCount=%d",passWordCount);
+            FlyLog.d("passWordCount=%d", passWordCount);
         }
         return super.dispatchTouchEvent(ev);
     }

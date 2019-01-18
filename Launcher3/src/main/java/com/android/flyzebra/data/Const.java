@@ -22,6 +22,7 @@ public class Const {
             "com.android.music",
             "com.autochips.videoplayer2",
             "com.autochips.bluetooth",
-            "com.autochips.dvrmipi"
+            "com.autochips.dvrmipi",
+            "com.mediatek.camera"
     };
 }

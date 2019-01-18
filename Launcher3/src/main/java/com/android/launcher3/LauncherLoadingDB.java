@@ -13,7 +13,6 @@ import com.android.flyzebra.LaunActivityUtil;
 import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -181,7 +180,6 @@ public class LauncherLoadingDB {
             }
         } else {
             try {
-                screen = 1;
                 ContentValues v = new ContentValues();
                 v.put(LauncherSettings.WorkspaceScreens._ID, 1);
                 v.put(LauncherSettings.WorkspaceScreens.SCREEN_RANK, 0);

@@ -103,7 +103,12 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
     @Override
     public void notifyView() {
         if (imageView == null) return;
-        Glide.with(getContext()).load(appInfo.defaultImageUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
+        Glide.with(getContext())
+                .load(appInfo.defaultImageUrl)
+                .asBitmap()
+                .skipMemoryCache(false)
+                .dontAnimate()
+                .into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(final Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
                 imageView.setImageBitmap(bitmap);

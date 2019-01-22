@@ -477,7 +477,7 @@ public class LauncherModel extends BroadcastReceiver
      * @return screenId and the coordinates for the item.
      */
     @Thunk
-    Pair<Long, int[]> findSpaceForItem(
+    public Pair<Long, int[]> findSpaceForItem(
             Context context,
             ArrayList<Long> workspaceScreens,
             ArrayList<Long> addedWorkspaceScreensFinal,
@@ -506,7 +506,9 @@ public class LauncherModel extends BroadcastReceiver
 
         int screenCount = workspaceScreens.size();
         // First check the preferred screen.
-        int preferredScreenIndex = workspaceScreens.isEmpty() ? 0 : 1;
+        //@FlyZebra 从第一页开始查找
+//        int preferredScreenIndex = workspaceScreens.isEmpty() ? 0 : 1;
+        int preferredScreenIndex = 0;
         if (preferredScreenIndex < screenCount) {
             screenId = workspaceScreens.get(preferredScreenIndex);
             found = findNextAvailableIconSpaceInScreen(

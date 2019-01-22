@@ -564,6 +564,18 @@ public class LauncherModel extends BroadcastReceiver
                 ArrayList<Long> workspaceScreens = loadWorkspaceScreensDb(context);
                 synchronized (sBgLock) {
                     for (ItemInfo item : workspaceApps) {
+
+                        //@FlyZebra 如果桌面已经添加该快捷方式，先删除该快捷方式
+                        try {
+                            for (ItemInfo flyitem : sBgItemsIdMap) {
+                                if(flyitem.getIntent().getComponent().compareTo(item.getIntent().getComponent())==0){
+                                    sBgItemsIdMap.remove(flyitem.id);
+                                    break;
+                                }
+                            }
+                        } catch (Exception e) {
+                            FlyLog.e(e.toString());
+                        }
                         if (item instanceof ShortcutInfo) {
                             // Short-circuit this logic if the icon exists somewhere on the workspace
                             if (shortcutExists(context, item.getIntent(), item.user)) {

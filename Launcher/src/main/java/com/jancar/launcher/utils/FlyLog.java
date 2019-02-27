@@ -7,7 +7,7 @@ import android.util.Log;
  * Created by FlyZebra on 2016/3/24.
  */
 public class FlyLog {
-    public static final String TAG = "jancar.laun";
+    public static final String TAG = "JAC-laun3";
     public static String[] filter = {
     };
 

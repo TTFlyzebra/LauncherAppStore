@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
         launcherView.setOffscreenPageLimit(10);
         navForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
 
-        String template = SystemProperties.get(this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_NAME, "AP1") + ".json";
+        String template = SystemProperties.get(this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_NAME, "FLY") + ".json";
         switchUI(template);
 
         receiver = new USBReceiver();

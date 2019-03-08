@@ -1,14 +1,20 @@
 package com.jancar.launcher.view.viewpager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.jancar.launcher.bean.PageBean;
 import com.jancar.launcher.bean.TemplateBean;
+import com.jancar.launcher.utils.CommondUtils;
+import com.jancar.launcher.utils.FlyLog;
 import com.jancar.launcher.view.pageview.SimplePageView;
 
 import java.util.ArrayList;
@@ -18,6 +24,19 @@ public class LauncherView extends ViewPager implements ILauncher {
     private List<PageBean> pageList = new ArrayList<>();
     private TemplateBean templateBean;
     private MyPgaeAdapter myPgaeAdapter = new MyPgaeAdapter();
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+
+    private Runnable runSetWallTask = new Runnable() {
+        @Override
+        public void run() {
+            FlyLog.d("runSetWallTask ");
+            CommondUtils.execStartPackage(
+                    getContext(),
+                    "com.android.launcher3",
+                    "com.android.launcher3.WallpaperPickerActivity"
+            );
+        }
+    };
 
     public LauncherView(Context context) {
         this(context, null);
@@ -26,7 +45,6 @@ public class LauncherView extends ViewPager implements ILauncher {
     public LauncherView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
-//        setPageTransformer(true, new Switch3DPageTransformer());
     }
 
     private void init(Context context) {
@@ -113,5 +131,34 @@ public class LauncherView extends ViewPager implements ILauncher {
 
     }
 
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if(ev.getAction()==MotionEvent.ACTION_DOWN){
+            FlyLog.d(ev.toString());
+        }
+        return super.onInterceptTouchEvent(ev);
+    }
 
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                FlyLog.d("ACTION_DOWN");
+                mHandler.removeCallbacks(runSetWallTask);
+                mHandler.postDelayed(runSetWallTask,1000);
+                break;
+            case MotionEvent.ACTION_UP:
+                FlyLog.d("ACTION_UP");
+                mHandler.removeCallbacks(runSetWallTask);
+                break;
+        }
+        return super.onTouchEvent(ev);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        mHandler.removeCallbacksAndMessages(null);
+        super.onDetachedFromWindow();
+    }
 }

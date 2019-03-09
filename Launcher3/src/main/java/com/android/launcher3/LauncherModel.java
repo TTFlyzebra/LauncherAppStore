@@ -3104,10 +3104,14 @@ public class LauncherModel extends BroadcastReceiver
                         mBgAllAppsList.addPackage(context, packages[i], mUser);
 
                         //添加图标到桌面
-                        ArrayList<AppInfo> list = (ArrayList<AppInfo>) LaunActivityUtil.getAppInfos(packages[i], context, mIconCache);
-                        if (list != null && !list.isEmpty()) {
-                            FlyLog.i("OP_ADD, addAndBindAddedWorkspaceItems=%s", packages[i]);
-                            addAndBindAddedWorkspaceItems(context, list);
+                        try {
+                            ArrayList<AppInfo> list = (ArrayList<AppInfo>) LaunActivityUtil.getAppInfos(packages[i], context, mIconCache);
+                            if (list != null && !list.isEmpty()) {
+                                FlyLog.i("OP_ADD, addAndBindAddedWorkspaceItems=%s", packages[i]);
+                                addAndBindAddedWorkspaceItems(context, list);
+                            }
+                        }catch (Exception e){
+                            FlyLog.i(e.toString());
                         }
                     }
 

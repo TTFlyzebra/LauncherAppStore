@@ -27,12 +27,12 @@ import com.jancar.launcher.view.flyview.FlyTextView;
 import com.jancar.launcher.view.flyview.MirrorView;
 
 public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouchListener, View.OnClickListener {
-    private CellBean appInfo;
-    private FlyImageView imageView;
-    private MirrorView mirrorView;
-    private TextView textView;
-    private Handler mHandler = new Handler();
-    private JancarManager jancarManager;
+    protected CellBean appInfo;
+    protected FlyImageView imageView;
+    protected MirrorView mirrorView;
+    protected TextView textView;
+    protected Handler mHandler = new Handler();
+    protected JancarManager jancarManager;
 
 
     public SimpeCellView(Context context) {

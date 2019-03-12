@@ -1,16 +1,18 @@
 package com.jancar.launcher.view.cellview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.jancar.launcher.R;
 import com.jancar.launcher.utils.FlyLog;
-import com.jancar.launcher.utils.SPUtil;
 import com.jancar.launcher.view.flyview.NumTextView;
 import com.jancar.media.JacMediaController;
 
@@ -18,11 +20,12 @@ public class RadioCellView extends SimpeCellView {
     private NumTextView numTextView;
     private ImageView AMFM_ImageView;
     private ImageView KHZMHZ_ImageView;
+    private ImageView imageView2;
     private JacMediaController controller;
-    private String fmText = "FM1";
-    private String fmName = "87.5";
-    private String fmKz = "MHz";
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private String fmText = "";
+    private String fmName = "";
+    private String fmKz = "";
+    private String showImageUrl = "";
 
     public RadioCellView(Context context) {
         super(context);
@@ -60,18 +63,23 @@ public class RadioCellView extends SimpeCellView {
         KHZMHZ_ImageView.setImageResource(R.drawable.radio_khz);
         addView(KHZMHZ_ImageView, params2);
 
+        imageView2 = new ImageView(context);
+        LayoutParams params4 = new LayoutParams(120, 120);
+        params4.leftMargin = 46;
+        params4.topMargin = 72;
+        addView(imageView2, params4);
+
+        imageView2.setVisibility(View.VISIBLE);
+        AMFM_ImageView.setVisibility(View.GONE);
+        KHZMHZ_ImageView.setVisibility(View.GONE);
+        numTextView.setVisibility(View.GONE);
+
+
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        String temStr = (String) SPUtil.get(getContext(), "FM_CHANNEL", "");
-        String strs[] = temStr.split("##");
-        if (strs.length == 3) {
-            fmText = strs[0];
-            fmKz = strs[1];
-            fmName = strs[2];
-        }
         controller = new JacMediaController(getContext().getApplicationContext()) {
             @Override
             public void onSession(String page) {
@@ -115,59 +123,66 @@ public class RadioCellView extends SimpeCellView {
                         fmKz = fmType < 3 ? "MHz" : "KHz";
                         fmName = extras.getString("name");
                     } catch (Exception e) {
-                        fmText = "FM1";
-                        fmName = "87.5";
-                        fmKz = "MHz";
+                        fmText = "";
+                        fmName = "";
+                        fmKz = "";
                         FlyLog.e(e.toString());
                     }
                     if (TextUtils.isEmpty(fmName)) {
-                        fmText = "FM1";
-                        fmName = "87.5";
-                        fmKz = "MHz";
+                        fmText = "";
+                        fmName = "";
+                        fmKz = "";
                     }
                 }
                 upWidgetView();
-                mHandler.removeCallbacks(saveFMtask);
-                mHandler.postDelayed(saveFMtask, 2000);
             }
         };
         controller.Connect();
         upWidgetView();
     }
 
+
     private void upWidgetView() {
         try {
-            boolean isFM = fmText.startsWith("FM");
-            boolean isKHz = fmKz.endsWith("KHz");
-            AMFM_ImageView.setImageResource(isFM ? R.drawable.radio_fm : R.drawable.radio_am);
-            KHZMHZ_ImageView.setImageResource(isKHz ? R.drawable.radio_khz : R.drawable.radio_mhz);
-            if(fmName.length()>5){
-                fmName = fmName.substring(0,5);
+            if (TextUtils.isEmpty(fmName) || TextUtils.isEmpty(fmText) || TextUtils.isEmpty(fmKz)) {
+                imageView2.setVisibility(View.VISIBLE);
+                AMFM_ImageView.setVisibility(View.GONE);
+                KHZMHZ_ImageView.setVisibility(View.GONE);
+                numTextView.setVisibility(View.GONE);
+            } else {
+                imageView2.setVisibility(View.GONE);
+                boolean isFM = fmText.startsWith("FM");
+                boolean isKHz = fmKz.endsWith("KHz");
+                AMFM_ImageView.setImageResource(isFM ? R.drawable.radio_fm : R.drawable.radio_am);
+                KHZMHZ_ImageView.setImageResource(isKHz ? R.drawable.radio_khz : R.drawable.radio_mhz);
+                if (fmName.length() > 5) {
+                    fmName = fmName.substring(0, 5);
+                }
+                numTextView.setText(fmName);
+                AMFM_ImageView.setVisibility(View.VISIBLE);
+                KHZMHZ_ImageView.setVisibility(View.VISIBLE);
+                numTextView.setVisibility(View.VISIBLE);
             }
-            numTextView.setText(fmName);
-        }catch (Exception e){
+        } catch (Exception e) {
             FlyLog.e(e.toString());
         }
     }
 
     @Override
     protected void onDetachedFromWindow() {
-        mHandler.removeCallbacksAndMessages(null);
-        SPUtil.set(getContext(), "FM_CHANNEL", fmText + "##" + fmKz + "##" + fmName);
         controller.release();
         super.onDetachedFromWindow();
     }
 
-    private Runnable saveFMtask = new Runnable() {
-        @Override
-        public void run() {
-            SPUtil.set(getContext(), "FM_CHANNEL", fmText + "##" + fmKz + "##" + fmName);
-        }
-    };
 
     @Override
     public void notifyView() {
         super.notifyView();
+        if (imageView2 == null) return;
+
+        Glide.with(getContext())
+                .load(appInfo.focusImageUrl)
+                .into(imageView2);
     }
 
 }

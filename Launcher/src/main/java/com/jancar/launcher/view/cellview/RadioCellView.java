@@ -1,7 +1,6 @@
 package com.jancar.launcher.view.cellview;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -9,8 +8,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.jancar.launcher.R;
 import com.jancar.launcher.utils.FlyLog;
 import com.jancar.launcher.view.flyview.NumTextView;

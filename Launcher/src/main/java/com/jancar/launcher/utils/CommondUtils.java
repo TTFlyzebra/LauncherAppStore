@@ -8,15 +8,9 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.text.TextUtils;
-
-
-import com.jancar.launcher.utils.FlyLog;
-import com.jancar.launcher.utils.IntentParamParseHelper;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

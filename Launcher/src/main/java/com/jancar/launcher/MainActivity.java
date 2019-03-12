@@ -138,75 +138,103 @@ public class MainActivity extends Activity {
         return stringBuilder.toString();
     }
 
-    private void switchUI(String name) {
+    int addcount = 0;
+
+    private void switchUI(final String name) {
         String jsonStr = null;
         File file = new File(name);
-        boolean isInFile = file.exists();
+        final boolean isInFile = file.exists();
         if (isInFile) {
             jsonStr = getFileText(name, this);
         } else {
             jsonStr = getAssetFileText(name, this);
         }
-        TemplateBean templateBean = GsonUtils.json2Object(jsonStr, TemplateBean.class);
+        final TemplateBean templateBean = GsonUtils.json2Object(jsonStr, TemplateBean.class);
         if (templateBean != null) {
-            List<PageBean> pageBeans = templateBean.pageList;
-            if (templateBean.x != 0 || templateBean.y != 0 || templateBean.width != 0 || templateBean.height != 0) {
-                FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) pagesView.getLayoutParams();
-                lp.setMargins(templateBean.x, templateBean.y, 0, 0);
-                lp.setMarginStart(templateBean.x);
-                lp.width = templateBean.width;
-                lp.height = templateBean.height;
-                pagesView.setLayoutParams(lp);
-                for (PageBean pageBean : pageBeans) {
-                    if (pageBean.cells == null || pageBean.cells.isEmpty()) continue;
-                    for (CellBean cellBean : pageBean.cells) {
-                        cellBean.x = cellBean.x - templateBean.x;
-                        cellBean.y = cellBean.y - templateBean.y;
-                    }
+            try {
+                final PageBean pageBean = templateBean.pageList.get(0);
+                for (int j = 0; j < pageBean.cells.size(); j++) {
+                    CellBean cellBean = pageBean.cells.get(j);
+                    Glide.with(this)
+                            .load(cellBean.defaultImageUrl)
+                            .asBitmap()
+                            .into(new SimpleTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                                    addcount++;
+                                    if (addcount == pageBean.cells.size()) {
+                                        loadView(templateBean, isInFile, name);
+                                    }
+                                }
+                            });
                 }
-            } else {
-                FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) pagesView.getLayoutParams();
-                lp.setMargins(templateBean.x, templateBean.y, 0, 0);
-                lp.setMarginStart(templateBean.x);
-                lp.width = -1;
-                lp.height = -1;
-                pagesView.setLayoutParams(lp);
-            }
-
-            if (pageBeans != null && !pageBeans.isEmpty()) {
-
-                if (isInFile) {
-                    String rootPath = name.substring(0, name.lastIndexOf("/"));
-                    for (PageBean page : pageBeans) {
-                        for (CellBean cellBean : page.cells) {
-                            if (!TextUtils.isEmpty(cellBean.defaultImageUrl)) {
-                                cellBean.defaultImageUrl.replace("file:///android_asset", rootPath);
-                            }
-                        }
-                    }
-                }
-
-                switch (templateBean.animtor) {
-                    case 1:
-                        launcherView.setPageTransformer(true, new Switch3DPageTransformer());
-                        break;
-                    default:
-                        launcherView.setPageTransformer(true, null);
-                        break;
-                }
-
-                launcherView.setData(templateBean);
-                navForViewPager.setViewPager(launcherView);
-            }
-
-            topView.removeAllViews();
-            if (templateBean.topPage != null && templateBean.topPage.cells != null && !templateBean.topPage.cells.isEmpty()) {
-                topView.setData(templateBean.topPage);
+            } catch (Exception e) {
+                FlyLog.e(e.toString());
+                loadView(templateBean, isInFile, name);
             }
 
             //设置壁纸
-            if (!TextUtils.isEmpty(templateBean.bkimg))
-                setBackGround(templateBean.bkimg);
+//            if (!TextUtils.isEmpty(templateBean.bkimg))
+//                setBackGround(templateBean.bkimg);
+        }
+    }
+
+
+    private void loadView(TemplateBean templateBean, boolean isInFile, String name) {
+        List<PageBean> pageBeans = templateBean.pageList;
+        if (templateBean.x != 0 || templateBean.y != 0 || templateBean.width != 0 || templateBean.height != 0) {
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) pagesView.getLayoutParams();
+            lp.setMargins(templateBean.x, templateBean.y, 0, 0);
+            lp.setMarginStart(templateBean.x);
+            lp.width = templateBean.width;
+            lp.height = templateBean.height;
+            pagesView.setLayoutParams(lp);
+            for (PageBean pageBean : pageBeans) {
+                if (pageBean.cells == null || pageBean.cells.isEmpty())
+                    continue;
+                for (CellBean cellBean : pageBean.cells) {
+                    cellBean.x = cellBean.x - templateBean.x;
+                    cellBean.y = cellBean.y - templateBean.y;
+                }
+            }
+        } else {
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) pagesView.getLayoutParams();
+            lp.setMargins(templateBean.x, templateBean.y, 0, 0);
+            lp.setMarginStart(templateBean.x);
+            lp.width = -1;
+            lp.height = -1;
+            pagesView.setLayoutParams(lp);
+        }
+
+        if (pageBeans != null && !pageBeans.isEmpty()) {
+
+            if (isInFile) {
+                String rootPath = name.substring(0, name.lastIndexOf("/"));
+                for (PageBean page : pageBeans) {
+                    for (CellBean cellBean : page.cells) {
+                        if (!TextUtils.isEmpty(cellBean.defaultImageUrl)) {
+                            cellBean.defaultImageUrl.replace("file:///android_asset", rootPath);
+                        }
+                    }
+                }
+            }
+
+            switch (templateBean.animtor) {
+                case 1:
+                    launcherView.setPageTransformer(true, new Switch3DPageTransformer());
+                    break;
+                default:
+                    launcherView.setPageTransformer(true, null);
+                    break;
+            }
+
+            launcherView.setData(templateBean);
+            navForViewPager.setViewPager(launcherView);
+        }
+
+        topView.removeAllViews();
+        if (templateBean.topPage != null && templateBean.topPage.cells != null && !templateBean.topPage.cells.isEmpty()) {
+            topView.setData(templateBean.topPage);
         }
     }
 

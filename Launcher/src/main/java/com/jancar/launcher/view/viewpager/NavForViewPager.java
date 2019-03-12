@@ -22,7 +22,7 @@ public class NavForViewPager extends View {
     private int width;
     private int height;
     //总页数
-    private int sumItem = 10;
+    private int sumItem = 0;
     //当前页
     private int currentItem = 5;
 

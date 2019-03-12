@@ -9,6 +9,8 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -48,6 +50,9 @@ public class MainActivity extends Activity {
     private RelativeLayout pagesView;
     private NavForViewPager navForViewPager;
     private USBReceiver receiver;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private int addcount = 0;
+    private boolean isLoad = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,8 +143,6 @@ public class MainActivity extends Activity {
         return stringBuilder.toString();
     }
 
-    int addcount = 0;
-
     private void switchUI(final String name) {
         String jsonStr = null;
         File file = new File(name);
@@ -151,6 +154,14 @@ public class MainActivity extends Activity {
         }
         final TemplateBean templateBean = GsonUtils.json2Object(jsonStr, TemplateBean.class);
         if (templateBean != null) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!isLoad) {
+                        loadView(templateBean, isInFile, name);
+                    }
+                }
+            }, 10000);
             try {
                 final PageBean pageBean = templateBean.pageList.get(0);
                 for (int j = 0; j < pageBean.cells.size(); j++) {
@@ -162,7 +173,7 @@ public class MainActivity extends Activity {
                                 @Override
                                 public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
                                     addcount++;
-                                    if (addcount == pageBean.cells.size()) {
+                                    if (addcount == pageBean.cells.size() && !isLoad) {
                                         loadView(templateBean, isInFile, name);
                                     }
                                 }
@@ -181,6 +192,7 @@ public class MainActivity extends Activity {
 
 
     private void loadView(TemplateBean templateBean, boolean isInFile, String name) {
+        isLoad = true;
         List<PageBean> pageBeans = templateBean.pageList;
         if (templateBean.x != 0 || templateBean.y != 0 || templateBean.width != 0 || templateBean.height != 0) {
             FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) pagesView.getLayoutParams();
@@ -325,4 +337,9 @@ public class MainActivity extends Activity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        mHandler.removeCallbacksAndMessages(null);
+        super.onDestroy();
+    }
 }

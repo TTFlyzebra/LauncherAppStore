@@ -49,8 +49,11 @@ public class MirrorView extends ImageView {
             try {
                 showRefImage();
             } catch (OutOfMemoryError | Exception e) {
+                FlyLog.e(e.toString());
                 e.printStackTrace();
             }
+        }else{
+            FlyLog.e("mirror bitmap is null");
         }
     }
 

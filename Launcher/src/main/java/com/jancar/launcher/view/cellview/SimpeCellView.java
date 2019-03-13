@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.jancar.JancarManager;
@@ -104,19 +105,29 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
         Glide.with(getContext())
                 .load(appInfo.defaultImageUrl)
                 .asBitmap()
-                .skipMemoryCache(false)
-                .dontAnimate()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(new SimpleTarget<Bitmap>() {
-            @Override
-            public void onResourceReady(final Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-                imageView.setImageBitmap(bitmap);
-                if (mirrorView != null) {
-                    setDrawingCacheEnabled(true);
-                    Bitmap bmp = getDrawingCache();
-                    mirrorView.showImage(bmp);
-                }
-            }
-        });
+                    @Override
+                    public void onResourceReady(final Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                        FlyLog.d("load finish %s", appInfo.defaultImageUrl);
+                        imageView.setImageBitmap(bitmap);
+                        if (mirrorView != null) {
+                            setDrawingCacheEnabled(true);
+                            Bitmap bmp = getDrawingCache();
+                            if (bmp == null) {
+                                FlyLog.d("getDrawingCache bitmap is null, must measure");
+                                measure(MeasureSpec.makeMeasureSpec(appInfo.width, MeasureSpec.EXACTLY),
+                                        MeasureSpec.makeMeasureSpec(appInfo.height, MeasureSpec.EXACTLY));
+                                layout(0, 0, getMeasuredWidth(), getMeasuredHeight());
+                                buildDrawingCache();
+                                bmp = getDrawingCache();
+                            }
+                            mirrorView.showImage(bmp);
+                        }
+                    }
+                });
+
+
     }
 
     /**

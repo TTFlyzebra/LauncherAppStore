@@ -109,13 +109,11 @@ public class SimpeCellView extends FrameLayout implements ICellView, View.OnTouc
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(final Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-                        FlyLog.d("load finish %s", appInfo.defaultImageUrl);
                         imageView.setImageBitmap(bitmap);
                         if (mirrorView != null) {
                             setDrawingCacheEnabled(true);
                             Bitmap bmp = getDrawingCache();
                             if (bmp == null) {
-                                FlyLog.d("getDrawingCache bitmap is null, must measure");
                                 measure(MeasureSpec.makeMeasureSpec(appInfo.width, MeasureSpec.EXACTLY),
                                         MeasureSpec.makeMeasureSpec(appInfo.height, MeasureSpec.EXACTLY));
                                 layout(0, 0, getMeasuredWidth(), getMeasuredHeight());

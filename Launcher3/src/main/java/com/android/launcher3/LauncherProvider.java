@@ -155,12 +155,15 @@ public class LauncherProvider extends ContentProvider {
                     String component = m.group();
                     Cursor c = db.query(table, null,
                             "intent LIKE ?",
-                            new String[]{"%"+component+"%"},
+                            new String[]{"%" + component + "%"},
                             null,
                             null,
                             null,
                             null);
                     hasInsert = c != null && c.moveToNext();
+                    if (c != null) {
+                        c.close();
+                    }
                 }
             }
         } catch (Exception e) {

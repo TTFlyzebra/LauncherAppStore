@@ -3111,7 +3111,7 @@ public class LauncherModel extends BroadcastReceiver
                                 addAndBindAddedWorkspaceItems(context, list);
                             }
                         }catch (Exception e){
-                            FlyLog.i(e.toString());
+                            FlyLog.e(e.toString());
                         }
                     }
 

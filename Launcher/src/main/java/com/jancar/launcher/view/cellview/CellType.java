@@ -25,4 +25,6 @@ public interface CellType {
      * 可镜像的小部件
      */
     int TYPE_APP_MIRRORIMG = 5;
+
+    int TYPE_APP_SWITCH = 9;
 }

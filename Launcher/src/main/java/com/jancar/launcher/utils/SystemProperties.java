@@ -12,6 +12,7 @@ public class SystemProperties {
      * 系统属性相关常量
      */
     public interface Property{
+        String SWITCH_APP_CELL = "ro.support.google.suite";
         String PERSIST_KEY_TEMPLATE_ON = "persist.jancar.template.on";
         String PERSIST_KEY_TEMPLATE_NAME = "persist.jancar.template.name";
     }

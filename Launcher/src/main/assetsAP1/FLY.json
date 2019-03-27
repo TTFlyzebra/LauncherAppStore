@@ -130,13 +130,13 @@
         },
         {
           "action": "",
-          "className": "net.easyconn.WelcomeActivity",
+          "className": "net.easyconn.WelcomeActivity#com.google.android.apps.chrome.Main",
           "defaultImageUrl": "file:///android_asset/AP1/page01_default_1.png",
-          "focusImageUrl": "file:///android_asset/AP1/page01_focus_1.png",
+          "focusImageUrl": "file:///android_asset/AP1/chrome.png",
           "height": 317,
           "intentFlag": "0x10200000",
           "jancar": "elink",
-          "packName": "net.easyconn",
+          "packName": "net.easyconn#com.android.chrome",
           "sort": 4,
           "textBottom": 10,
           "textColor": "#FFFFFF",
@@ -164,7 +164,7 @@
             "zh_TW": "手機互聯"
           },
           "textTop": 0,
-          "type": 1,
+          "type": 9,
           "width": 212,
           "x": 0,
           "y": 0

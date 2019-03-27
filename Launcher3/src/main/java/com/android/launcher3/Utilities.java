@@ -798,7 +798,7 @@ public final class Utilities {
             }
             //Drawable drawable = context.getResources().getDrawable(R.drawable.homescreen_blue_strong_holo);
             try {
-                Drawable drawable = context.getResources().getDrawable(R.drawable.icon_bg3);
+                Drawable drawable = context.getResources().getDrawable(R.drawable.bak_icon);
                 drawable.setBounds(0, 0, sIconWidth, sIconHeight);
                 drawable.draw(canvas);
             } catch (Exception e) {

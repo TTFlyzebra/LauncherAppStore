@@ -69,13 +69,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingTop="20px"
+                android:layoutDirection="ltr"
                 android:weightSum="2">
 
                 <LinearLayout
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="left">
+                    android:gravity="start">
 
                     <ImageView
                         android:id="@+id/wg_music_prev"
@@ -88,7 +89,7 @@
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="right">
+                    android:gravity="end">
 
                     <ImageView
                         android:id="@+id/wg_music_next"
@@ -135,6 +136,7 @@
                 android:layout_marginBottom="20px"
                 android:layout_width="match_parent"
                 android:layout_height="38px"
+                android:layoutDirection="ltr"
                 android:orientation="horizontal"
                 android:weightSum="4">
 

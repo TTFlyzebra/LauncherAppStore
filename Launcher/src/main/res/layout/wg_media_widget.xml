@@ -121,48 +121,22 @@
             android:layout_marginStart="50px"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="100px">
-
-                <TextView
-                    android:id="@+id/wg_fm_tv01"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:gravity="start"
-                    android:maxLines="1"
-                    android:textColor="#FFF"
-                    android:textSize="22px" />
-
-                <TextView
-                    android:id="@+id/wg_fm_tv02"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:paddingTop="22px"
-                    android:textColor="#FFF"
-                    android:textSize="64px" />
-
-                <TextView
-                    android:id="@+id/wg_fm_tv03"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:gravity="end"
-                    android:maxLines="1"
-                    android:textColor="#FFF"
-                    android:textSize="22px" />
-            </RelativeLayout>
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/wg_fm_tv02"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="#FFF"
+                android:textSize="80px" />
+
+            <LinearLayout
+                android:layout_marginTop="20px"
+                android:layout_marginBottom="20px"
+                android:layout_width="match_parent"
+                android:layout_height="38px"
                 android:orientation="horizontal"
-                android:paddingTop="20px"
-                android:weightSum="2">
+                android:weightSum="4">
 
                 <LinearLayout
                     android:layout_width="0px"
@@ -177,9 +151,29 @@
                         android:src="@drawable/mediainfo_prev" />
                 </LinearLayout>
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/wg_fm_tv01"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textColor="#FFF"
+                    android:textSize="24px" />
+
+                <TextView
+                    android:id="@+id/wg_fm_tv03"
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textColor="#FFF"
+                    android:textSize="24px" />
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="end">
 

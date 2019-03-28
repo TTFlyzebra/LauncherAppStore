@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -141,8 +142,10 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
             @Override
             public void onSession(String page) {
                 FlyLog.d("onSession page=%s", page);
-                mSession = page;
-                upWidgetView();
+                if(!TextUtils.isEmpty(page)) {
+                    mSession = page;
+                    upWidgetView();
+                }
             }
 
             @Override

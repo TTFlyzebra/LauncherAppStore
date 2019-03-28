@@ -1,9 +1,11 @@
 package com.jancar.launcher.view.cellview;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
-import android.os.Handler;
-import android.os.Looper;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -18,12 +20,19 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import static android.provider.Settings.Global.AUTO_TIME;
 
 public class TimeCellView extends StaticCellView {
-    private TextView timeView, dateView, weekView;
+    private TextView ampmView, timeView, dateView, weekView;
     private LinearLayout rootLayout;
+    private boolean bTime24 = true;
+    private String ampm = "";
+    private String time = "";
+    private String date = "";
+    private String week = "";
+    private IntentFilter intentFilter;
+    private TimeChangeReceiver timeChangeReceiver;
 
     public TimeCellView(Context context) {
         super(context);
@@ -40,11 +49,26 @@ public class TimeCellView extends StaticCellView {
     @Override
     public void initView(Context context) {
         super.initView(context);
+        try {
+            intentFilter = new IntentFilter();
+            intentFilter.addAction(Intent.ACTION_TIME_TICK);//每分钟变化
+            intentFilter.addAction(Intent.ACTION_TIMEZONE_CHANGED);//设置了系统时区
+            intentFilter.addAction(Intent.ACTION_TIME_CHANGED);//设置了系统时间
+            intentFilter.addAction(AUTO_TIME);
+            timeChangeReceiver = new TimeChangeReceiver();
+            bTime24 = Settings.System.getString(getContext().getContentResolver(), Settings.System.TIME_12_24).equals("24");
+            FlyLog.d("first bTime24=" + bTime24);
+        } catch (Exception e) {
+            FlyLog.d(e.toString());
+        }
         rootLayout = new LinearLayout(context);
         rootLayout.setOrientation(LinearLayout.VERTICAL);
         rootLayout.setGravity(Gravity.CENTER);
         addView(rootLayout, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
+        ampmView = new TextView(context);
+        ampmView.setGravity(Gravity.START);
+        rootLayout.addView(ampmView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         timeView = new TextView(context);
         timeView.setGravity(Gravity.CENTER);
         rootLayout.addView(timeView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -59,7 +83,17 @@ public class TimeCellView extends StaticCellView {
 
     public void upView() {
         try {
-            FlyLog.d("up time");
+            FlyLog.d("up time bTime24=" + bTime24);
+            ampm = getCurrentDate("a");
+            time = getCurrentDate(bTime24 ? "HH:mm" : "hh:mm");
+            date = getCurrentDate("yyyy-MM-dd");
+            week = getCurrentWeek();
+            if (bTime24) {
+                ampmView.setVisibility(INVISIBLE);
+            } else {
+                ampmView.setVisibility(VISIBLE);
+                ampmView.setText(ampm);
+            }
             timeView.setText(time);
             weekView.setText(week);
             dateView.setText(date);
@@ -69,36 +103,37 @@ public class TimeCellView extends StaticCellView {
     }
 
     @Override
-    public void setData(CellBean appInfo) {
-        this.appInfo = appInfo;
-
-        rootLayout.setPadding(appInfo.textLeft, appInfo.textTop, appInfo.textRight, appInfo.textBottom);
+    public void setData(CellBean mCellBean) {
+        this.mCellBean = mCellBean;
 
         int color = 0xFFFFFFFF;
         try {
-            color = Color.parseColor(appInfo.textColor);
+            color = Color.parseColor(mCellBean.textColor);
         } catch (Exception e) {
             color = 0xFFFFFFFF;
         }
-        int margin = (appInfo.height - appInfo.textSize * 3 - appInfo.textBottom - appInfo.textTop) / 6;
+        LinearLayout.LayoutParams alp = (LinearLayout.LayoutParams) ampmView.getLayoutParams();
+        alp.setMargins(0, -24, 0, 0);
+        alp.setMarginStart(38);
+        ampmView.setLayoutParams(alp);
         LinearLayout.LayoutParams tlp = (LinearLayout.LayoutParams) timeView.getLayoutParams();
-        tlp.height = (int) (appInfo.textSize * 1.5f);
-        tlp.setMargins(0, margin, 0, margin);
+        tlp.setMargins(0, -16, 0, 0);
         timeView.setLayoutParams(tlp);
         LinearLayout.LayoutParams wlp = (LinearLayout.LayoutParams) weekView.getLayoutParams();
-        wlp.height = (int) (appInfo.textSize / 2 * 1.5f);
-        wlp.setMargins(0, margin, 0, margin);
+        wlp.setMargins(0, 4, 0, 0);
         weekView.setLayoutParams(wlp);
         LinearLayout.LayoutParams dlp = (LinearLayout.LayoutParams) dateView.getLayoutParams();
-        dlp.height = (int) (appInfo.textSize / 2 * 1.5f);
-        dlp.setMargins(0, margin, 0, margin);
+        dlp.setMargins(0, 12, 0, 0);
         dateView.setLayoutParams(dlp);
+
+        ampmView.setTextColor(color);
+        ampmView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCellBean.textSize * 32 / 128);
         timeView.setTextColor(color);
-        timeView.setTextSize(TypedValue.COMPLEX_UNIT_PX, appInfo.textSize);
+        timeView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCellBean.textSize);
         weekView.setTextColor(color);
-        weekView.setTextSize(TypedValue.COMPLEX_UNIT_PX, appInfo.textSize * 32 / 64);
+        weekView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCellBean.textSize * 32 / 64);
         dateView.setTextColor(color);
-        dateView.setTextSize(TypedValue.COMPLEX_UNIT_PX, appInfo.textSize * 32 / 64);
+        dateView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCellBean.textSize * 32 / 64);
     }
 
     private static String getCurrentDate(String dateFormat) {
@@ -123,47 +158,38 @@ public class TimeCellView extends StaticCellView {
         return weeks[mCalendar.get(Calendar.DAY_OF_WEEK) - 1];
     }
 
-    private Timer mTimer;
-    private String time = "";
-    private String date = "";
-    private String week = "";
-
-    private Handler mHandler = new Handler(Looper.getMainLooper());
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (mTimer == null) {
-            mTimer = new Timer();
-            mTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    String tmpTime = getCurrentDate("HH:mm");
-                    String tmpDate = getCurrentDate("yyyy-MM-dd");
-                    String tmpWeek = getCurrentWeek();
-                    if (!(tmpTime.equals(time) && tmpDate.equals(date) && tmpWeek.equals(week))) {
-                        time = tmpTime;
-                        date = tmpDate;
-                        week = tmpWeek;
-                        mHandler.removeCallbacksAndMessages(null);
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                upView();
-                            }
-                        });
-                    }
-                }
-            }, 0, 1000);
+        try {
+            getContext().registerReceiver(timeChangeReceiver, intentFilter);
+        } catch (Exception e) {
+            FlyLog.e(e.toString());
         }
     }
 
     @Override
     protected void onDetachedFromWindow() {
-        mHandler.removeCallbacksAndMessages(null);
-        if (mTimer != null) {
-            mTimer.cancel();
+        upView();
+        try {
+            getContext().unregisterReceiver(timeChangeReceiver);
+        } catch (Exception e) {
+            FlyLog.e(e.toString());
         }
         super.onDetachedFromWindow();
+    }
+
+    class TimeChangeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Intent.ACTION_TIME_TICK:
+                case Intent.ACTION_TIME_CHANGED:
+                case Intent.ACTION_TIMEZONE_CHANGED:
+                    bTime24 = Settings.System.getString(getContext().getContentResolver(), Settings.System.TIME_12_24).equals("24");
+                    upView();
+                    break;
+            }
+        }
     }
 }

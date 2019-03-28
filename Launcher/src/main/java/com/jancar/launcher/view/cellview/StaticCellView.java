@@ -15,7 +15,7 @@ import com.jancar.launcher.view.flyview.FlyImageView;
 import com.jancar.launcher.view.flyview.MirrorView;
 
 public class StaticCellView extends FrameLayout implements ICellView{
-    protected CellBean appInfo;
+    protected CellBean mCellBean;
     private FlyImageView imageView;
     private MirrorView mirrorView;
 
@@ -41,14 +41,14 @@ public class StaticCellView extends FrameLayout implements ICellView{
 
     @Override
     public void setData(CellBean appInfo) {
-        this.appInfo = appInfo;
+        this.mCellBean = appInfo;
     }
 
     @Override
     public void notifyView() {
         if (imageView == null) return;
         Glide.with(getContext())
-                .load(appInfo.defaultImageUrl)
+                .load(mCellBean.defaultImageUrl)
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(new SimpleTarget<Bitmap>() {

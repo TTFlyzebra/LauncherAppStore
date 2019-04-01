@@ -7,7 +7,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.jancar.launcher.bean.CellBean;
@@ -15,7 +14,7 @@ import com.jancar.launcher.view.flyview.FlyImageView;
 import com.jancar.launcher.view.flyview.MirrorView;
 
 public class StaticCellView extends FrameLayout implements ICellView{
-    protected CellBean mCellBean;
+    protected CellBean cellBean;
     private FlyImageView imageView;
     private MirrorView mirrorView;
 
@@ -40,17 +39,17 @@ public class StaticCellView extends FrameLayout implements ICellView{
     }
 
     @Override
-    public void setData(CellBean appInfo) {
-        this.mCellBean = appInfo;
+    public void setData(CellBean cellBean) {
+        this.cellBean = cellBean;
     }
 
     @Override
     public void notifyView() {
         if (imageView == null) return;
         Glide.with(getContext())
-                .load(mCellBean.defaultImageUrl)
+                .load(cellBean.defaultImageUrl)
                 .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .override(cellBean.width, cellBean.height)
                 .into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(final Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {

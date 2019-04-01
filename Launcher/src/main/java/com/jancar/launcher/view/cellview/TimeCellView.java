@@ -104,7 +104,7 @@ public class TimeCellView extends StaticCellView {
 
     @Override
     public void setData(CellBean mCellBean) {
-        this.mCellBean = mCellBean;
+        this.cellBean = mCellBean;
 
         int color = 0xFFFFFFFF;
         try {

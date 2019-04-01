@@ -1,10 +1,10 @@
 {
-  "bkimg": "",
-  "animtor": "1",
-  "mirror": "1",
+  "imageurl": "",
+  "animType": "1",
+  "isMirror": "1",
   "pageList": [
     {
-      "cells": [
+      "cellList": [
         {
           "action": "",
           "className": "com.autonavi.amapauto.MainMapActivity",
@@ -179,7 +179,7 @@
       "y": 0
     },
     {
-      "cells": [
+      "cellList": [
         {
           "action": "",
           "className": "com.jancar.player.video.VideoActivity",
@@ -354,7 +354,7 @@
       "y": 0
     },
     {
-      "cells": [
+      "cellList": [
         {
           "action": "",
           "className": "com.jancar.settings.view.activity.MainActivity",

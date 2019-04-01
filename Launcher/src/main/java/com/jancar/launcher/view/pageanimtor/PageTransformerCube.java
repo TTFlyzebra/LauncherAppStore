@@ -1,4 +1,4 @@
-package com.jancar.launcher.view.viewpager;
+package com.jancar.launcher.view.pageanimtor;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -8,9 +8,10 @@ import android.view.View;
  * Created by  Rex on 2016/9/28.
  * 给ViewPager加上3d旋转过度动画
  */
-public class Switch3DPageTransformer implements ViewPager.PageTransformer {
+public class PageTransformerCube implements ViewPager.PageTransformer {
     @Override
     public void transformPage(View view, float position) {
+//        FlyLog.d("%d:position="+position,view.getTag());
         float rotation = 45f * position;
         if (position >= 0) {
             view.setPivotX(0);
@@ -19,7 +20,7 @@ public class Switch3DPageTransformer implements ViewPager.PageTransformer {
         }
         view.setPivotY(view.getHeight() * 0.5f);
         view.setRotationY(rotation);
-        if (position > -1.0f || position < 1.0f) {
+        if (position > -1.0f && position < 1.0f) {
             view.setVisibility(View.VISIBLE);
         } else {
             view.setTranslationX(0);

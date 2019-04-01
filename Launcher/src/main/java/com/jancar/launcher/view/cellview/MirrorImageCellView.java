@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.jancar.JancarManager;
@@ -28,7 +27,7 @@ import com.jancar.launcher.view.flyview.FlyTextView;
 import com.jancar.launcher.view.flyview.MirrorView;
 
 public class MirrorImageCellView extends FrameLayout implements ICellView, View.OnTouchListener, View.OnClickListener {
-    private CellBean appInfo;
+    private CellBean cellBean;
     private FlyImageView imageView;
     private MirrorView mirrorView;
     private MirrorView mirrorImageView;
@@ -74,7 +73,7 @@ public class MirrorImageCellView extends FrameLayout implements ICellView, View.
 
     @Override
     public void setData(CellBean appInfo) {
-        this.appInfo = appInfo;
+        this.cellBean = appInfo;
         if (appInfo.width > 0 || appInfo.height > 0) {
             LayoutParams params1 = (LayoutParams) imageView.getLayoutParams();
             params1.width = appInfo.width;
@@ -109,14 +108,14 @@ public class MirrorImageCellView extends FrameLayout implements ICellView, View.
 
     @Override
     public void notifyView() {
-        if (textView != null && appInfo != null && appInfo.textTitle != null) {
-            textView.setText(appInfo.textTitle.getText());
+        if (textView != null && cellBean != null && cellBean.textTitle != null) {
+            textView.setText(cellBean.textTitle.getText());
         }
         if (imageView == null) return;
         Glide.with(getContext())
-                .load(appInfo.defaultImageUrl)
+                .load(cellBean.defaultImageUrl)
                 .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .override(cellBean.width, cellBean.height)
                 .into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(final Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -136,18 +135,18 @@ public class MirrorImageCellView extends FrameLayout implements ICellView, View.
      */
     @Override
     public void runAction() {
-        if (!TextUtils.isEmpty(appInfo.jancar) && jancarManager != null) {
-            if (jancarManager.requestPage(appInfo.jancar)) {
-                FlyLog.d("start app by jancarManager id=%s", appInfo.jancar);
+        if (!TextUtils.isEmpty(cellBean.jancar) && jancarManager != null) {
+            if (jancarManager.requestPage(cellBean.jancar)) {
+                FlyLog.d("start app by jancarManager id=%s", cellBean.jancar);
                 return;
             } else {
                 FlyLog.d("start app by jancarManager failed!");
             }
         }
-        if (CommondUtils.execStartPackage(getContext(), appInfo.packName, appInfo.className))
+        if (CommondUtils.execStartPackage(getContext(), cellBean.packName, cellBean.className))
             return;
-        if (CommondUtils.execStartActivity(getContext(), appInfo.action)) return;
-        if (!CommondUtils.execStartPackage(getContext(), appInfo.packName)) {
+        if (CommondUtils.execStartActivity(getContext(), cellBean.action)) return;
+        if (!CommondUtils.execStartPackage(getContext(), cellBean.packName)) {
 //            Toast.makeText(getContext(), getContext().getResources().getString(R.string.startAppFailed), Toast.LENGTH_SHORT).show();
         }
     }

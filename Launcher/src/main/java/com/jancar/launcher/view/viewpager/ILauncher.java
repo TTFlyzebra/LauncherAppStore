@@ -1,8 +1,8 @@
 package com.jancar.launcher.view.viewpager;
 
-import com.jancar.launcher.bean.TemplateBean;
+import com.jancar.launcher.bean.ThemeBean;
 
 
 public interface ILauncher {
-    void setData(TemplateBean templateBean);
+    void setData(ThemeBean themeBean);
 }

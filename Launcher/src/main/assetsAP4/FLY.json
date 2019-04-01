@@ -1,11 +1,11 @@
 {
-  "bkimg": "file:///android_asset/AA3/bkimg.png",
+  "imageurl": "file:///android_asset/AP4/bkimg.png",
   "pageList": [
     {
-      "cells": [
+      "cellList": [
         {
           "action": "",
-          "defaultImageUrl": "file:///android_asset/AA3/01_00.png",
+          "defaultImageUrl": "file:///android_asset/AP4/01_00.png",
           "type": 0,
           "width": 1024,
           "height": 140,
@@ -14,7 +14,7 @@
         },
         {
           "action": "",
-          "defaultImageUrl": "file:///android_asset/AA3/01_01.png",
+          "defaultImageUrl": "file:///android_asset/AP4/01_01.png",
           "type": 3,
           "textColor": "#FFFFFF",
           "textTop": 10,
@@ -29,7 +29,7 @@
         },
         {
           "action": "",
-          "defaultImageUrl": "file:///android_asset/AA3/01_02.png",
+          "defaultImageUrl": "file:///android_asset/AP4/01_02.png",
           "type": 4,
           "height": 236,
           "width": 650,
@@ -39,7 +39,7 @@
         {
           "action": "",
           "className": "com.autonavi.amapauto.MainMapActivity",
-          "defaultImageUrl": "file:///android_asset/AA3/01_03.png",
+          "defaultImageUrl": "file:///android_asset/AP4/01_03.png",
           "intentFlag": "0x10200000",
           "jancar": "gps",
           "packName": "com.autonavi.amapauto",
@@ -79,7 +79,7 @@
         {
           "action": "",
           "className": "com.jancar.radio.RadioActivity",
-          "defaultImageUrl": "file:///android_asset/AA3/01_04.png",
+          "defaultImageUrl": "file:///android_asset/AP4/01_04.png",
           "intentFlag": "0x10200000",
           "jancar": "fm",
           "packName": "com.jancar.radio",
@@ -119,7 +119,7 @@
         {
           "action": "",
           "className": "com.android.launcher3.Launcher",
-          "defaultImageUrl": "file:///android_asset/AA3/01_05.png",
+          "defaultImageUrl": "file:///android_asset/AP4/01_05.png",
           "height": 112,
           "intentFlag": "0x10200000",
           "jancar": "app",
@@ -158,7 +158,7 @@
         {
           "action": "",
           "className": "com.jancar.bluetooth.phone.view.MainActivity",
-          "defaultImageUrl": "file:///android_asset/AA3/01_06.png",
+          "defaultImageUrl": "file:///android_asset/AP4/01_06.png",
           "intentFlag": "0x10200000",
           "jancar": "btdial",
           "packName": "com.jancar.bluetooth.phone",
@@ -198,7 +198,7 @@
         {
           "action": "",
           "className": "com.jancar.bluetooth.phone.view.MusicActivity",
-          "defaultImageUrl": "file:///android_asset/AA3/01_07.png",
+          "defaultImageUrl": "file:///android_asset/AP4/01_07.png",
           "intentFlag": "0x10200000",
           "jancar": "a2dp",
           "packName": "com.jancar.bluetooth.phone",

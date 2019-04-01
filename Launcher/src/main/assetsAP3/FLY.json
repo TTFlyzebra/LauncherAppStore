@@ -1,13 +1,13 @@
 {
-  "bkimg": "file:///android_asset/AA2/bkimg.png",
-  "animtor": "1",
+  "imageurl": "file:///android_asset/AP3/bkimg.png",
+  "animType": "1",
   "pageList": [
     {
-      "cells": [
+      "cellList": [
         {
           "action": "",
           "className": "com.jancar.radio.RadioActivity",
-          "defaultImageUrl": "file:///android_asset/AA2/01_01.png",
+          "defaultImageUrl": "file:///android_asset/AP3/01_01.png",
           "intentFlag": "0x10200000",
           "jancar": "fm",
           "packName": "com.jancar.radio",
@@ -47,7 +47,7 @@
         {
           "action": "",
           "className": "com.autonavi.amapauto.MainMapActivity",
-          "defaultImageUrl": "file:///android_asset/AA2/01_02.png",
+          "defaultImageUrl": "file:///android_asset/AP3/01_02.png",
           "intentFlag": "0x10200000",
           "jancar": "gps",
           "packName": "com.autonavi.amapauto",
@@ -87,7 +87,7 @@
         {
           "action": "",
           "className": "net.easyconn.WelcomeActivity",
-          "defaultImageUrl": "file:///android_asset/AA2/01_03.png",
+          "defaultImageUrl": "file:///android_asset/AP3/01_03.png",
           "intentFlag": "0x10200000",
           "jancar": "elink",
           "packName": "net.easyconn",
@@ -127,7 +127,7 @@
         {
           "action": "",
           "className": "com.jancar.bluetooth.phone.view.MainActivity",
-          "defaultImageUrl": "file:///android_asset/AA2/01_04.png",
+          "defaultImageUrl": "file:///android_asset/AP3/01_04.png",
           "intentFlag": "0x10200000",
           "jancar": "btdial",
           "packName": "com.jancar.bluetooth.phone",
@@ -167,7 +167,7 @@
         {
           "action": "",
           "className": "com.jancar.bluetooth.phone.view.MusicActivity",
-          "defaultImageUrl": "file:///android_asset/AA2/01_05.png",
+          "defaultImageUrl": "file:///android_asset/AP3/01_05.png",
           "intentFlag": "0x10200000",
           "jancar": "a2dp",
           "packName": "com.jancar.bluetooth.phone",
@@ -207,7 +207,7 @@
         {
           "action": "",
           "className": "com.jancar.player.music.MusicActivity",
-          "defaultImageUrl": "file:///android_asset/AA2/01_06.png",
+          "defaultImageUrl": "file:///android_asset/AP3/01_06.png",
           "intentFlag": "0x10200000",
           "jancar": "music",
           "packName": "com.jancar.player.music",
@@ -249,11 +249,11 @@
       "y": 0
     },
     {
-      "cells": [
+      "cellList": [
         {
           "action": "",
           "className": "com.jancar.player.video.VideoActivity",
-          "defaultImageUrl": "file:///android_asset/AA2/02_01.png",
+          "defaultImageUrl": "file:///android_asset/AP3/02_01.png",
           "intentFlag": "0x10200000",
           "jancar": "video",
           "packName": "com.jancar.player.video",
@@ -293,7 +293,7 @@
         {
           "action": "",
           "className": "com.jancar.player.photo.PhotoActivity",
-          "defaultImageUrl": "file:///android_asset/AA2/02_02.png",
+          "defaultImageUrl": "file:///android_asset/AP3/02_02.png",
           "intentFlag": "0x10200000",
           "jancar": "image",
           "packName": "com.jancar.player.photo",
@@ -333,7 +333,7 @@
         {
           "action": "",
           "className": "com.jancar.settings.view.activity.MainActivity",
-          "defaultImageUrl": "file:///android_asset/AA2/02_03.png",
+          "defaultImageUrl": "file:///android_asset/AP3/02_03.png",
           "intentFlag": "0x10200000",
           "jancar": "setting",
           "packName": "com.jancar.settingss",
@@ -373,7 +373,7 @@
         {
           "action": "",
           "className": "com.jancar.avin.MainActivity",
-          "defaultImageUrl": "file:///android_asset/AA2/02_04.png",
+          "defaultImageUrl": "file:///android_asset/AP3/02_04.png",
           "intentFlag": "0x10200000",
           "jancar": "avin",
           "packName": "com.jancar.avin",
@@ -413,7 +413,7 @@
         {
           "action": "",
           "className": "com.android.launcher3.Launcher",
-          "defaultImageUrl": "file:///android_asset/AA2/02_05.png",
+          "defaultImageUrl": "file:///android_asset/AP3/02_05.png",
           "intentFlag": "0x10200000",
           "jancar": "app",
           "packName": "com.android.launcher3",

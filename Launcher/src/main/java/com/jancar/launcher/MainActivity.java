@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -24,15 +25,16 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.bean.PageBean;
-import com.jancar.launcher.bean.TemplateBean;
+import com.jancar.launcher.bean.ThemeBean;
 import com.jancar.launcher.utils.FlyLog;
 import com.jancar.launcher.utils.GsonUtils;
 import com.jancar.launcher.utils.SystemProperties;
 import com.jancar.launcher.view.flyview.FlyDialog;
+import com.jancar.launcher.view.pageanimtor.PageTransformerCube;
+import com.jancar.launcher.view.pageanimtor.PageTransformerPage;
 import com.jancar.launcher.view.pageview.SimplePageView;
 import com.jancar.launcher.view.viewpager.LauncherView;
 import com.jancar.launcher.view.viewpager.NavForViewPager;
-import com.jancar.launcher.view.viewpager.Switch3DPageTransformer;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -46,14 +48,17 @@ import java.util.List;
 
 
 public class MainActivity extends Activity {
-    private LauncherView launcherView;
+    private LauncherView pageViews;
     private SimplePageView topView;
-    private RelativeLayout pagesView;
     private NavForViewPager navForViewPager;
     private USBReceiver receiver;
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private int addcount = 0;
     private boolean isLoad = false;
+    private float screenWidth = 1024;
+    private float screenHeigh = 600;
+    private float screenScacle = 1.0f;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,14 +66,17 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 //        Settings.Global.putInt(getContentResolver(), Settings.Global.DEVICE_PROVISIONED, 1);
 //        Settings.Secure.putInt(getContentResolver(), Settings.Secure.USER_SETUP_COMPLETE, 1);
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        screenWidth = dm.widthPixels;
+        screenHeigh = dm.heightPixels;
 
-        launcherView = (LauncherView) findViewById(R.id.ac_main_launcherview);
+
+        pageViews = (LauncherView) findViewById(R.id.ac_main_launcherview);
         topView = (SimplePageView) findViewById(R.id.ac_main_topview);
-        pagesView = (RelativeLayout) findViewById(R.id.ac_main_pages);
-
 
 //        new ViewPagerScroller(launcherView.getContext()).initViewPagerScroll(launcherView);
-        launcherView.setOffscreenPageLimit(10);
+        pageViews.setOffscreenPageLimit(10);
         navForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
 
         String template = SystemProperties.get(this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_NAME, "FLY") + ".json";
@@ -153,79 +161,58 @@ public class MainActivity extends Activity {
         } else {
             jsonStr = getAssetFileText(name, this);
         }
-        final TemplateBean templateBean = GsonUtils.json2Object(jsonStr, TemplateBean.class);
-        if (templateBean != null) {
+        final ThemeBean themeBean = GsonUtils.json2Object(jsonStr, ThemeBean.class);
+        if (themeBean != null) {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     if (!isLoad) {
-                        loadView(templateBean, isInFile, name);
+                        loadView(themeBean, isInFile, name);
                     }
                 }
             }, 10000);
             try {
-                final PageBean pageBean = templateBean.pageList.get(0);
-                for (int j = 0; j < pageBean.cells.size(); j++) {
-                    CellBean cellBean = pageBean.cells.get(j);
+                final PageBean pageBean = themeBean.pageList.get(0);
+                for (int j = 0; j < pageBean.cellList.size(); j++) {
+                    CellBean cellBean = pageBean.cellList.get(j);
                     Glide.with(this)
                             .load(cellBean.defaultImageUrl)
                             .asBitmap()
-                            .diskCacheStrategy( DiskCacheStrategy.NONE )
+                            .override(cellBean.width, cellBean.height)
                             .into(new SimpleTarget<Bitmap>() {
                                 @Override
                                 public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
                                     addcount++;
-                                    if (addcount == pageBean.cells.size() && !isLoad) {
-                                        loadView(templateBean, isInFile, name);
+                                    if (addcount == pageBean.cellList.size() && !isLoad) {
+                                        loadView(themeBean, isInFile, name);
                                     }
                                 }
                             });
                 }
             } catch (Exception e) {
                 FlyLog.e(e.toString());
-                loadView(templateBean, isInFile, name);
+                loadView(themeBean, isInFile, name);
             }
-
-            //设置壁纸
-//            if (!TextUtils.isEmpty(templateBean.bkimg))
-//                setBackGround(templateBean.bkimg);
         }
     }
 
 
-    private void loadView(TemplateBean templateBean, boolean isInFile, String name) {
+    private void loadView(ThemeBean themeBean, boolean isInFile, String name) {
         isLoad = true;
-        List<PageBean> pageBeans = templateBean.pageList;
-        if (templateBean.x != 0 || templateBean.y != 0 || templateBean.width != 0 || templateBean.height != 0) {
-            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) pagesView.getLayoutParams();
-            lp.setMargins(templateBean.x, templateBean.y, 0, 0);
-            lp.setMarginStart(templateBean.x);
-            lp.width = templateBean.width;
-            lp.height = templateBean.height;
-            pagesView.setLayoutParams(lp);
-            for (PageBean pageBean : pageBeans) {
-                if (pageBean.cells == null || pageBean.cells.isEmpty())
-                    continue;
-                for (CellBean cellBean : pageBean.cells) {
-                    cellBean.x = cellBean.x - templateBean.x;
-                    cellBean.y = cellBean.y - templateBean.y;
-                }
-            }
-        } else {
-            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) pagesView.getLayoutParams();
-            lp.setMargins(templateBean.x, templateBean.y, 0, 0);
-            lp.setMarginStart(templateBean.x);
-            lp.width = -1;
-            lp.height = -1;
-            pagesView.setLayoutParams(lp);
-        }
+        matchResolution(themeBean);
+        List<PageBean> pageBeans = themeBean.pageList;
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(themeBean.right - themeBean.left, themeBean.bottom - themeBean.top);
+        lp.setMarginStart(themeBean.left);
+        lp.topMargin = themeBean.top;
+
+        pageViews.setLayoutParams(lp);
 
         if (pageBeans != null && !pageBeans.isEmpty()) {
 
             if (isInFile) {
                 String rootPath = name.substring(0, name.lastIndexOf("/"));
                 for (PageBean page : pageBeans) {
-                    for (CellBean cellBean : page.cells) {
+                    for (CellBean cellBean : page.cellList) {
                         if (!TextUtils.isEmpty(cellBean.defaultImageUrl)) {
                             cellBean.defaultImageUrl.replace("file:///android_asset", rootPath);
                         }
@@ -233,22 +220,25 @@ public class MainActivity extends Activity {
                 }
             }
 
-            switch (templateBean.animtor) {
+            switch (themeBean.animType) {
                 case 1:
-                    launcherView.setPageTransformer(true, new Switch3DPageTransformer());
+                    pageViews.setPageTransformer(true, new PageTransformerCube());
+                    break;
+                case 2:
+                    pageViews.setPageTransformer(true, new PageTransformerPage());
                     break;
                 default:
-                    launcherView.setPageTransformer(true, null);
+                    pageViews.setPageTransformer(true, null);
                     break;
             }
 
-            launcherView.setData(templateBean);
-            navForViewPager.setViewPager(launcherView);
+            pageViews.setData(themeBean);
+            navForViewPager.setViewPager(pageViews);
         }
 
         topView.removeAllViews();
-        if (templateBean.topPage != null && templateBean.topPage.cells != null && !templateBean.topPage.cells.isEmpty()) {
-            topView.setData(templateBean.topPage);
+        if (themeBean.topPage != null && themeBean.topPage.cellList != null && !themeBean.topPage.cellList.isEmpty()) {
+            topView.setData(themeBean.topPage);
         }
     }
 
@@ -317,7 +307,6 @@ public class MainActivity extends Activity {
                 }
 
                 if (!list.isEmpty()) {
-//                                    switchUI("AA3.json");
                     showSwitchDialog(list);
                 }
             }
@@ -343,5 +332,82 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
         mHandler.removeCallbacksAndMessages(null);
         super.onDestroy();
+    }
+
+    /**
+     * 匹配屏幕分辨率
+     */
+    private void matchResolution(ThemeBean mThemeBean) {
+        //如果设置的分辨率无效，设置为系统获取的分辨率和有效区域。
+        if (mThemeBean.screenWidth <= 0 || mThemeBean.screenHeight <= 0) {
+            mThemeBean.screenWidth = (int) screenWidth;
+            mThemeBean.screenHeight = (int) screenHeigh;
+            mThemeBean.left = 0;
+            mThemeBean.top = 0;
+            mThemeBean.right = (int) screenWidth;
+            mThemeBean.bottom = (int) screenHeigh;
+            return;
+        }
+        if (mThemeBean.right <= mThemeBean.left || mThemeBean.bottom <= mThemeBean.top) {
+            mThemeBean.left = 0;
+            mThemeBean.top = 0;
+            mThemeBean.right = (int) screenWidth;
+            mThemeBean.bottom = (int) screenHeigh;
+        }
+
+        //如果设置的有效区域无效，设置有效区域为全屏
+        float wScale = screenWidth / (float) mThemeBean.screenWidth;
+        float hScale = screenHeigh / (float) mThemeBean.screenHeight;
+        if (wScale == 1 && hScale == 1) {
+            if (mThemeBean.left != 0 || mThemeBean.top != 0) {
+                for (PageBean pageBean : mThemeBean.pageList) {
+                    for (CellBean cellBean : pageBean.cellList) {
+                        //有效显示区域FitCenter，只显示位于指定区域中的内容
+                        cellBean.x = cellBean.x - mThemeBean.left;
+                        cellBean.y = cellBean.y - mThemeBean.top;
+                    }
+                }
+            }
+            return;
+        }
+
+        screenScacle = Math.min(wScale, hScale);
+        int moveX = (int) ((screenWidth - mThemeBean.screenWidth * screenScacle) / 2);
+        int moveY = (int) ((screenHeigh - mThemeBean.screenHeight * screenScacle) / 2);
+
+        mThemeBean.left = (int) (mThemeBean.left * screenScacle) + moveX;
+        mThemeBean.top = (int) (mThemeBean.top * screenScacle) + moveY;
+        mThemeBean.right = (int) (mThemeBean.right * screenScacle) + moveX;
+        mThemeBean.bottom = (int) (mThemeBean.bottom * screenScacle) + moveY;
+
+        if (mThemeBean.pageList != null) {
+            for (PageBean pageBean : mThemeBean.pageList) {
+                for (CellBean cellBean : pageBean.cellList) {
+                    //有效显示区域FitCenter，只显示位于指定区域中的内容
+                    cellBean.x = (int) (cellBean.x * screenScacle) + moveX - mThemeBean.left;
+                    cellBean.y = (int) (cellBean.y * screenScacle) + moveY - mThemeBean.top;
+                    cellBean.width = (int) (cellBean.width * screenScacle);
+                    cellBean.height = (int) (cellBean.height * screenScacle);
+                    cellBean.textSize = (int) (cellBean.textSize * screenScacle);
+                    cellBean.textLeft = (int) (cellBean.textLeft * screenScacle);
+                    cellBean.textTop = (int) (cellBean.textTop * screenScacle);
+                    cellBean.textRight = (int) (cellBean.textRight * screenScacle);
+                    cellBean.textBottom = (int) (cellBean.textBottom * screenScacle);
+                }
+            }
+            if (mThemeBean.topPage != null && mThemeBean.topPage.cellList != null) {
+                for (CellBean cellBean : mThemeBean.topPage.cellList) {
+                    cellBean.x = (int) (cellBean.x * screenScacle) + moveX;
+                    cellBean.y = (int) (cellBean.y * screenScacle) + moveY;
+                    cellBean.width = (int) (cellBean.width * screenScacle);
+                    cellBean.height = (int) (cellBean.height * screenScacle);
+                    cellBean.textSize = (int) (cellBean.textSize * screenScacle);
+                    cellBean.textLeft = (int) (cellBean.textLeft * screenScacle);
+                    cellBean.textTop = (int) (cellBean.textTop * screenScacle);
+                    cellBean.textRight = (int) (cellBean.textRight * screenScacle);
+                    cellBean.textBottom = (int) (cellBean.textBottom * screenScacle);
+                }
+            }
+        }
     }
 }

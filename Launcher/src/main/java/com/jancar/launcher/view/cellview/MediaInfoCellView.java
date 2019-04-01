@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.jancar.JancarServer;
@@ -30,7 +29,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class MediaInfoCellView extends FrameLayout implements ICellView, View.OnClickListener {
-    private CellBean appInfo;
+    private CellBean cellBean;
     private FlyImageView imageView;
     private MirrorView mirrorView;
     private JacMediaController controller;
@@ -99,16 +98,16 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
 
     @Override
     public void setData(CellBean appInfo) {
-        this.appInfo = appInfo;
+        this.cellBean = appInfo;
     }
 
     @Override
     public void notifyView() {
         if (imageView == null) return;
         Glide.with(getContext())
-                .load(appInfo.defaultImageUrl)
+                .load(cellBean.defaultImageUrl)
                 .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .override(cellBean.width, cellBean.height)
                 .into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(final Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {

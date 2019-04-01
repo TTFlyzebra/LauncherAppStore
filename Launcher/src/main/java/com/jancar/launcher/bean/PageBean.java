@@ -11,10 +11,10 @@ public class PageBean implements Cloneable{
     public int itemHeight = 0;
     public int x = 0;
     public int y= 0;
-    public List<CellBean> cells;
+    public List<CellBean> cellList;
     public PageBean clone() throws CloneNotSupportedException{
         PageBean newPageBean = (PageBean) super.clone();
-        newPageBean.cells = new ArrayList<>();
+        newPageBean.cellList = new ArrayList<>();
         return newPageBean;
     }
 }

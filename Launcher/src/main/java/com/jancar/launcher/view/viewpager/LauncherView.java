@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jancar.launcher.bean.PageBean;
-import com.jancar.launcher.bean.TemplateBean;
+import com.jancar.launcher.bean.ThemeBean;
 import com.jancar.launcher.utils.CommondUtils;
 import com.jancar.launcher.utils.FlyLog;
 import com.jancar.launcher.view.pageview.SimplePageView;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class LauncherView extends ViewPager implements ILauncher {
     private List<PageBean> pageList = new ArrayList<>();
-    private TemplateBean templateBean;
+    private ThemeBean themeBean;
     private MyPgaeAdapter myPgaeAdapter = new MyPgaeAdapter();
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
@@ -57,12 +57,12 @@ public class LauncherView extends ViewPager implements ILauncher {
     }
 
     @Override
-    public void setData(TemplateBean templateBean) {
-        if (templateBean == null || templateBean.pageList == null || templateBean.pageList.isEmpty()) {
+    public void setData(ThemeBean themeBean) {
+        if (themeBean == null || themeBean.pageList == null || themeBean.pageList.isEmpty()) {
             return;
         }
-        this.templateBean = templateBean;
-        List<PageBean> mPageBeanList = templateBean.pageList;
+        this.themeBean = themeBean;
+        List<PageBean> mPageBeanList = themeBean.pageList;
         pageList.clear();
         if (mPageBeanList.size() > 1) {
             pageList.add(mPageBeanList.get(mPageBeanList.size() - 1));
@@ -103,7 +103,7 @@ public class LauncherView extends ViewPager implements ILauncher {
         public Object instantiateItem(ViewGroup container, int position) {
             SimplePageView simplePageView = new SimplePageView(getContext());
             simplePageView.setTag(position);
-            simplePageView.setMirror(templateBean.mirror != 0);
+            simplePageView.setMirror(themeBean.isMirror != 0);
             simplePageView.setData(pageList.get(position));
             container.addView(simplePageView);
             return simplePageView;

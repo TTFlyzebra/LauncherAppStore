@@ -119,7 +119,7 @@ public class SwitchCellView extends FrameLayout implements ICellView, View.OnTou
         Glide.with(getContext())
                 .load(imgurl)
                 .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .override(mCellBean.width, mCellBean.height)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(final Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {

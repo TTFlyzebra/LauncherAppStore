@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.jancar.launcher.R;
 import com.jancar.launcher.utils.FlyLog;
 import com.jancar.launcher.view.flyview.NumTextView;
@@ -179,8 +178,8 @@ public class RadioCellView extends SimpeCellView {
         if (imageView2 == null) return;
 
         Glide.with(getContext())
-                .load(appInfo.focusImageUrl)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .load(cellBean.focusImageUrl)
+                .override(cellBean.width, cellBean.height)
                 .into(imageView2);
     }
 

@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
         pageViews.setOffscreenPageLimit(10);
         navForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
 
-        String template = SystemProperties.get(this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_NAME, "FLY") + ".json";
+        String template = SystemProperties.get(this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_NAME, "AP3") + ".json";
         switchUI(template);
 
         receiver = new USBReceiver();
@@ -204,7 +204,6 @@ public class MainActivity extends Activity {
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(themeBean.right - themeBean.left, themeBean.bottom - themeBean.top);
         lp.setMarginStart(themeBean.left);
         lp.topMargin = themeBean.top;
-
         pageViews.setLayoutParams(lp);
 
         if (pageBeans != null && !pageBeans.isEmpty()) {
@@ -351,8 +350,8 @@ public class MainActivity extends Activity {
         if (mThemeBean.right <= mThemeBean.left || mThemeBean.bottom <= mThemeBean.top) {
             mThemeBean.left = 0;
             mThemeBean.top = 0;
-            mThemeBean.right = (int) screenWidth;
-            mThemeBean.bottom = (int) screenHeigh;
+            mThemeBean.right =  mThemeBean.screenWidth;
+            mThemeBean.bottom =  mThemeBean.screenHeight;
         }
 
         //如果设置的有效区域无效，设置有效区域为全屏

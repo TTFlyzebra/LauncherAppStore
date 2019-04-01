@@ -382,6 +382,9 @@ public class MainActivity extends Activity {
 
         if (mThemeBean.pageList != null) {
             for (PageBean pageBean : mThemeBean.pageList) {
+                pageBean.itemWidth = (int) (pageBean.itemWidth * screenScacle);
+                pageBean.itemHeight = (int) (pageBean.itemHeight * screenScacle);
+                pageBean.itemPadding = (int) (pageBean.itemPadding * screenScacle);
                 for (CellBean cellBean : pageBean.cellList) {
                     //有效显示区域FitCenter，只显示位于指定区域中的内容
                     cellBean.x = (int) (cellBean.x * screenScacle) + moveX - mThemeBean.left;

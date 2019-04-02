@@ -18,7 +18,7 @@
         <com.jancar.launcher.view.viewpager.NavForViewPager
             android:id="@+id/ac_main_navforviewpager"
             android:layout_width="match_parent"
-            android:layout_height="80px"
+            android:layout_height="70px"
             android:layout_alignParentBottom="true" />
     </RelativeLayout>
 

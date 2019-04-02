@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.jancar.launcher.bean.CellBean;
@@ -49,7 +50,7 @@ public class StaticCellView extends FrameLayout implements ICellView{
         Glide.with(getContext())
                 .load(cellBean.defaultImageUrl)
                 .asBitmap()
-                .override(cellBean.width, cellBean.height)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(final Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {

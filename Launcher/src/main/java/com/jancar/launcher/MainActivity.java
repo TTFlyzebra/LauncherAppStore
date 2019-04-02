@@ -15,7 +15,6 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
@@ -79,7 +78,7 @@ public class MainActivity extends Activity {
         pageViews.setOffscreenPageLimit(10);
         navForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
 
-        String template = SystemProperties.get(this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_NAME, "AP3") + ".json";
+        String template = SystemProperties.get(this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_NAME, "FLY") + ".json";
         switchUI(template);
 
         receiver = new USBReceiver();
@@ -178,7 +177,7 @@ public class MainActivity extends Activity {
                     Glide.with(this)
                             .load(cellBean.defaultImageUrl)
                             .asBitmap()
-                            .override(cellBean.width, cellBean.height)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(new SimpleTarget<Bitmap>() {
                                 @Override
                                 public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {

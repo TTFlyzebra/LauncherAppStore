@@ -1,9 +1,11 @@
 package com.jancar.launcher.view.cellview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -24,6 +26,9 @@ public class RadioCellView extends SimpeCellView {
     private String fmName = "";
     private String fmKz = "";
     private String showImageUrl = "";
+    private int screenWidth;
+    private int screenHeigh;
+    private float screenScacle = 1.0f;
 
     public RadioCellView(Context context) {
         super(context);
@@ -40,38 +45,46 @@ public class RadioCellView extends SimpeCellView {
     @Override
     public void initView(Context context) {
         super.initView(context);
+        DisplayMetrics dm = new DisplayMetrics();
+        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        screenWidth = dm.widthPixels;
+        screenHeigh = dm.heightPixels;
+        //如果设置的有效区域无效，设置有效区域为全屏
+        float wScale = screenWidth / (float)1024;
+        float hScale = screenHeigh / (float)600;
+        screenScacle = Math.min(wScale, hScale);
+
         FlyLog.d("RadioManager init()");
         AMFM_ImageView = new ImageView(context);
         LayoutParams params1 = new LayoutParams(-2, -2);
-        params1.leftMargin = 10;
-        params1.topMargin = 64;
+        params1.leftMargin = (int) (10*screenScacle);
+        params1.topMargin = (int) (64*screenScacle);
         AMFM_ImageView.setImageResource(R.drawable.radio_am);
         addView(AMFM_ImageView, params1);
 
         numTextView = new NumTextView(context);
         LayoutParams params3 = new LayoutParams(-1, -1);
         params3.leftMargin = 0;
-        params3.topMargin = 114;
+        params3.topMargin = (int) (114*screenScacle);
         addView(numTextView, params3);
 
         KHZMHZ_ImageView = new ImageView(context);
         LayoutParams params2 = new LayoutParams(-2, -2);
-        params2.leftMargin = 132;
-        params2.topMargin = 176;
+        params2.leftMargin = (int) (132*screenScacle);
+        params2.topMargin = (int) (176*screenScacle);
         KHZMHZ_ImageView.setImageResource(R.drawable.radio_khz);
         addView(KHZMHZ_ImageView, params2);
 
         imageView2 = new ImageView(context);
-        LayoutParams params4 = new LayoutParams(120, 120);
-        params4.leftMargin = 46;
-        params4.topMargin = 72;
+        LayoutParams params4 = new LayoutParams((int)(120*screenScacle), (int)(120*screenScacle));
+        params4.leftMargin = (int) (46*screenScacle);
+        params4.topMargin = (int) (72*screenScacle);
         addView(imageView2, params4);
 
         imageView2.setVisibility(View.VISIBLE);
         AMFM_ImageView.setVisibility(View.GONE);
         KHZMHZ_ImageView.setVisibility(View.GONE);
         numTextView.setVisibility(View.GONE);
-
 
     }
 
@@ -153,8 +166,8 @@ public class RadioCellView extends SimpeCellView {
                 boolean isKHz = fmKz.endsWith("KHz");
                 AMFM_ImageView.setImageResource(isFM ? R.drawable.radio_fm : R.drawable.radio_am);
                 KHZMHZ_ImageView.setImageResource(isKHz ? R.drawable.radio_khz : R.drawable.radio_mhz);
-                if (fmName.length() > 5) {
-                    fmName = fmName.substring(0, 5);
+                if (fmName.length() > 4) {
+                    fmName = fmName.substring(0, 4);
                 }
                 numTextView.setText(fmName);
                 AMFM_ImageView.setVisibility(View.VISIBLE);

@@ -133,24 +133,40 @@ public class LauncherView extends ViewPager implements ILauncher {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if(ev.getAction()==MotionEvent.ACTION_DOWN){
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             FlyLog.d(ev.toString());
         }
         return super.onInterceptTouchEvent(ev);
     }
 
+    private float x;
+    private float y;
+    private boolean isRemoveTask;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        switch (ev.getAction()){
+        switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 FlyLog.d("ACTION_DOWN");
                 mHandler.removeCallbacks(runSetWallTask);
-                mHandler.postDelayed(runSetWallTask,1000);
+                mHandler.postDelayed(runSetWallTask, 2000);
+                isRemoveTask = false;
+                x = ev.getX();
+                y = ev.getY();
                 break;
             case MotionEvent.ACTION_UP:
                 FlyLog.d("ACTION_UP");
                 mHandler.removeCallbacks(runSetWallTask);
+                isRemoveTask = true;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                FlyLog.d("ACTION_MOVE");
+                if (!isRemoveTask && (Math.abs(ev.getX() - x) > 30 || Math.abs(ev.getY() - y) > 30)) {
+                    FlyLog.d("removeCallbacks -> SetWallTask");
+                    mHandler.removeCallbacks(runSetWallTask);
+                    isRemoveTask = true;
+                }
                 break;
         }
         return super.onTouchEvent(ev);

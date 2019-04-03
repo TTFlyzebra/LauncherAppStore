@@ -1,5 +1,6 @@
 package com.jancar.launcher.view.cellview;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.provider.Settings;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.LinearLayout;
@@ -33,6 +35,9 @@ public class TimeCellView extends StaticCellView {
     private String week = "";
     private IntentFilter intentFilter;
     private TimeChangeReceiver timeChangeReceiver;
+    private int screenWidth;
+    private int screenHeigh;
+    private float screenScacle = 1.0f;
 
     public TimeCellView(Context context) {
         super(context);
@@ -48,6 +53,14 @@ public class TimeCellView extends StaticCellView {
 
     @Override
     public void initView(Context context) {
+        DisplayMetrics dm = new DisplayMetrics();
+        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        screenWidth = dm.widthPixels;
+        screenHeigh = dm.heightPixels;
+        //如果设置的有效区域无效，设置有效区域为全屏
+        float wScale = screenWidth / (float)1024;
+        float hScale = screenHeigh / (float)600;
+        screenScacle = Math.min(wScale, hScale);
         super.initView(context);
         try {
             intentFilter = new IntentFilter();
@@ -113,27 +126,27 @@ public class TimeCellView extends StaticCellView {
             color = 0xFFFFFFFF;
         }
         LinearLayout.LayoutParams alp = (LinearLayout.LayoutParams) ampmView.getLayoutParams();
-        alp.setMargins(0, -24, 0, 0);
-        alp.setMarginStart(38);
+        alp.setMargins(0, 0, 0, 0);
+        alp.setMarginStart((int) (cellBean.textSize/1.6f*screenScacle));
         ampmView.setLayoutParams(alp);
         LinearLayout.LayoutParams tlp = (LinearLayout.LayoutParams) timeView.getLayoutParams();
-        tlp.setMargins(0, -16, 0, 0);
+        tlp.setMargins(0, (int) (-10*screenScacle), 0, 0);
         timeView.setLayoutParams(tlp);
         LinearLayout.LayoutParams wlp = (LinearLayout.LayoutParams) weekView.getLayoutParams();
-        wlp.setMargins(0, 4, 0, 0);
+        wlp.setMargins(0, (int) (4*screenScacle), 0, 0);
         weekView.setLayoutParams(wlp);
         LinearLayout.LayoutParams dlp = (LinearLayout.LayoutParams) dateView.getLayoutParams();
-        dlp.setMargins(0, 12, 0, 0);
+        dlp.setMargins(0, (int) (12*screenScacle), 0, 0);
         dateView.setLayoutParams(dlp);
 
         ampmView.setTextColor(color);
-        ampmView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCellBean.textSize * 32 / 128);
+        ampmView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCellBean.textSize * 32 / 128*screenScacle);
         timeView.setTextColor(color);
         timeView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCellBean.textSize);
         weekView.setTextColor(color);
-        weekView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCellBean.textSize * 32 / 64);
+        weekView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCellBean.textSize * 32 / 64*screenScacle);
         dateView.setTextColor(color);
-        dateView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCellBean.textSize * 32 / 64);
+        dateView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCellBean.textSize * 32 / 64*screenScacle);
     }
 
     private static String getCurrentDate(String dateFormat) {

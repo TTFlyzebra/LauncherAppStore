@@ -467,7 +467,7 @@ public class DeviceProfile {
             lp.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
             lp.width = LayoutParams.WRAP_CONTENT;
             lp.height = LayoutParams.WRAP_CONTENT;
-            lp.bottomMargin = 28;
+            lp.bottomMargin = (int) (38 * Launcher.screenScacle);
             pageIndicator.setLayoutParams(lp);
 //            }
         }

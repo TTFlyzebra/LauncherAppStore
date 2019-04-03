@@ -214,6 +214,7 @@ public class Launcher extends Activity
     private static final String QSB_WIDGET_PROVIDER = "qsb_widget_provider";
 
     public static final String USER_HAS_MIGRATED = "launcher.user_migrated_from_old_data";
+    public static float screenScacle = 1.0f;
 
     /**
      * The different states that Launcher can be in.
@@ -430,6 +431,12 @@ public class Launcher extends Activity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        //如果设置的有效区域无效，设置有效区域为全屏
+        screenScacle = Math.min(dm.widthPixels / (float)1024, dm.heightPixels / (float)600);
+
         if (DEBUG_STRICT_MODE) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                     .detectDiskReads()
@@ -554,8 +561,6 @@ public class Launcher extends Activity
         /**
          * 初始化后门配置
          */
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
         rect[1].left = dm.widthPixels - setp;
         rect[1].right = dm.widthPixels;
         rect[2].top = dm.heightPixels - setp;

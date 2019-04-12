@@ -41,6 +41,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
+import com.android.flyzebra.FlyLog;
 import com.android.launcher3.IconCache.IconLoadRequest;
 import com.android.launcher3.model.PackageItemInfo;
 
@@ -281,7 +282,11 @@ public class BubbleTextView extends TextView
                 // we pre-create it on ACTION_DOWN (it takes a small but perceptible amount of time
                 // to create it)
                 if (!mDeferShadowGenerationOnTouch && mPressedBackground == null) {
-                    mPressedBackground = mOutlineHelper.createMediumDropShadow(this);
+                    try {
+                        mPressedBackground = mOutlineHelper.createMediumDropShadow(this);
+                    }catch (Exception e){
+                        FlyLog.e(e.toString());
+                    }
                 }
 
                 // If we're in a stylus button press, don't check for long press.

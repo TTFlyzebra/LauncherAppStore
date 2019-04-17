@@ -24,7 +24,7 @@
           "textSize": 64,
           "height": 240,
           "width": 262,
-          "x": 44,
+          "x": 34,
           "y": 121
         },
         {
@@ -48,7 +48,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 22,
+          "textSize": 28,
           "textTitle": {
             "ar": "التنقل",
             "de": "navigieren",
@@ -71,10 +71,10 @@
           },
           "textTop": 0,
           "type": 1,
-          "width": 143,
-          "height": 143,
-          "x": 41,
-          "y": 420
+          "width": 142,
+          "height": 142,
+          "x": 40,
+          "y": 405
         },
         {
           "action": "",
@@ -88,7 +88,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 22,
+          "textSize": 28,
           "textTitle": {
             "ar": "راديو",
             "de": "Radio",
@@ -111,16 +111,15 @@
           },
           "textTop": 0,
           "type": 1,
-          "width": 143,
-          "height": 143,
-          "x": 248,
-          "y": 420
+          "width": 142,
+          "height": 142,
+          "x": 240,
+          "y": 405
         },
         {
           "action": "",
           "className": "com.android.launcher3.Launcher",
           "defaultImageUrl": "file:///android_asset/AP4/01_05.png",
-          "height": 143,
           "intentFlag": "0x10200000",
           "jancar": "app",
           "packName": "com.android.launcher3",
@@ -128,7 +127,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 22,
+          "textSize": 28,
           "textTitle": {
             "ar": "تطبيقات",
             "de": "Apps",
@@ -151,9 +150,10 @@
           },
           "textTop": 0,
           "type": 1,
-          "width": 143,
-          "x": 454,
-          "y": 420
+          "width": 142,
+          "height": 142,
+          "x": 439,
+          "y": 405
         },
         {
           "action": "",
@@ -167,7 +167,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 22,
+          "textSize": 28,
           "textTitle": {
             "ar": "الهاتف",
             "de": "Telefon",
@@ -190,10 +190,10 @@
           },
           "textTop": 0,
           "type": 1,
-          "width": 143,
-          "height": 143,
-          "x": 659,
-          "y": 420
+          "width": 142,
+          "height": 142,
+          "x": 637,
+          "y": 405
         },
         {
           "action": "",
@@ -207,7 +207,7 @@
           "textColor": "#FFFFFF",
           "textLeft": 0,
           "textRight": 0,
-          "textSize": 22,
+          "textSize": 28,
           "textTitle": {
             "ar": "الموسيقى بلوتوث",
             "de": "Bluetooth Musik",
@@ -230,10 +230,10 @@
           },
           "textTop": 0,
           "type": 1,
-          "width": 143,
-          "height": 143,
-          "x": 866,
-          "y": 420
+          "width": 142,
+          "height": 142,
+          "x": 837,
+          "y": 405
         }
       ],
       "x": 0,

@@ -102,7 +102,7 @@ public class TimeCellView extends StaticCellView {
             date = getCurrentDate("yyyy-MM-dd");
             week = getCurrentWeek();
             if (bTime24) {
-                ampmView.setVisibility(INVISIBLE);
+                ampmView.setVisibility(GONE);
             } else {
                 ampmView.setVisibility(VISIBLE);
                 ampmView.setText(ampm);
@@ -127,7 +127,7 @@ public class TimeCellView extends StaticCellView {
         }
         LinearLayout.LayoutParams alp = (LinearLayout.LayoutParams) ampmView.getLayoutParams();
         alp.setMargins(0, 0, 0, 0);
-        alp.setMarginStart((int) (cellBean.textSize/1.6f*screenScacle));
+        alp.setMarginStart(10);
         ampmView.setLayoutParams(alp);
         LinearLayout.LayoutParams tlp = (LinearLayout.LayoutParams) timeView.getLayoutParams();
         tlp.setMargins(0, (int) (-10*screenScacle), 0, 0);
@@ -140,7 +140,7 @@ public class TimeCellView extends StaticCellView {
         dateView.setLayoutParams(dlp);
 
         ampmView.setTextColor(color);
-        ampmView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCellBean.textSize * 32 / 128*screenScacle);
+        ampmView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCellBean.textSize * 48 / 128*screenScacle);
         timeView.setTextColor(color);
         timeView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mCellBean.textSize);
         weekView.setTextColor(color);

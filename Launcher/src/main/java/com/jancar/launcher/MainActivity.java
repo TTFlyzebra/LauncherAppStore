@@ -77,8 +77,11 @@ public class MainActivity extends Activity {
 //        new ViewPagerScroller(launcherView.getContext()).initViewPagerScroll(launcherView);
         pageViews.setOffscreenPageLimit(10);
         navForViewPager = (NavForViewPager) findViewById(R.id.ac_main_navforviewpager);
-
-        String template = SystemProperties.get(this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_NAME, "FLY") + ".json";
+        String jsonFile = "FLY";
+        if (screenWidth == 800 && screenHeigh == 480) {
+            jsonFile = "FLY800X480";
+        }
+        String template = SystemProperties.get(this, SystemProperties.Property.PERSIST_KEY_TEMPLATE_NAME, jsonFile) + ".json";
         switchUI(template);
 
         receiver = new USBReceiver();
@@ -336,26 +339,11 @@ public class MainActivity extends Activity {
      * 匹配屏幕分辨率
      */
     private void matchResolution(ThemeBean mThemeBean) {
-        //如果设置的分辨率无效，设置为系统获取的分辨率和有效区域。
-        if (mThemeBean.screenWidth <= 0 || mThemeBean.screenHeight <= 0) {
-            mThemeBean.screenWidth = (int) screenWidth;
-            mThemeBean.screenHeight = (int) screenHeigh;
-            mThemeBean.left = 0;
-            mThemeBean.top = 0;
-            mThemeBean.right = (int) screenWidth;
-            mThemeBean.bottom = (int) screenHeigh;
-            return;
-        }
-        if (mThemeBean.right <= mThemeBean.left || mThemeBean.bottom <= mThemeBean.top) {
-            mThemeBean.left = 0;
-            mThemeBean.top = 0;
-            mThemeBean.right =  mThemeBean.screenWidth;
-            mThemeBean.bottom =  mThemeBean.screenHeight;
-        }
-
         //如果设置的有效区域无效，设置有效区域为全屏
         float wScale = screenWidth / (float) mThemeBean.screenWidth;
         float hScale = screenHeigh / (float) mThemeBean.screenHeight;
+
+
         if (wScale == 1 && hScale == 1) {
             if (mThemeBean.left != 0 || mThemeBean.top != 0) {
                 for (PageBean pageBean : mThemeBean.pageList) {
@@ -366,6 +354,19 @@ public class MainActivity extends Activity {
                     }
                 }
             }
+            if (mThemeBean.screenWidth <= 0 || mThemeBean.screenHeight <= 0) {
+                mThemeBean.screenWidth = (int) screenWidth;
+                mThemeBean.screenHeight = (int) screenHeigh;
+                mThemeBean.left = 0;
+                mThemeBean.top = 0;
+                mThemeBean.right = (int) screenWidth;
+                mThemeBean.bottom = (int) screenHeigh;
+            }else if (mThemeBean.right <= mThemeBean.left || mThemeBean.bottom <= mThemeBean.top) {
+                mThemeBean.left = 0;
+                mThemeBean.top = 0;
+                mThemeBean.right = mThemeBean.screenWidth;
+                mThemeBean.bottom = mThemeBean.screenHeight;
+            }
             return;
         }
 
@@ -373,10 +374,24 @@ public class MainActivity extends Activity {
         int moveX = (int) ((screenWidth - mThemeBean.screenWidth * screenScacle) / 2);
         int moveY = (int) ((screenHeigh - mThemeBean.screenHeight * screenScacle) / 2);
 
-        mThemeBean.left = (int) (mThemeBean.left * screenScacle) + moveX;
-        mThemeBean.top = (int) (mThemeBean.top * screenScacle) + moveY;
-        mThemeBean.right = (int) (mThemeBean.right * screenScacle) + moveX;
-        mThemeBean.bottom = (int) (mThemeBean.bottom * screenScacle) + moveY;
+        if (mThemeBean.screenWidth <= 0 || mThemeBean.screenHeight <= 0) {
+            mThemeBean.screenWidth = (int) screenWidth;
+            mThemeBean.screenHeight = (int) screenHeigh;
+            mThemeBean.left = 0;
+            mThemeBean.top = 0;
+            mThemeBean.right = (int) screenWidth;
+            mThemeBean.bottom = (int) screenHeigh;
+        }else if (mThemeBean.right <= mThemeBean.left || mThemeBean.bottom <= mThemeBean.top) {
+            mThemeBean.left = 0;
+            mThemeBean.top = 0;
+            mThemeBean.right = mThemeBean.screenWidth;
+            mThemeBean.bottom = mThemeBean.screenHeight;
+        }else {
+            mThemeBean.left = (int) (mThemeBean.left * screenScacle) + moveX;
+            mThemeBean.top = (int) (mThemeBean.top * screenScacle) + moveY;
+            mThemeBean.right = (int) (mThemeBean.right * screenScacle) + moveX;
+            mThemeBean.bottom = (int) (mThemeBean.bottom * screenScacle) + moveY;
+        }
 
         if (mThemeBean.pageList != null) {
             for (PageBean pageBean : mThemeBean.pageList) {

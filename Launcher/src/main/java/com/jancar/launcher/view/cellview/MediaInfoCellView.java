@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.jancar.JancarServer;
+import com.jancar.JancarManager;
 import com.jancar.launcher.R;
 import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.utils.FlyLog;
@@ -27,7 +27,6 @@ import com.jancar.media.JacMediaController;
 import com.jancar.source.Page;
 
 import java.util.Locale;
-import java.util.Objects;
 
 public class MediaInfoCellView extends FrameLayout implements ICellView, View.OnClickListener {
     private CellBean cellBean;
@@ -40,6 +39,7 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
     private long mDuration;
     private Bitmap mBitmap;
     private int playstate = 0;
+    private String mLastSession = Page.PAGE_FM;
 
     private String fmText = "FM1";
     private String fmName = "87.5";
@@ -47,10 +47,10 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
 
     private View mViewMusic, mViewFm;
     private TextView fmTv01, fmTv02, fmTv03;
-    private ImageView fmNext, fmPrev, musicPrev, musicNext;
+    private ImageView fmNext, fmPrev, musicPrev, musicNext, musicPlay;
     private TextView musicTv01, musicTvStart, musicTvEnd;
     private ProgressBar mProgressBar;
-    private ImageView musicId3img,fmimg;
+    private ImageView musicId3img, fmimg;
 
     public MediaInfoCellView(Context context) {
         this(context, null);
@@ -81,6 +81,7 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
         fmNext = (ImageView) view.findViewById(R.id.wg_fm_next);
         musicPrev = (ImageView) view.findViewById(R.id.wg_music_prev);
         musicNext = (ImageView) view.findViewById(R.id.wg_music_next);
+        musicPlay = (ImageView) view.findViewById(R.id.wg_music_play);
         musicTv01 = (TextView) view.findViewById(R.id.mediainfo_music_title);
         musicTvStart = (TextView) view.findViewById(R.id.mediainfo_music_starttime);
         musicTvEnd = (TextView) view.findViewById(R.id.mediainfo_music_endtime);
@@ -92,7 +93,10 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
         fmNext.setOnClickListener(this);
         musicPrev.setOnClickListener(this);
         musicNext.setOnClickListener(this);
+        musicPlay.setOnClickListener(this);
 
+        fmTv02.setOnClickListener(this);
+        musicTv01.setOnClickListener(this);
         musicId3img.setOnClickListener(this);
         fmimg.setOnClickListener(this);
     }
@@ -110,16 +114,16 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(new SimpleTarget<Bitmap>() {
-            @Override
-            public void onResourceReady(final Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-                imageView.setImageBitmap(bitmap);
-                if (mirrorView != null) {
-                    setDrawingCacheEnabled(true);
-                    Bitmap bmp = getDrawingCache();
-                    mirrorView.showImage(bmp);
-                }
-            }
-        });
+                    @Override
+                    public void onResourceReady(final Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                        imageView.setImageBitmap(bitmap);
+                        if (mirrorView != null) {
+                            setDrawingCacheEnabled(true);
+                            Bitmap bmp = getDrawingCache();
+                            mirrorView.showImage(bmp);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -142,9 +146,12 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
             @Override
             public void onSession(String page) {
                 FlyLog.d("onSession page=%s", page);
-                if(!TextUtils.isEmpty(page)) {
+                if (!TextUtils.isEmpty(page)) {
                     mSession = page;
-                    upWidgetView();
+                    if (isJancarSession()) {
+                        mLastSession = page;
+                        upWidgetView();
+                    }
                 }
             }
 
@@ -221,7 +228,7 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
     }
 
     private void upWidgetView() {
-        switch (mSession) {
+        switch (mLastSession) {
             case Page.PAGE_FM:
                 mViewMusic.setVisibility(View.GONE);
                 mViewFm.setVisibility(View.VISIBLE);
@@ -243,6 +250,7 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
                 mProgressBar.setProgress((int) (mCurrent / 1000));
                 musicTvStart.setText(str1);
                 musicTvEnd.setText(str2);
+                musicPlay.setImageResource(playstate == 1 ? R.drawable.media_pause : R.drawable.media_play);
                 //更新图片
                 if (mBitmap == null) {
                     musicId3img.setImageResource(Page.PAGE_MUSIC.endsWith(mSession) ?
@@ -262,18 +270,31 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
         switch (view.getId()) {
             case R.id.wg_fm_next:
             case R.id.wg_music_next:
-                controller.requestNext();
+                if (!isJancarSession()) {
+                    startAppByLastSession();
+                } else {
+                    playNext();
+                }
                 break;
             case R.id.wg_fm_prev:
             case R.id.wg_music_prev:
-                controller.requestPrev();
+                if (!isJancarSession()) {
+                    startAppByLastSession();
+                } else {
+                    playPrev();
+                }
                 break;
             case R.id.mediainfo_fmimg:
             case R.id.mediainfo_id3img:
-                try {
-                    ((JancarServer) Objects.requireNonNull(getContext().getSystemService("jancar_manager"))).requestPage(mSession);
-                } catch (Exception e) {
-                    FlyLog.e(e.toString());
+            case R.id.mediainfo_music_title:
+            case R.id.wg_fm_tv02:
+                startAppByLastSession();
+                break;
+            case R.id.wg_music_play:
+                if (!isJancarSession()) {
+                    startAppByLastSession();
+                } else {
+                    playPasue();
                 }
                 break;
         }
@@ -287,5 +308,43 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
         int hours = totalSeconds / 3600;
         return hours > 0 ? String.format(Locale.ENGLISH, "%02d:%02d:%02d", hours, minutes, seconds)
                 : String.format(Locale.ENGLISH, "%02d:%02d", minutes, seconds);
+    }
+
+    private boolean isJancarSession() {
+        return Page.PAGE_FM.equals(mSession) || Page.PAGE_MUSIC.equals(mSession) || Page.PAGE_A2DP.equals(mSession);
+    }
+
+    @SuppressLint("WrongConstant")
+    private void startAppByLastSession() {
+        try {
+            FlyLog.d("start app mSession=" + mLastSession);
+            ((JancarManager) getContext().getSystemService(JancarManager.JAC_SERVICE)).requestPage(mLastSession);
+        } catch (Exception e) {
+            FlyLog.e(e.toString());
+        }
+    }
+
+    private void playNext() {
+        try {
+            controller.requestNext();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void playPrev() {
+        try {
+            controller.requestPrev();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void playPasue() {
+        try {
+            controller.requestPPause();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

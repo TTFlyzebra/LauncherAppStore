@@ -9,7 +9,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="3.4"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/mediainfo_id3img"
@@ -73,7 +73,7 @@
                 android:orientation="horizontal"
                 android:paddingTop="20px"
                 android:layoutDirection="ltr"
-                android:weightSum="2">
+                android:weightSum="3">
 
                 <LinearLayout
                     android:layout_width="0px"
@@ -86,6 +86,19 @@
                         android:layout_width="42px"
                         android:layout_height="38px"
                         android:src="@drawable/mediainfo_prev" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/wg_music_play"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/media_pause" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -111,7 +124,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="3.4"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/mediainfo_fmimg"

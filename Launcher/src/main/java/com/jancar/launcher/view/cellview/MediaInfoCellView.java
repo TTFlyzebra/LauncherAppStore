@@ -151,6 +151,8 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
                     if (isJancarSession()) {
                         mLastSession = page;
                         upWidgetView();
+                    }else{
+                        mBitmap = null;
                     }
                 }
             }
@@ -228,6 +230,7 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
     }
 
     private void upWidgetView() {
+        FlyLog.d("last session=%s",mLastSession);
         switch (mLastSession) {
             case Page.PAGE_FM:
                 mViewMusic.setVisibility(View.GONE);
@@ -253,7 +256,7 @@ public class MediaInfoCellView extends FrameLayout implements ICellView, View.On
                 musicPlay.setImageResource(playstate == 1 ? R.drawable.media_pause : R.drawable.media_play);
                 //更新图片
                 if (mBitmap == null) {
-                    musicId3img.setImageResource(Page.PAGE_MUSIC.endsWith(mSession) ?
+                    musicId3img.setImageResource(Page.PAGE_MUSIC.equals(mLastSession) ?
                             R.drawable.mediainfo_music_default : R.drawable.mediainfo_bt_default);
                 } else {
                     musicId3img.setImageBitmap(mBitmap);

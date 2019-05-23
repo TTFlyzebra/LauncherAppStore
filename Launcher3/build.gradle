@@ -9,13 +9,86 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        flavorDimensions "versionCode"
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        AP1 {
+            resources.srcDir 'src/AP1/res' //资源目录
+        }
+        AP2 {
+            resources.srcDir 'src/AP2/res' //资源目录
+        }
+
+        AP3 {
+            resources.srcDir 'src/AP3/res' //资源目录
+        }
+
+        AP4 {
+            resources.srcDir 'src/AP4/res' //资源目录
+        }
+
+        AP5 {
+            resources.srcDir 'src/AP5/res' //资源目录
+        }
+
+        AP6 {
+            resources.srcDir 'src/AP5/res' //资源目录
+        }
+
+        AP7 {
+            resources.srcDir 'src/AP5/res' //资源目录
+        }
+
+        AP8 {
+            resources.srcDir 'src/AP8/res' //资源目录
+        }
+
+        AP9 {
+            resources.srcDir 'src/AP9/res' //资源目录
+        }
+    }
+
+    productFlavors {
+        AP1 {
+            versionName "AP1_v1.0"
+        }
+        AP2 {
+            versionName "AP2_v1.0"
+        }
+
+        AP3 {
+            versionName "AP3_v1.0"
+        }
+
+        AP4 {
+            versionName "AP4_v1.0"
+        }
+
+        AP5 {
+            versionName "AP5_v1.0"
+        }
+        AP6 {
+            versionName "AP5_v1.0"
+        }
+        AP7 {
+            versionName "AP5_v1.0"
+        }
+        AP8 {
+            versionName "AP8_v1.0"
+        }
+        AP9 {
+            versionName "AP5_v1.0"
+        }
+    }
+
     signingConfigs {
         release {
             storeFile file("../platform.keystore")
@@ -31,6 +104,7 @@ android {
             keyPassword 'android'
         }
     }
+
 }
 
 dependencies {

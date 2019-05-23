@@ -398,7 +398,20 @@ public class IconCache {
         }
         if (entry == null) {
             entry = new CacheEntry();
-            entry.icon = Utilities.create3rdIconBitmap(app.getBadgedIcon(mIconDpi), mContext);
+            /**
+             * 自己的应用不缩小
+             */
+            try {
+                String appName = app.getComponentName().getPackageName();
+                if(!TextUtils.isEmpty(appName)&&appName.indexOf("com.jancar.")==0){
+                    entry.icon = Utilities.create3rdIconBitmap(app.getBadgedIcon(mIconDpi), mContext);
+                }else{
+                    entry.icon = Utilities.createMin3rdIconBitmap(app.getBadgedIcon(mIconDpi), mContext);
+                }
+            } catch (Exception e) {
+                FlyLog.e(e.toString());
+            }
+
         }
         entry.title = app.getLabel();
         entry.contentDescription = mUserManager.getBadgedLabelForUser(entry.title, app.getUser());
@@ -561,7 +574,19 @@ public class IconCache {
             // Check the DB first.
             if (!getEntryFromDB(cacheKey, entry, useLowResIcon)) {
                 if (info != null) {
-                    entry.icon = Utilities.create3rdIconBitmap(info.getBadgedIcon(mIconDpi), mContext);
+                    /**
+                     * 自己的应用不缩小
+                     */
+                    try {
+                        String appName = info.getComponentName().getPackageName();
+                        if(!TextUtils.isEmpty(appName)&&appName.indexOf("com.jancar.")==0){
+                            entry.icon = Utilities.create3rdIconBitmap(info.getBadgedIcon(mIconDpi), mContext);
+                        }else{
+                            entry.icon = Utilities.createMin3rdIconBitmap(info.getBadgedIcon(mIconDpi), mContext);
+                        }
+                    } catch (Exception e) {
+                        FlyLog.e(e.toString());
+                    }
                 } else {
                     if (usePackageIcon) {
                         CacheEntry packageEntry = getEntryForPackageLocked(

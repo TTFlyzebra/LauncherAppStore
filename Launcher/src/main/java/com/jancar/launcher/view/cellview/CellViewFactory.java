@@ -35,6 +35,12 @@ public class CellViewFactory {
             case CellType.TYPE_APP_SWITCH:
                 iCellView = new SwitchCellView(context);
                 break;
+            case CellType.TYPE_APP_TIME1:
+                iCellView = new Time1CellView(context);
+                break;
+            case CellType.TYPE_APP_MEDIA1:
+                iCellView = new MediaInfoCellView1(context);
+                break;
             case CellType.TYPE_APP_NORMAL:
             default:
                 iCellView = new SimpeCellView(context);

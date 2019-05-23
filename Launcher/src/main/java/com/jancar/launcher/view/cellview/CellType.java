@@ -27,4 +27,13 @@ public interface CellType {
     int TYPE_APP_MIRRORIMG = 5;
 
     int TYPE_APP_SWITCH = 9;
+
+    /**
+     * 时间1
+     */
+    int TYPE_APP_TIME1 = 10;
+    /**
+     * 媒体小部件1
+     */
+    int TYPE_APP_MEDIA1 = 11;
 }

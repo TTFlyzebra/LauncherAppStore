@@ -507,17 +507,17 @@ public class Launcher extends Activity
             android.os.Debug.stopMethodTracing();
         }
 
-//        if (!mRestoring) {
-//            if (DISABLE_SYNCHRONOUS_BINDING_CURRENT_PAGE) {
-//                // If the user leaves launcher, then we should just load items asynchronously when
-//                // they return.
-//                mModel.startLoader(PagedView.INVALID_RESTORE_PAGE);
-//            } else {
-//                // We only load the page synchronously if the user rotates (or triggers a
-//                // configuration change) while launcher is in the foreground
-//                mModel.startLoader(mWorkspace.getRestorePage());
-//            }
-//        }
+        if (!mRestoring) {
+            if (DISABLE_SYNCHRONOUS_BINDING_CURRENT_PAGE) {
+                // If the user leaves launcher, then we should just load items asynchronously when
+                // they return.
+                mModel.startLoader(PagedView.INVALID_RESTORE_PAGE);
+            } else {
+                // We only load the page synchronously if the user rotates (or triggers a
+                // configuration change) while launcher is in the foreground
+                mModel.startLoader(mWorkspace.getRestorePage());
+            }
+        }
 
         // For handling default keys
         mDefaultKeySsb = new SpannableStringBuilder();
@@ -555,8 +555,8 @@ public class Launcher extends Activity
 //            showFirstRunActivity();
 //            showFirstRunClings();
 //        }
-        LauncherModel model = getModel();
-        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
+//        LauncherModel model = getModel();
+//        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
 
         /**
          * 初始化后门配置

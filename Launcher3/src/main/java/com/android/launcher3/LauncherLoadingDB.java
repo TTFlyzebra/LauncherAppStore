@@ -35,7 +35,7 @@ public class LauncherLoadingDB {
     }
 
     public interface ILoadingDB {
-        void loadingFinish();
+        void loadingFinish(boolean isChanged);
     }
 
     public LauncherLoadingDB(LauncherAppState launcherAppStatep) {
@@ -67,17 +67,18 @@ public class LauncherLoadingDB {
             }
         });
 
-        checkItems(context);
-        iLoadingDB.loadingFinish();
+        iLoadingDB.loadingFinish(checkItems(context));
     }
 
     /**
      * 每次启动检测workspace显示的图标，对比本机安装应用进行增减
      */
-    private void checkItems(Context mContext) {
+    private boolean checkItems(Context mContext) {
         if (allLauncherActivitys != null && !allLauncherActivitys.isEmpty()) {
             SharedPreferences sp = mContext.getSharedPreferences(LauncherAppState.getSharedPreferencesKey(), Context.MODE_PRIVATE);
-            checkFavorites(mContext, allLauncherActivitys);
+            return checkFavorites(mContext, allLauncherActivitys);
+        }else{
+            return false;
         }
     }
 

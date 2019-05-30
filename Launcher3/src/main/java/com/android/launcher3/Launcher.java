@@ -435,7 +435,7 @@ public class Launcher extends Activity
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         //如果设置的有效区域无效，设置有效区域为全屏
-        screenScacle = Math.min(dm.widthPixels / (float)1024, dm.heightPixels / (float)600);
+        screenScacle = Math.min(dm.widthPixels / (float) 1024, dm.heightPixels / (float) 600);
 
         if (DEBUG_STRICT_MODE) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -555,12 +555,8 @@ public class Launcher extends Activity
 //            showFirstRunActivity();
 //            showFirstRunClings();
 //        }
-//        LauncherModel model = getModel();
-//        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
-
-        LauncherLoadingDB launcherLoadingDB = new LauncherLoadingDB(LauncherAppState.getInstance());
-        launcherLoadingDB.setOnListener(this);
-        launcherLoadingDB.start(this);
+        LauncherModel model = getModel();
+        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
 
         /**
          * 初始化后门配置
@@ -576,16 +572,18 @@ public class Launcher extends Activity
     }
 
     @Override
-    public void loadingFinish() {
-        if (!mRestoring) {
-            if (DISABLE_SYNCHRONOUS_BINDING_CURRENT_PAGE) {
-                // If the user leaves launcher, then we should just load items asynchronously when
-                // they return.
-                mModel.startLoader(PagedView.INVALID_RESTORE_PAGE);
-            } else {
-                // We only load the page synchronously if the user rotates (or triggers a
-                // configuration change) while launcher is in the foreground
-                mModel.startLoader(mWorkspace.getRestorePage());
+    public void loadingFinish(boolean isChanged) {
+        if (isChanged) {
+            if (!mRestoring) {
+                if (DISABLE_SYNCHRONOUS_BINDING_CURRENT_PAGE) {
+                    // If the user leaves launcher, then we should just load items asynchronously when
+                    // they return.
+                    mModel.startLoader(PagedView.INVALID_RESTORE_PAGE);
+                } else {
+                    // We only load the page synchronously if the user rotates (or triggers a
+                    // configuration change) while launcher is in the foreground
+                    mModel.startLoader(mWorkspace.getRestorePage());
+                }
             }
         }
     }
@@ -1044,6 +1042,9 @@ public class Launcher extends Activity
     @Override
     protected void onStart() {
         super.onStart();
+        LauncherLoadingDB launcherLoadingDB = new LauncherLoadingDB(LauncherAppState.getInstance());
+        launcherLoadingDB.setOnListener(this);
+        launcherLoadingDB.start(this);
         FirstFrameAnimatorHelper.setIsVisible(true);
 
 

@@ -558,6 +558,10 @@ public class Launcher extends Activity
 //        LauncherModel model = getModel();
 //        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
 
+        LauncherLoadingDB launcherLoadingDB = new LauncherLoadingDB(LauncherAppState.getInstance());
+        launcherLoadingDB.setOnListener(this);
+        launcherLoadingDB.start(this);
+
         /**
          * 初始化后门配置
          */
@@ -1040,9 +1044,6 @@ public class Launcher extends Activity
     @Override
     protected void onStart() {
         super.onStart();
-        LauncherLoadingDB launcherLoadingDB = new LauncherLoadingDB(LauncherAppState.getInstance());
-        launcherLoadingDB.setOnListener(this);
-        launcherLoadingDB.start(this);
         FirstFrameAnimatorHelper.setIsVisible(true);
 
 

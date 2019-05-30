@@ -132,7 +132,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Default launcher application.
  */
 public class Launcher extends Activity
-        implements View.OnClickListener, OnLongClickListener, LauncherModel.Callbacks,
+        implements OnClickListener, OnLongClickListener, LauncherModel.Callbacks,
         View.OnTouchListener, PageSwitchListener, LauncherProviderChangeListener, LauncherLoadingDB.ILoadingDB {
     static final String TAG = "Launcher";
     static final boolean LOGD = false;
@@ -609,7 +609,7 @@ public class Launcher extends Activity
 
     public boolean setLauncherCallbacks(LauncherCallbacks callbacks) {
         mLauncherCallbacks = callbacks;
-        mLauncherCallbacks.setLauncherSearchCallback(new Launcher.LauncherSearchCallbacks() {
+        mLauncherCallbacks.setLauncherSearchCallback(new LauncherSearchCallbacks() {
             private boolean mWorkspaceImportanceStored = false;
             private boolean mHotseatImportanceStored = false;
             private int mWorkspaceImportanceForAccessibility =

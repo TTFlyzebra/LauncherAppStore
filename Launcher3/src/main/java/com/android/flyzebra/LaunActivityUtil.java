@@ -29,11 +29,11 @@ public class LaunActivityUtil {
                 for (LauncherActivityInfoCompat info : addList) {
                     boolean isFilter = false;
                     try {
-                        String myPackName = info.getComponentName().getPackageName();
+                        String myPackName = info.getComponentName().getPackageName();;
                         for (String packName : Const.FILTER_PACKNAMES) {
                             if (packName.equals(myPackName)) {
                                 FlyLog.i("filter packname, packName=%s", packName);
-                                isFilter = true;
+                                isFilter = false;
                                 break;
                             }
                         }

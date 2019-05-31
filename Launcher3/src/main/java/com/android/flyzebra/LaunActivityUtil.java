@@ -31,9 +31,18 @@ public class LaunActivityUtil {
                     try {
                         String myPackName = info.getComponentName().getPackageName();;
                         for (String packName : Const.FILTER_PACKNAMES) {
+                            if(myPackName.equals("com.jancar.front")){
+                                if(SystemProperties.get(context,"persist.jancar.front.video","0").equals("1")){
+                                    continue;
+                                }else{
+                                    isFilter = true;
+                                    break;
+                                }
+                            }
+
                             if (packName.equals(myPackName)) {
                                 FlyLog.i("filter packname, packName=%s", packName);
-                                isFilter = false;
+                                isFilter = true;
                                 break;
                             }
                         }

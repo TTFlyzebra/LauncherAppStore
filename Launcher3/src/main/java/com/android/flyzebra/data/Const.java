@@ -23,6 +23,7 @@ public class Const {
             "com.autochips.videoplayer2",
             "com.autochips.bluetooth",
             "com.autochips.dvrmipi",
-            "com.mediatek.camera"
+            "com.mediatek.camera",
+            "com.jancar.front"
     };
 }

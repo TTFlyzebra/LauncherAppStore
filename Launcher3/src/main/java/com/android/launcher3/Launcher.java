@@ -215,6 +215,8 @@ public class Launcher extends Activity
 
     public static final String USER_HAS_MIGRATED = "launcher.user_migrated_from_old_data";
     public static float screenScacle = 1.0f;
+    private LauncherLoadingDB launcherLoadingDB;
+    private boolean isFirst = true;
 
     /**
      * The different states that Launcher can be in.
@@ -507,17 +509,17 @@ public class Launcher extends Activity
             android.os.Debug.stopMethodTracing();
         }
 
-        if (!mRestoring) {
-            if (DISABLE_SYNCHRONOUS_BINDING_CURRENT_PAGE) {
-                // If the user leaves launcher, then we should just load items asynchronously when
-                // they return.
-                mModel.startLoader(PagedView.INVALID_RESTORE_PAGE);
-            } else {
-                // We only load the page synchronously if the user rotates (or triggers a
-                // configuration change) while launcher is in the foreground
-                mModel.startLoader(mWorkspace.getRestorePage());
-            }
-        }
+//        if (!mRestoring) {
+//            if (DISABLE_SYNCHRONOUS_BINDING_CURRENT_PAGE) {
+//                // If the user leaves launcher, then we should just load items asynchronously when
+//                // they return.
+//                mModel.startLoader(PagedView.INVALID_RESTORE_PAGE);
+//            } else {
+//                // We only load the page synchronously if the user rotates (or triggers a
+//                // configuration change) while launcher is in the foreground
+//                mModel.startLoader(mWorkspace.getRestorePage());
+//            }
+//        }
 
         // For handling default keys
         mDefaultKeySsb = new SpannableStringBuilder();
@@ -558,6 +560,9 @@ public class Launcher extends Activity
 //        LauncherModel model = getModel();
 //        model.startLoader(PagedView.INVALID_RESTORE_PAGE,LauncherModel.LOADER_FLAG_NONE);
 
+        launcherLoadingDB = new LauncherLoadingDB(LauncherAppState.getInstance());
+        launcherLoadingDB.setOnListener(this);
+
         /**
          * 初始化后门配置
          */
@@ -573,16 +578,27 @@ public class Launcher extends Activity
 
     @Override
     public void loadingFinish(boolean isChanged) {
-        if (isChanged) {
-            if (!mRestoring) {
-                if (DISABLE_SYNCHRONOUS_BINDING_CURRENT_PAGE) {
-                    // If the user leaves launcher, then we should just load items asynchronously when
-                    // they return.
-                    mModel.startLoader(PagedView.INVALID_RESTORE_PAGE);
-                } else {
-                    // We only load the page synchronously if the user rotates (or triggers a
-                    // configuration change) while launcher is in the foreground
-                    mModel.startLoader(mWorkspace.getRestorePage());
+        if (isFirst) {
+            FlyLog.d("First loadding icon isChanged=" + isChanged);
+            isFirst = false;
+            if (DISABLE_SYNCHRONOUS_BINDING_CURRENT_PAGE) {
+                // If the user leaves launcher, then we should just load items asynchronously when
+                // they return.
+                mModel.startLoader(PagedView.INVALID_RESTORE_PAGE);
+            } else {
+                // We only load the page synchronously if the user rotates (or triggers a
+                // configuration change) while launcher is in the foreground
+                mModel.startLoader(mWorkspace.getRestorePage());
+            }
+        } else {
+            FlyLog.d("Start loadding icon isChanged=" + isChanged);
+            if (isChanged) {
+                if (!mRestoring) {
+                    if (DISABLE_SYNCHRONOUS_BINDING_CURRENT_PAGE) {
+                        mModel.startLoader(PagedView.INVALID_RESTORE_PAGE);
+                    } else {
+                        mModel.startLoader(mWorkspace.getRestorePage());
+                    }
                 }
             }
         }
@@ -1042,8 +1058,6 @@ public class Launcher extends Activity
     @Override
     protected void onStart() {
         super.onStart();
-        LauncherLoadingDB launcherLoadingDB = new LauncherLoadingDB(LauncherAppState.getInstance());
-        launcherLoadingDB.setOnListener(this);
         launcherLoadingDB.start(this);
         FirstFrameAnimatorHelper.setIsVisible(true);
 

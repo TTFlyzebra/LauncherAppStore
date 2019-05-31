@@ -29,21 +29,28 @@ public class LaunActivityUtil {
                 for (LauncherActivityInfoCompat info : addList) {
                     boolean isFilter = false;
                     try {
-                        String myPackName = info.getComponentName().getPackageName();;
-                        for (String packName : Const.FILTER_PACKNAMES) {
-                            if(myPackName.equals("com.jancar.front")){
-                                if(SystemProperties.get(context,"persist.jancar.front.video","0").equals("1")){
-                                    continue;
-                                }else{
+                        String myPackName = info.getComponentName().getPackageName();
+                        //按系统属性设置过滤
+                        boolean isFindinPropList = false;
+                        for (String packName : Const.FILTER_SYSPROP_PACKNAMES) {
+                            if (packName.equals(myPackName)) {
+                                isFindinPropList = true;
+                                String systemProp = "persist." + myPackName;
+                                isFilter = !SystemProperties.get(context, systemProp, "0").equals("1");
+                                if(isFilter){
+                                    FlyLog.i("filter sysprop packname, packName=%s", packName);
+                                }
+                                break;
+                            }
+                        }
+                        //过滤黑名单
+                        if (!isFindinPropList) {
+                            for (String packName : Const.FILTER_PACKNAMES) {
+                                if (packName.equals(myPackName)) {
+                                    FlyLog.i("filter packname, packName=%s", packName);
                                     isFilter = true;
                                     break;
                                 }
-                            }
-
-                            if (packName.equals(myPackName)) {
-                                FlyLog.i("filter packname, packName=%s", packName);
-                                isFilter = true;
-                                break;
                             }
                         }
                     } catch (Exception e) {

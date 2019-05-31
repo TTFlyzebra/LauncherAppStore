@@ -24,6 +24,9 @@ public class Const {
             "com.autochips.bluetooth",
             "com.autochips.dvrmipi",
             "com.mediatek.camera",
+    };
+
+    public static String FILTER_SYSPROP_PACKNAMES[] = {
             "com.jancar.front"
     };
 }

@@ -177,6 +177,10 @@ public class MainActivity extends Activity {
                 final PageBean pageBean = themeBean.pageList.get(0);
                 for (int j = 0; j < pageBean.cellList.size(); j++) {
                     CellBean cellBean = pageBean.cellList.get(j);
+                    if(TextUtils.isEmpty(cellBean.defaultImageUrl)){
+                        addcount++;
+                        continue;
+                    }
                     Glide.with(this)
                             .load(cellBean.defaultImageUrl)
                             .asBitmap()

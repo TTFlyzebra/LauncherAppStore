@@ -35,7 +35,7 @@ public class LaunActivityUtil {
                         for (String packName : Const.FILTER_SYSPROP_PACKNAMES) {
                             if (packName.equals(myPackName)) {
                                 isFindinPropList = true;
-                                String systemProp = "persist." + myPackName;
+                                String systemProp = "persist.jancar.front.video";
                                 isFilter = !SystemProperties.get(context, systemProp, "0").equals("1");
                                 if(isFilter){
                                     FlyLog.i("filter sysprop packname, packName=%s", packName);

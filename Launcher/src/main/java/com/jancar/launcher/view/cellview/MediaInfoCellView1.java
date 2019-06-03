@@ -105,6 +105,10 @@ public class MediaInfoCellView1 extends FrameLayout implements ICellView, View.O
     @Override
     public void notifyView() {
         if (imageView == null) return;
+        if(TextUtils.isEmpty(cellBean.defaultImageUrl)){
+            imageView.setImageBitmap(null);;
+            return;
+        }
         Glide.with(getContext())
                 .load(cellBean.defaultImageUrl)
                 .asBitmap()

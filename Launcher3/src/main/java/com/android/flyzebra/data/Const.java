@@ -26,7 +26,7 @@ public class Const {
             "com.mediatek.camera",
     };
 
-    public static String FILTER_SYSPROP_PACKNAMES[] = {
-            "com.jancar.front"
+    public static String FILTER_SYSPROP_PACKNAMES[][] = {
+            { "com.jancar.front","persist.jancar.front.video"}
     };
 }

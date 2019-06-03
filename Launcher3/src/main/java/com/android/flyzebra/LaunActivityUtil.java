@@ -32,13 +32,12 @@ public class LaunActivityUtil {
                         String myPackName = info.getComponentName().getPackageName();
                         //按系统属性设置过滤
                         boolean isFindinPropList = false;
-                        for (String packName : Const.FILTER_SYSPROP_PACKNAMES) {
-                            if (packName.equals(myPackName)) {
+                        for (String[] packInfo : Const.FILTER_SYSPROP_PACKNAMES) {
+                            if (packInfo[0].equals(myPackName)) {
                                 isFindinPropList = true;
-                                String systemProp = "persist.jancar.front.video";
-                                isFilter = !SystemProperties.get(context, systemProp, "0").equals("1");
+                                isFilter = !SystemProperties.get(context, packInfo[1], "0").equals("1");
                                 if(isFilter){
-                                    FlyLog.i("filter sysprop packname, packName=%s", packName);
+                                    FlyLog.i("filter sysprop packname, packName=%s", packInfo[0]);
                                 }
                                 break;
                             }

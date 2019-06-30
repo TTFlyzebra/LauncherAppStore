@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -19,10 +18,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.jancar.JancarManager;
 import com.jancar.launcher.bean.CellBean;
 import com.jancar.launcher.utils.CommondUtils;
-import com.jancar.launcher.utils.FlyLog;
 import com.jancar.launcher.view.flyview.FlyImageView;
 import com.jancar.launcher.view.flyview.FlyTextView;
 import com.jancar.launcher.view.flyview.MirrorView;
@@ -34,7 +31,6 @@ public class MirrorImageCellView extends FrameLayout implements ICellView, View.
     private MirrorView mirrorImageView;
     private TextView textView;
     private Handler mHandler = new Handler();
-    private JancarManager jancarManager;
 
 
     public MirrorImageCellView(Context context) {
@@ -48,11 +44,6 @@ public class MirrorImageCellView extends FrameLayout implements ICellView, View.
     @SuppressLint("WrongConstant")
     public MirrorImageCellView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        try {
-            jancarManager = (JancarManager) context.getSystemService("jancar_manager");
-        } catch (Exception e) {
-            FlyLog.e(e.toString());
-        }
         initView(context);
         focusChange(false);
     }
@@ -136,14 +127,6 @@ public class MirrorImageCellView extends FrameLayout implements ICellView, View.
      */
     @Override
     public void runAction() {
-        if (!TextUtils.isEmpty(cellBean.jancar) && jancarManager != null) {
-            if (jancarManager.requestPage(cellBean.jancar)) {
-                FlyLog.d("start app by jancarManager id=%s", cellBean.jancar);
-                return;
-            } else {
-                FlyLog.d("start app by jancarManager failed!");
-            }
-        }
         if (CommondUtils.execStartPackage(getContext(), cellBean.packName, cellBean.className))
             return;
         if (CommondUtils.execStartActivity(getContext(), cellBean.action)) return;

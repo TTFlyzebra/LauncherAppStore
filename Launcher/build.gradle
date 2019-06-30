@@ -11,11 +11,12 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
     }
 
     signingConfigs {
@@ -33,24 +34,22 @@ android {
             keyPassword 'android'
         }
     }
-}
 
-preBuild {
-    doLast {
-        def imlFile = file(project.name + ".iml")
-        println 'Change ' + project.name + '.iml order'
-        try {
-            def parsedXml = (new XmlParser()).parse(imlFile)
-            def jdkNode = parsedXml.component[1].orderEntry.find { it.'@type' == 'jdk' }
-            parsedXml.component[1].remove(jdkNode)
-            def sdkString = "Android API " + android.compileSdkVersion.substring("android-".length()) + " Platform"
-            new Node(parsedXml.component[1], 'orderEntry', ['type': 'jdk', 'jdkName': sdkString, 'jdkType': 'Android SDK'])
-            groovy.xml.XmlUtil.serialize(parsedXml, new FileOutputStream(imlFile))
-        } catch (FileNotFoundException e) {
-            // nop, iml not found
+    buildTypes {
+        release {
+//            minifyEnabled true //混淆
+//            zipAlignEnabled true//Zipalign优化
+//            shrinkResources true// 移除无用的resource文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
 }
+
 
 dependencies {
     //    implementation files('libs/ICS.jar')
@@ -58,6 +57,5 @@ dependencies {
     implementation files('libs/glide-3.7.0.jar')
     implementation 'com.android.support:support-v4:23.1.0'
     implementation 'com.android.support:multidex:1.0.3'
-    compileOnly files('libs/framework.jar')
 }
 

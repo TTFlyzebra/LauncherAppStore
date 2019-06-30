@@ -20,26 +20,14 @@ public class CellViewFactory {
             case CellType.TYPE_BACKGROUND:
                 iCellView = new StaticCellView(context);
                 break;
-            case CellType.TYPE_APP_RADIO:
-                iCellView = new RadioCellView(context);
-                break;
             case CellType.TYPE_APP_TIME:
                 iCellView = new TimeCellView(context);
-                break;
-            case CellType.TYPE_APP_MEDIA:
-                iCellView = new MediaInfoCellView(context);
                 break;
             case CellType.TYPE_APP_MIRRORIMG:
                 iCellView = new MirrorImageCellView(context);
                 break;
-            case CellType.TYPE_APP_SWITCH:
-                iCellView = new SwitchCellView(context);
-                break;
             case CellType.TYPE_APP_TIME1:
                 iCellView = new Time1CellView(context);
-                break;
-            case CellType.TYPE_APP_MEDIA1:
-                iCellView = new MediaInfoCellView1(context);
                 break;
             case CellType.TYPE_APP_NORMAL:
             default:
